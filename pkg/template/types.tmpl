@@ -12,6 +12,9 @@ import (
   // Element
   type {{ .Name }} struct {
     XMLName xml.Name `xml:{{.Name}}`
+    {{ range .Attributes }}
+        {{ .Name }} string `xml:"{{.Name}},attr"`
+    {{end }}
   }
 
 {{end}}
