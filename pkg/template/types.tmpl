@@ -2,6 +2,12 @@
 {{$packageName := .GoPackageName -}}
 package {{ $packageName }}
 
+import (
+    {{ range .GoImportsNeeded}}
+        "{{ . }}"
+    {{ end }}
+)
+
 {{range .Elements }}
   // Element
   type {{ .Name }} struct {

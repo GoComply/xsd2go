@@ -27,3 +27,7 @@ func Parse(r io.Reader) (*Schema, error) {
 func (sch *Schema) GoPackageName() string {
 	return "TODO"
 }
+
+func (sch *Schema) GoImportsNeeded() []string {
+	return []string{"encoding/xml"}
+}
