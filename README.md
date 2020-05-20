@@ -10,13 +10,13 @@ are up to here.
 ### Related projects:
  - ![Metaschema](https://github.com/gocomply/metaschema) - generate golang code based on NIST metaschema input
 
-## Usage
+## Exemplary Usage
 
 ```
-# Acquire latest some XSD file you want to convert
-wget https://raw.githubusercontent.com/OpenSCAP/openscap/maint-1.3/schemas/xccdf/1.2/xccdf_1.2.xsd
+# Acquire latest some XSD file you want to convert - for instance XCCDF 1.2
+git clone --depth 1 https://github.com/openscap/openscap
 # Parse XSD schema and generate golang structs
-./gocomply_xsd2go convert xccdf_1.2.xsd github.com/complianceascode/librescap pkg/scap/models/xccdf/1.2
+./gocomply_xsd2go convert openscap/schemas/xccdf/1.2/xccdf_1.2.xsd github.com/complianceascode/librescap pkg/scap/models/xccdf/1.2
 ```
 
 ## Installation
