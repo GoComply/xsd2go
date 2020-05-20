@@ -3,7 +3,7 @@ package xsd
 import (
 	"encoding/xml"
 	"fmt"
-	"io"
+	"os"
 )
 
 // Schema is the root XSD element
@@ -14,9 +14,15 @@ type Schema struct {
 	Elements        []Element `xml:"element"`
 }
 
-func Parse(r io.Reader) (*Schema, error) {
+func Parse(xsdPath string) (*Schema, error) {
+	f, err := os.Open(xsdPath)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+
 	var schema Schema
-	d := xml.NewDecoder(r)
+	d := xml.NewDecoder(f)
 
 	if err := d.Decode(&schema); err != nil {
 		return nil, fmt.Errorf("Error decoding XSD: %s", err)

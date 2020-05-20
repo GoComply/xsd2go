@@ -2,7 +2,6 @@ package xsd2go
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/gocomply/xsd2go/pkg/template"
 	"github.com/gocomply/xsd2go/pkg/xsd"
@@ -10,13 +9,7 @@ import (
 
 func Convert(xsdPath, goModule, outputDir string) error {
 	fmt.Printf("Processing '%s'\n", xsdPath)
-	f, err := os.Open(xsdPath)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-
-	meta, err := xsd.Parse(f)
+	meta, err := xsd.Parse(xsdPath)
 	if err != nil {
 		return err
 	}
