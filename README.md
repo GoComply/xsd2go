@@ -15,7 +15,7 @@ are up to here.
 ```
 # Acquire latest some XSD file you want to convert
 wget https://raw.githubusercontent.com/OpenSCAP/openscap/maint-1.3/schemas/xccdf/1.2/xccdf_1.2.xsd
-# Parse metaschema and generate golang structs
+# Parse XSD schema and generate golang structs
 ./gocomply_xsd2go convert xccdf_1.2.xsd github.com/complianceascode/librescap pkg/scap/models/xccdf/1.2
 ```
 

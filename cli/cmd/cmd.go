@@ -29,12 +29,11 @@ var convert = cli.Command{
 		return nil
 	},
 	Action: func(c *cli.Context) error {
-		metaschemaDir, goModule, outputDir := c.Args()[0], c.Args()[1], c.Args()[2]
-		err := xsd2go.Convert(metaschemaDir, goModule, outputDir)
+		xsdFile, goModule, outputDir := c.Args()[0], c.Args()[1], c.Args()[2]
+		err := xsd2go.Convert(xsdFile, goModule, outputDir)
 		if err != nil {
 			return cli.NewExitError(err, 1)
 		}
 		return nil
 	},
-
 }
