@@ -9,7 +9,7 @@ import (
 )
 
 func Convert(xsdPath, goModule, outputDir string) error {
-	fmt.Println("Processing ", xsdPath)
+	fmt.Printf("Processing '%s'\n", xsdPath)
 	f, err := os.Open(xsdPath)
 	if err != nil {
 		return err
