@@ -10,6 +10,7 @@ import (
 type Schema struct {
 	XMLName         xml.Name  `xml:"http://www.w3.org/2001/XMLSchema schema"`
 	TargetNamespace string    `xml:"targetNamespace,attr"`
+	Imports         []Import  `xml:import`
 	Elements        []Element `xml:"element"`
 }
 
@@ -30,4 +31,10 @@ func (sch *Schema) GoPackageName() string {
 
 func (sch *Schema) GoImportsNeeded() []string {
 	return []string{"encoding/xml"}
+}
+
+type Import struct {
+	XMLName        xml.Name `xml:"http://www.w3.org/2001/XMLSchema import"`
+	Namespace      string   `xml:"namespace,attr"`
+	SchemaLocation string   `xml:"schemaLocation,attr"`
 }
