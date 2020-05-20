@@ -1,9 +1,7 @@
 package xsd2go
 
 import (
-	"encoding/xml"
 	"fmt"
-	"io"
 	"os"
 
 	"github.com/gocomply/xsd2go/pkg/template"
@@ -18,7 +16,7 @@ func Convert(xsdPath, goModule, outputDir string) error {
 	}
 	defer f.Close()
 
-	meta, err := decode(f)
+	meta, err := xsd.Parse(f)
 	if err != nil {
 		return err
 	}
@@ -27,16 +25,4 @@ func Convert(xsdPath, goModule, outputDir string) error {
 		return err
 	}
 	return nil
-}
-
-func decode(r io.Reader) (*xsd.Schema, error) {
-	var schema xsd.Schema
-
-	d := xml.NewDecoder(r)
-
-	if err := d.Decode(&schema); err != nil {
-		return nil, fmt.Errorf("Error decoding XSD: %s", err)
-	}
-
-	return &schema, nil
 }
