@@ -1,0 +1,11 @@
+package xsd
+
+import (
+	"encoding/xml"
+)
+
+// Element defines single XML element
+type Element struct {
+	XMLName xml.Name `xml:"http://www.w3.org/2001/XMLSchema element"`
+	Name    string   `xml:"name,attr"`
+}

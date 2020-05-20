@@ -8,8 +8,9 @@ import (
 
 // Schema is the root XSD element
 type Schema struct {
-	XMLName         xml.Name `xml:"http://www.w3.org/2001/XMLSchema schema"`
-	TargetNamespace string   `xml:"targetNamespace,attr"`
+	XMLName         xml.Name  `xml:"http://www.w3.org/2001/XMLSchema schema"`
+	TargetNamespace string    `xml:"targetNamespace,attr"`
+	Elements        []Element `xml:"element"`
 }
 
 func Parse(r io.Reader) (*Schema, error) {
