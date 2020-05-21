@@ -9,10 +9,11 @@ import (
 
 // Schema is the root XSD element
 type Schema struct {
-	XMLName         xml.Name  `xml:"http://www.w3.org/2001/XMLSchema schema"`
-	TargetNamespace string    `xml:"targetNamespace,attr"`
-	Imports         []Import  `xml:"import"`
-	Elements        []Element `xml:"element"`
+	XMLName         xml.Name    `xml:"http://www.w3.org/2001/XMLSchema schema"`
+	TargetNamespace string      `xml:"targetNamespace,attr"`
+	Imports         []Import    `xml:"import"`
+	Elements        []Element   `xml:"element"`
+	Attributes      []Attribute `xml:"attribute"`
 }
 
 func Parse(xsdPath string) (*Schema, error) {
@@ -45,6 +46,51 @@ func (sch *Schema) compile() {
 		el := &sch.Elements[idx]
 		el.compile(sch)
 	}
+}
+
+func (sch *Schema) findReferencedAttribute(ref reference) *Attribute {
+	innerSchema := sch.findReferencedSchemaByPrefix(ref.NsPrefix())
+	if innerSchema == nil {
+		panic("Internal error: referenced attribute '" + ref + "'cannot be found.")
+	}
+	return innerSchema.GetAttribute(ref.Name())
+}
+
+func (sch *Schema) findReferencedSchemaByPrefix(xmlnsPrefix string) *Schema {
+	return sch.findReferencedSchemaByXmlns(sch.xmlnsByPrefix(xmlnsPrefix))
+}
+
+func (sch *Schema) xmlnsByPrefix(xmlnsPrefix string) string {
+	switch xmlnsPrefix {
+	case "":
+		return sch.TargetNamespace
+	case "xml":
+		return "http://www.w3.org/XML/1998/namespace"
+	default:
+		panic("Not implemented: Unknown prefix: " + xmlnsPrefix)
+	}
+	return ""
+}
+
+func (sch *Schema) findReferencedSchemaByXmlns(xmlns string) *Schema {
+	if sch.TargetNamespace == xmlns {
+		return sch
+	}
+	for _, imp := range sch.Imports {
+		if imp.Namespace == xmlns {
+			return imp.importedSchema
+		}
+	}
+	return nil
+}
+
+func (sch *Schema) GetAttribute(name string) *Attribute {
+	for idx, attr := range sch.Attributes {
+		if attr.Name == name {
+			return &sch.Attributes[idx]
+		}
+	}
+	return nil
 }
 
 func (sch *Schema) GoPackageName() string {
