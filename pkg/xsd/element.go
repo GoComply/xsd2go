@@ -25,6 +25,7 @@ func (e *Element) compile(s *Schema) {
 		goNames := map[string]uint{}
 		for idx, _ := range e.ComplexType.Attributes {
 			attribute := &e.ComplexType.Attributes[idx]
+			attribute.compile(s)
 
 			count := goNames[attribute.GoName()]
 			count += 1
