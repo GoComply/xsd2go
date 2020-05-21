@@ -20,13 +20,12 @@ func (e *Element) Attributes() []Attribute {
 
 func (e *Element) compile(s *Schema) {
 	if e.ComplexType != nil {
-		attributes := e.ComplexType.Attributes
-
 		// Handle improbable name clash. Consider XSD defining two attributes on the element:
 		// "id" and "Id", this would create name clash given the camelization we do.
 		goNames := map[string]uint{}
-		for idx, _ := range attributes {
-			attribute := &attributes[idx]
+		for idx, _ := range e.ComplexType.Attributes {
+			attribute := &e.ComplexType.Attributes[idx]
+
 			count := goNames[attribute.GoName()]
 			count += 1
 			goNames[attribute.GoName()] = count
