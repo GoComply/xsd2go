@@ -30,8 +30,8 @@ func Parse(xsdPath string) (*Schema, error) {
 	}
 
 	dir := filepath.Dir(xsdPath)
-	for _, imp := range schema.Imports {
-		if err := imp.Load(dir); err != nil {
+	for idx, _ := range schema.Imports {
+		if err := schema.Imports[idx].Load(dir); err != nil {
 			return nil, err
 		}
 	}
