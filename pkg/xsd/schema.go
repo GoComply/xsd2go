@@ -35,8 +35,16 @@ func Parse(xsdPath string) (*Schema, error) {
 			return nil, err
 		}
 	}
+	schema.compile()
 
 	return &schema, nil
+}
+
+func (sch *Schema) compile() {
+	for idx, _ := range sch.Elements {
+		el := &sch.Elements[idx]
+		el.compile(sch)
+	}
 }
 
 func (sch *Schema) GoPackageName() string {

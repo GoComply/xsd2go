@@ -13,6 +13,13 @@ type Element struct {
 
 func (e *Element) Attributes() []Attribute {
 	if e.ComplexType != nil {
+		return e.ComplexType.Attributes
+	}
+	return []Attribute{}
+}
+
+func (e *Element) compile(s *Schema) {
+	if e.ComplexType != nil {
 		attributes := e.ComplexType.Attributes
 
 		// Handle improbable name clash. Consider XSD defining two attributes on the element:
@@ -27,7 +34,5 @@ func (e *Element) Attributes() []Attribute {
 			// Second GoName may be different depending on the DuplicateCount
 			goNames[attribute.GoName()] = count
 		}
-		return attributes
 	}
-	return []Attribute{}
 }
