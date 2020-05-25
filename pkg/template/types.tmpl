@@ -15,6 +15,9 @@ import (
     {{ range .Attributes }}
         {{ .GoName }} string `xml:"{{.Name}},attr"`
     {{end }}
+    {{ range .Elements }}
+      {{ .GoName}} {{ .GoName }} `xml:"{{.XmlName}}"`
+    {{ end }}
   }
 
 {{end}}

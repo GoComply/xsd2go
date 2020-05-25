@@ -18,6 +18,21 @@ func (e *Element) Attributes() []Attribute {
 	return []Attribute{}
 }
 
+func (e *Element) Elements() []Element {
+	if e.ComplexType != nil {
+		return e.ComplexType.Elements()
+	}
+	return []Element{}
+}
+
+func (e *Element) GoName() string {
+	return e.Name
+}
+
+func (e *Element) XmlName() string {
+	return e.Name
+}
+
 func (e *Element) compile(s *Schema) {
 	if e.ComplexType != nil {
 		// Handle improbable name clash. Consider XSD defining two attributes on the element:
