@@ -9,12 +9,13 @@ import (
 
 // Schema is the root XSD element
 type Schema struct {
-	XMLName         xml.Name    `xml:"http://www.w3.org/2001/XMLSchema schema"`
-	Xmlns           Xmlns       `xml:"-"`
-	TargetNamespace string      `xml:"targetNamespace,attr"`
-	Imports         []Import    `xml:"import"`
-	Elements        []Element   `xml:"element"`
-	Attributes      []Attribute `xml:"attribute"`
+	XMLName         xml.Name      `xml:"http://www.w3.org/2001/XMLSchema schema"`
+	Xmlns           Xmlns         `xml:"-"`
+	TargetNamespace string        `xml:"targetNamespace,attr"`
+	Imports         []Import      `xml:"import"`
+	Elements        []Element     `xml:"element"`
+	Attributes      []Attribute   `xml:"attribute"`
+	ComplexTypes    []ComplexType `xml:"complexType"`
 }
 
 func Parse(xsdPath string) (*Schema, error) {

@@ -21,3 +21,9 @@ import (
   }
 
 {{end}}
+
+
+// XSD ComplexType declarations
+{{range .ComplexTypes }}
+  type {{ .GoName }} string
+{{end}}

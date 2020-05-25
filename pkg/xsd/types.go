@@ -2,6 +2,8 @@ package xsd
 
 import (
 	"encoding/xml"
+
+	"github.com/iancoleman/strcase"
 )
 
 type ComplexType struct {
@@ -17,6 +19,10 @@ func (ct *ComplexType) Elements() []Element {
 		return ct.Sequence.Elements
 	}
 	return []Element{}
+}
+
+func (ct *ComplexType) GoName() string {
+	return strcase.ToCamel(ct.Name)
 }
 
 type Sequence struct {
