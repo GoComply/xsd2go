@@ -10,6 +10,7 @@ import (
 type Element struct {
 	XMLName     xml.Name     `xml:"http://www.w3.org/2001/XMLSchema element"`
 	Name        string       `xml:"name,attr"`
+	Type        reference    `xml:"type,attr"`
 	Ref         reference    `xml:"ref,attr"`
 	refElm      *Element     `xml:"-"`
 	ComplexType *ComplexType `xml:"complexType"`
@@ -36,6 +37,13 @@ func (e *Element) GoName() string {
 		return e.refElm.GoName()
 	}
 	return strcase.ToCamel(name)
+}
+
+func (e *Element) GoTypeName() string {
+	if e.Type != "" {
+		return strcase.ToCamel(e.Type.Name())
+	}
+	return e.GoName()
 }
 
 func (e *Element) XmlName() string {
