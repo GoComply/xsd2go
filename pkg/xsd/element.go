@@ -8,6 +8,7 @@ import (
 type Element struct {
 	XMLName     xml.Name     `xml:"http://www.w3.org/2001/XMLSchema element"`
 	Name        string       `xml:"name,attr"`
+	Ref         reference    `xml:"ref,attr"`
 	ComplexType *ComplexType `xml:"complexType"`
 }
 
