@@ -9,14 +9,14 @@ import (
 
 // Schema is the root XSD element
 type Schema struct {
-	XMLName         xml.Name        `xml:"http://www.w3.org/2001/XMLSchema schema"`
-	Xmlns           Xmlns           `xml:"-"`
-	TargetNamespace string          `xml:"targetNamespace,attr"`
-	Imports         []Import        `xml:"import"`
-	Elements        []Element       `xml:"element"`
-	Attributes      []Attribute     `xml:"attribute"`
-	ComplexTypes    []ComplexType   `xml:"complexType"`
-	importedModules map[string]bool `xml:"-"`
+	XMLName         xml.Name           `xml:"http://www.w3.org/2001/XMLSchema schema"`
+	Xmlns           Xmlns              `xml:"-"`
+	TargetNamespace string             `xml:"targetNamespace,attr"`
+	Imports         []Import           `xml:"import"`
+	Elements        []Element          `xml:"element"`
+	Attributes      []Attribute        `xml:"attribute"`
+	ComplexTypes    []ComplexType      `xml:"complexType"`
+	importedModules map[string]*Schema `xml:"-"`
 }
 
 func Parse(xsdPath string) (*Schema, error) {
@@ -26,7 +26,7 @@ func Parse(xsdPath string) (*Schema, error) {
 	}
 	defer f.Close()
 
-	schema := Schema{importedModules: map[string]bool{}}
+	schema := Schema{importedModules: map[string]*Schema{}}
 	d := xml.NewDecoder(f)
 
 	if err := d.Decode(&schema); err != nil {
@@ -138,11 +138,15 @@ func (sch *Schema) GoPackageName() string {
 }
 
 func (sch *Schema) GoImportsNeeded() []string {
-	return []string{"encoding/xml"}
+	imports := []string{"encoding/xml"}
+	for _, importedMod := range sch.importedModules {
+		imports = append(imports, importedMod.GoPackageName())
+	}
+	return imports
 }
 
 func (sch *Schema) registerImportedModule(module *Schema) {
-	sch.importedModules[module.GoPackageName()] = true
+	sch.importedModules[module.GoPackageName()] = module
 }
 
 type Import struct {
