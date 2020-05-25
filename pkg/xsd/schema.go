@@ -100,7 +100,7 @@ func (sch *Schema) findReferencedSchemaByXmlns(xmlns string) *Schema {
 	}
 	for _, imp := range sch.Imports {
 		if imp.Namespace == xmlns {
-			return imp.importedSchema
+			return imp.ImportedSchema
 		}
 	}
 	return nil
@@ -136,10 +136,10 @@ type Import struct {
 	XMLName        xml.Name `xml:"http://www.w3.org/2001/XMLSchema import"`
 	Namespace      string   `xml:"namespace,attr"`
 	SchemaLocation string   `xml:"schemaLocation,attr"`
-	importedSchema *Schema  `xml:"-"`
+	ImportedSchema *Schema  `xml:"-"`
 }
 
 func (i *Import) Load(baseDir string) (err error) {
-	i.importedSchema, err = Parse(filepath.Join(baseDir, i.SchemaLocation))
+	i.ImportedSchema, err = Parse(filepath.Join(baseDir, i.SchemaLocation))
 	return
 }
