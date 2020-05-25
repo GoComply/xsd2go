@@ -54,7 +54,11 @@ func (e *Element) GoForeignModule() string {
 }
 
 func (e *Element) XmlName() string {
-	return e.Name
+	name := e.Name
+	if name == "" {
+		return e.refElm.XmlName()
+	}
+	return name
 }
 
 func (e *Element) compile(s *Schema) {
