@@ -10,6 +10,7 @@ import (
 // Schema is the root XSD element
 type Schema struct {
 	XMLName         xml.Name    `xml:"http://www.w3.org/2001/XMLSchema schema"`
+	Xmlns           Xmlns       `xml:"-"`
 	TargetNamespace string      `xml:"targetNamespace,attr"`
 	Imports         []Import    `xml:"import"`
 	Elements        []Element   `xml:"element"`
@@ -39,6 +40,14 @@ func Parse(xsdPath string) (*Schema, error) {
 	schema.compile()
 
 	return &schema, nil
+}
+
+func (sch *Schema) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	sch.Xmlns = parseXmlns(start)
+
+	type s Schema
+	ss := (*s)(sch)
+	return d.DecodeElement(ss, &start)
 }
 
 func (sch *Schema) compile() {
