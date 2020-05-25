@@ -18,7 +18,7 @@ import (
     {{end }}
 
     {{ range .Elements }}
-      {{ .GoName}} {{ .GoTypeName }} `xml:"{{.XmlName}}"`
+      {{ .GoName}} {{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}"`
     {{ end }}
   }
 

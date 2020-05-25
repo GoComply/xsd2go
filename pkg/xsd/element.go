@@ -46,6 +46,13 @@ func (e *Element) GoTypeName() string {
 	return e.GoName()
 }
 
+func (e *Element) GoForeignModule() string {
+	if e.refElm != nil && e.schema != e.refElm.schema {
+		return e.refElm.schema.GoPackageName() + "."
+	}
+	return ""
+}
+
 func (e *Element) XmlName() string {
 	return e.Name
 }
