@@ -9,13 +9,14 @@ import (
 
 // Schema is the root XSD element
 type Schema struct {
-	XMLName         xml.Name      `xml:"http://www.w3.org/2001/XMLSchema schema"`
-	Xmlns           Xmlns         `xml:"-"`
-	TargetNamespace string        `xml:"targetNamespace,attr"`
-	Imports         []Import      `xml:"import"`
-	Elements        []Element     `xml:"element"`
-	Attributes      []Attribute   `xml:"attribute"`
-	ComplexTypes    []ComplexType `xml:"complexType"`
+	XMLName         xml.Name        `xml:"http://www.w3.org/2001/XMLSchema schema"`
+	Xmlns           Xmlns           `xml:"-"`
+	TargetNamespace string          `xml:"targetNamespace,attr"`
+	Imports         []Import        `xml:"import"`
+	Elements        []Element       `xml:"element"`
+	Attributes      []Attribute     `xml:"attribute"`
+	ComplexTypes    []ComplexType   `xml:"complexType"`
+	importedModules map[string]bool `xml:"-"`
 }
 
 func Parse(xsdPath string) (*Schema, error) {
@@ -25,7 +26,7 @@ func Parse(xsdPath string) (*Schema, error) {
 	}
 	defer f.Close()
 
-	var schema Schema
+	schema := Schema{importedModules: map[string]bool{}}
 	d := xml.NewDecoder(f)
 
 	if err := d.Decode(&schema); err != nil {
@@ -70,6 +71,10 @@ func (sch *Schema) findReferencedElement(ref reference) *Element {
 	innerSchema := sch.findReferencedSchemaByPrefix(ref.NsPrefix())
 	if innerSchema == nil {
 		panic("Internal error: referenced element '" + ref + "' cannot be found.")
+	}
+	if innerSchema != sch {
+		sch.registerImportedModule(innerSchema)
+
 	}
 	return innerSchema.GetElement(ref.Name())
 }
@@ -134,6 +139,10 @@ func (sch *Schema) GoPackageName() string {
 
 func (sch *Schema) GoImportsNeeded() []string {
 	return []string{"encoding/xml"}
+}
+
+func (sch *Schema) registerImportedModule(module *Schema) {
+	sch.importedModules[module.GoPackageName()] = true
 }
 
 type Import struct {
