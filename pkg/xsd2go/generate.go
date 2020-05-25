@@ -14,6 +14,15 @@ func Convert(xsdPath, goModule, outputDir string) error {
 		return err
 	}
 
+	for _, imp := range schema.Imports {
+		if imp.Namespace == "http://www.w3.org/XML/1998/namespace" {
+			continue
+		}
+		if err := template.GenerateTypes(imp.ImportedSchema, outputDir); err != nil {
+			return err
+		}
+	}
+
 	if err := template.GenerateTypes(schema, outputDir); err != nil {
 		return err
 	}
