@@ -65,6 +65,14 @@ func (sch *Schema) findReferencedAttribute(ref reference) *Attribute {
 	return innerSchema.GetAttribute(ref.Name())
 }
 
+func (sch *Schema) findReferencedElement(ref reference) *Element {
+	innerSchema := sch.findReferencedSchemaByPrefix(ref.NsPrefix())
+	if innerSchema == nil {
+		panic("Internal error: referenced element '" + ref + "' cannot be found.")
+	}
+	return innerSchema.GetElement(ref.Name())
+}
+
 func (sch *Schema) findReferencedSchemaByPrefix(xmlnsPrefix string) *Schema {
 	return sch.findReferencedSchemaByXmlns(sch.xmlnsByPrefix(xmlnsPrefix))
 }
@@ -97,6 +105,15 @@ func (sch *Schema) GetAttribute(name string) *Attribute {
 	for idx, attr := range sch.Attributes {
 		if attr.Name == name {
 			return &sch.Attributes[idx]
+		}
+	}
+	return nil
+}
+
+func (sch *Schema) GetElement(name string) *Element {
+	for idx, elm := range sch.Elements {
+		if elm.Name == name {
+			return &sch.Elements[idx]
 		}
 	}
 	return nil

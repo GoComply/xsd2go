@@ -9,6 +9,7 @@ type Element struct {
 	XMLName     xml.Name     `xml:"http://www.w3.org/2001/XMLSchema element"`
 	Name        string       `xml:"name,attr"`
 	Ref         reference    `xml:"ref,attr"`
+	refElm      *Element     `xml:"-"`
 	ComplexType *ComplexType `xml:"complexType"`
 	schema      *Schema      `xml:"-"`
 }
@@ -37,6 +38,12 @@ func (e *Element) XmlName() string {
 
 func (e *Element) compile(s *Schema) {
 	e.schema = s
+	if e.Ref != "" {
+		e.refElm = e.schema.findReferencedElement(e.Ref)
+		if e.refElm == nil {
+			panic("Cannot resolve element reference: " + e.Ref)
+		}
+	}
 	if e.ComplexType != nil {
 		// Handle improbable name clash. Consider XSD defining two attributes on the element:
 		// "id" and "Id", this would create name clash given the camelization we do.
