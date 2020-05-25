@@ -2,6 +2,8 @@ package xsd
 
 import (
 	"encoding/xml"
+
+	"github.com/iancoleman/strcase"
 )
 
 // Element defines single XML element
@@ -29,7 +31,11 @@ func (e *Element) Elements() []Element {
 }
 
 func (e *Element) GoName() string {
-	return e.Name
+	name := e.Name
+	if name == "" {
+		return e.refElm.GoName()
+	}
+	return strcase.ToCamel(name)
 }
 
 func (e *Element) XmlName() string {
