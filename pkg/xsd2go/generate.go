@@ -10,6 +10,7 @@ import (
 func Convert(xsdPath, goModule, outputDir string) error {
 	fmt.Printf("Processing '%s'\n", xsdPath)
 	schema, err := xsd.Parse(xsdPath)
+	schema.ModulesPath = fmt.Sprintf("%s/%s", goModule, outputDir)
 	if err != nil {
 		return err
 	}

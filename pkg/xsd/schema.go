@@ -17,6 +17,7 @@ type Schema struct {
 	Attributes      []Attribute        `xml:"attribute"`
 	ComplexTypes    []ComplexType      `xml:"complexType"`
 	importedModules map[string]*Schema `xml:"-"`
+	ModulesPath     string             `xml:"-"`
 }
 
 func Parse(xsdPath string) (*Schema, error) {
@@ -140,7 +141,7 @@ func (sch *Schema) GoPackageName() string {
 func (sch *Schema) GoImportsNeeded() []string {
 	imports := []string{"encoding/xml"}
 	for _, importedMod := range sch.importedModules {
-		imports = append(imports, importedMod.GoPackageName())
+		imports = append(imports, fmt.Sprintf("%s/%s", sch.ModulesPath, importedMod.GoPackageName()))
 	}
 	return imports
 }
