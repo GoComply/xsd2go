@@ -26,7 +26,7 @@ func GenerateTypes(schema *xsd.Schema, outputDir string) error {
 	if err != nil {
 		return err
 	}
-	f, err := os.Create(fmt.Sprintf("%s/%s.go", dir, packageName))
+	f, err := os.Create(fmt.Sprintf("%s/models.go", dir))
 	if err != nil {
 		return err
 	}
