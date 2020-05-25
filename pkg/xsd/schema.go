@@ -60,7 +60,7 @@ func (sch *Schema) compile() {
 func (sch *Schema) findReferencedAttribute(ref reference) *Attribute {
 	innerSchema := sch.findReferencedSchemaByPrefix(ref.NsPrefix())
 	if innerSchema == nil {
-		panic("Internal error: referenced attribute '" + ref + "'cannot be found.")
+		panic("Internal error: referenced attribute '" + ref + "' cannot be found.")
 	}
 	return innerSchema.GetAttribute(ref.Name())
 }
