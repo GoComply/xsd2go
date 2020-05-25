@@ -106,6 +106,10 @@ func (sch *Schema) findReferencedSchemaByXmlns(xmlns string) *Schema {
 	return nil
 }
 
+func (sch *Schema) Empty() bool {
+	return len(sch.Elements) == 0 && len(sch.ComplexTypes) == 0
+}
+
 func (sch *Schema) GetAttribute(name string) *Attribute {
 	for idx, attr := range sch.Attributes {
 		if attr.Name == name {
