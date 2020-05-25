@@ -10,6 +10,7 @@ type Element struct {
 	Name        string       `xml:"name,attr"`
 	Ref         reference    `xml:"ref,attr"`
 	ComplexType *ComplexType `xml:"complexType"`
+	schema      *Schema      `xml:"-"`
 }
 
 func (e *Element) Attributes() []Attribute {
@@ -35,6 +36,7 @@ func (e *Element) XmlName() string {
 }
 
 func (e *Element) compile(s *Schema) {
+	e.schema = s
 	if e.ComplexType != nil {
 		// Handle improbable name clash. Consider XSD defining two attributes on the element:
 		// "id" and "Id", this would create name clash given the camelization we do.
@@ -49,6 +51,12 @@ func (e *Element) compile(s *Schema) {
 			attribute.DuplicateCount = count
 			// Second GoName may be different depending on the DuplicateCount
 			goNames[attribute.GoName()] = count
+		}
+
+		elements := e.Elements()
+		for idx, _ := range elements {
+			el := &elements[idx]
+			el.compile(s)
 		}
 	}
 }
