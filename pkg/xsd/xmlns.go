@@ -22,3 +22,12 @@ func parseXmlns(el xml.StartElement) (result Xmlns) {
 	}
 	return
 }
+
+func (declarations Xmlns) PrefixByUri(uri string) string {
+	for _, declaration := range declarations {
+		if declaration.Uri == uri {
+			return declaration.Prefix
+		}
+	}
+	return ""
+}

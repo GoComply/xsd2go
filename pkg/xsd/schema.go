@@ -103,7 +103,7 @@ func (sch *Schema) GetAttribute(name string) *Attribute {
 }
 
 func (sch *Schema) GoPackageName() string {
-	return "TODO"
+	return sch.Xmlns.PrefixByUri(sch.TargetNamespace)
 }
 
 func (sch *Schema) GoImportsNeeded() []string {
