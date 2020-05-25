@@ -9,12 +9,12 @@ import (
 
 func Convert(xsdPath, goModule, outputDir string) error {
 	fmt.Printf("Processing '%s'\n", xsdPath)
-	meta, err := xsd.Parse(xsdPath)
+	schema, err := xsd.Parse(xsdPath)
 	if err != nil {
 		return err
 	}
 
-	if err := template.GenerateTypes(meta, outputDir); err != nil {
+	if err := template.GenerateTypes(schema, outputDir); err != nil {
 		return err
 	}
 	return nil
