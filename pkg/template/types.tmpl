@@ -10,7 +10,7 @@ import (
 
 {{range .Elements }}
   // Element
-  type {{ .Name }} struct {
+  type {{ .GoName }} struct {
     XMLName xml.Name `xml:{{.Name}}`
     {{ range .Attributes }}
         {{ .GoName }} string `xml:"{{.Name}},attr"`
