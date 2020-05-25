@@ -84,7 +84,11 @@ func (sch *Schema) xmlnsByPrefix(xmlnsPrefix string) string {
 	case "xml":
 		return "http://www.w3.org/XML/1998/namespace"
 	default:
-		panic("Not implemented: Unknown prefix: " + xmlnsPrefix)
+		uri := sch.Xmlns.UriByPrefix(xmlnsPrefix)
+		if uri == "" {
+			panic("Internal error: Unknown xmlns prefix: " + xmlnsPrefix)
+		}
+		return uri
 	}
 	return ""
 }

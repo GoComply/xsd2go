@@ -31,3 +31,12 @@ func (declarations Xmlns) PrefixByUri(uri string) string {
 	}
 	return ""
 }
+
+func (declarations Xmlns) UriByPrefix(prefix string) string {
+	for _, declaration := range declarations {
+		if declaration.Prefix == prefix {
+			return declaration.Uri
+		}
+	}
+	return ""
+}
