@@ -67,6 +67,17 @@ func (sch *Schema) findReferencedElement(ref reference) *Element {
 	return innerSchema.GetElement(ref.Name())
 }
 
+func (sch *Schema) findReferencedType(ref reference) *ComplexType {
+	innerSchema := sch.findReferencedSchemaByPrefix(ref.NsPrefix())
+	if innerSchema == nil {
+		panic("Internal error: referenced type '" + ref + "' cannot be found.")
+	}
+	if innerSchema != sch {
+		sch.registerImportedModule(innerSchema)
+	}
+	return innerSchema.GetType(ref.Name())
+}
+
 func (sch *Schema) findReferencedSchemaByPrefix(xmlnsPrefix string) *Schema {
 	return sch.findReferencedSchemaByXmlns(sch.xmlnsByPrefix(xmlnsPrefix))
 }
@@ -116,6 +127,15 @@ func (sch *Schema) GetElement(name string) *Element {
 	for idx, elm := range sch.Elements {
 		if elm.Name == name {
 			return &sch.Elements[idx]
+		}
+	}
+	return nil
+}
+
+func (sch *Schema) GetType(name string) *ComplexType {
+	for idx, typ := range sch.ComplexTypes {
+		if typ.Name == name {
+			return &sch.ComplexTypes[idx]
 		}
 	}
 	return nil

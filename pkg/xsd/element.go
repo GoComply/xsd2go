@@ -14,6 +14,7 @@ type Element struct {
 	Ref         reference    `xml:"ref,attr"`
 	refElm      *Element     `xml:"-"`
 	ComplexType *ComplexType `xml:"complexType"`
+	refType     *ComplexType `xml:"-"`
 	schema      *Schema      `xml:"-"`
 }
 
@@ -67,6 +68,12 @@ func (e *Element) compile(s *Schema) {
 		e.refElm = e.schema.findReferencedElement(e.Ref)
 		if e.refElm == nil {
 			panic("Cannot resolve element reference: " + e.Ref)
+		}
+	}
+	if e.Type != "" {
+		e.refType = e.schema.findReferencedType(e.Type)
+		if e.refType == nil {
+			panic("Cannot resolve type reference: " + string(e.Type))
 		}
 	}
 	if e.ComplexType != nil {
