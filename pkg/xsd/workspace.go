@@ -7,7 +7,6 @@ import (
 )
 
 type Workspace struct {
-	PrimarySchema *Schema
 	Cache         map[string]*Schema
 	GoModulesPath string
 }
@@ -18,7 +17,7 @@ func NewWorkspace(goModulesPath, xsdPath string) (*Workspace, error) {
 		GoModulesPath: goModulesPath,
 	}
 	var err error
-	ws.PrimarySchema, err = ws.loadXsd(xsdPath)
+	_, err = ws.loadXsd(xsdPath)
 	return &ws, err
 }
 
