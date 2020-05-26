@@ -13,19 +13,15 @@ func Convert(xsdPath, goModule, outputDir string) error {
 	if err != nil {
 		return err
 	}
-	schema := ws.PrimarySchema
 
-	for _, imp := range schema.Imports {
-		if imp.ImportedSchema.Empty() {
+	for _, sch := range ws.Cache {
+		if sch.Empty() {
 			continue
 		}
-		if err := template.GenerateTypes(imp.ImportedSchema, outputDir); err != nil {
+		if err := template.GenerateTypes(sch, outputDir); err != nil {
 			return err
 		}
 	}
 
-	if err := template.GenerateTypes(schema, outputDir); err != nil {
-		return err
-	}
 	return nil
 }
