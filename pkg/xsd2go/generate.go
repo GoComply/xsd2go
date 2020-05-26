@@ -9,10 +9,11 @@ import (
 
 func Convert(xsdPath, goModule, outputDir string) error {
 	fmt.Printf("Processing '%s'\n", xsdPath)
-	schema, err := xsd.Parse(xsdPath)
+	ws, err := xsd.NewWorkspace(xsdPath)
 	if err != nil {
 		return err
 	}
+	schema := ws.PrimarySchema
 	schema.ModulesPath = fmt.Sprintf("%s/%s", goModule, outputDir)
 
 	for _, imp := range schema.Imports {

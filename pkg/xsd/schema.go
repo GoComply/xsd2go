@@ -3,7 +3,7 @@ package xsd
 import (
 	"encoding/xml"
 	"fmt"
-	"os"
+	"io"
 	"path/filepath"
 )
 
@@ -20,27 +20,13 @@ type Schema struct {
 	ModulesPath     string             `xml:"-"`
 }
 
-func Parse(xsdPath string) (*Schema, error) {
-	f, err := os.Open(xsdPath)
-	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-
+func parseSchema(f io.Reader) (*Schema, error) {
 	schema := Schema{importedModules: map[string]*Schema{}}
 	d := xml.NewDecoder(f)
 
 	if err := d.Decode(&schema); err != nil {
 		return nil, fmt.Errorf("Error decoding XSD: %s", err)
 	}
-
-	dir := filepath.Dir(xsdPath)
-	for idx, _ := range schema.Imports {
-		if err := schema.Imports[idx].Load(dir); err != nil {
-			return nil, err
-		}
-	}
-	schema.compile()
 
 	return &schema, nil
 }
@@ -157,7 +143,7 @@ type Import struct {
 	ImportedSchema *Schema  `xml:"-"`
 }
 
-func (i *Import) Load(baseDir string) (err error) {
-	i.ImportedSchema, err = Parse(filepath.Join(baseDir, i.SchemaLocation))
+func (i *Import) load(ws *Workspace, baseDir string) (err error) {
+	i.ImportedSchema, err = ws.loadXsd(filepath.Join(baseDir, i.SchemaLocation))
 	return
 }
