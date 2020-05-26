@@ -17,6 +17,7 @@ type Schema struct {
 	Elements        []Element          `xml:"element"`
 	Attributes      []Attribute        `xml:"attribute"`
 	ComplexTypes    []ComplexType      `xml:"complexType"`
+	SimpleTypes     []SimpleType       `xml:"simpleType"`
 	importedModules map[string]*Schema `xml:"-"`
 	ModulesPath     string             `xml:"-"`
 }
@@ -67,7 +68,7 @@ func (sch *Schema) findReferencedElement(ref reference) *Element {
 	return innerSchema.GetElement(ref.Name())
 }
 
-func (sch *Schema) findReferencedType(ref reference) *ComplexType {
+func (sch *Schema) findReferencedType(ref reference) Type {
 	innerSchema := sch.findReferencedSchemaByPrefix(ref.NsPrefix())
 	if innerSchema == nil {
 		panic("Internal error: referenced type '" + ref + "' cannot be found.")
@@ -132,10 +133,15 @@ func (sch *Schema) GetElement(name string) *Element {
 	return nil
 }
 
-func (sch *Schema) GetType(name string) *ComplexType {
+func (sch *Schema) GetType(name string) Type {
 	for idx, typ := range sch.ComplexTypes {
 		if typ.Name == name {
 			return &sch.ComplexTypes[idx]
+		}
+	}
+	for idx, typ := range sch.SimpleTypes {
+		if typ.Name == name {
+			return &sch.SimpleTypes[idx]
 		}
 	}
 	return nil

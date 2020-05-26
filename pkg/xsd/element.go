@@ -14,7 +14,7 @@ type Element struct {
 	Ref         reference    `xml:"ref,attr"`
 	refElm      *Element     `xml:"-"`
 	ComplexType *ComplexType `xml:"complexType"`
-	refType     *ComplexType `xml:"-"`
+	refType     Type         `xml:"-"`
 	schema      *Schema      `xml:"-"`
 }
 

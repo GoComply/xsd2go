@@ -6,6 +6,10 @@ import (
 	"github.com/iancoleman/strcase"
 )
 
+type Type interface {
+	GoName() string
+}
+
 type ComplexType struct {
 	XMLName    xml.Name    `xml:"http://www.w3.org/2001/XMLSchema complexType"`
 	Name       string      `xml:"name,attr"`
@@ -28,4 +32,13 @@ func (ct *ComplexType) GoName() string {
 type Sequence struct {
 	XMLName  xml.Name  `xml:"http://www.w3.org/2001/XMLSchema sequence"`
 	Elements []Element `xml:"element"`
+}
+
+type SimpleType struct {
+	XMLName xml.Name `xml:"http://www.w3.org/2001/XMLSchema simpleType"`
+	Name    string   `xml:"name,attr"`
+}
+
+func (st *SimpleType) GoName() string {
+	return strcase.ToCamel(st.Name)
 }
