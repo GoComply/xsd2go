@@ -8,6 +8,7 @@ import (
 
 type Type interface {
 	GoName() string
+	Schema() *Schema
 }
 
 type ComplexType struct {
@@ -16,6 +17,7 @@ type ComplexType struct {
 	Mixed      string      `xml:"mixed,attr"`
 	Attributes []Attribute `xml:"attribute"`
 	Sequence   *Sequence   `xml:"sequence"`
+	schema     *Schema     `xml:"-"`
 }
 
 func (ct *ComplexType) Elements() []Element {
@@ -29,6 +31,14 @@ func (ct *ComplexType) GoName() string {
 	return strcase.ToCamel(ct.Name)
 }
 
+func (ct *ComplexType) Schema() *Schema {
+	return ct.schema
+}
+
+func (ct *ComplexType) compile(sch *Schema) {
+	ct.schema = sch
+}
+
 type Sequence struct {
 	XMLName  xml.Name  `xml:"http://www.w3.org/2001/XMLSchema sequence"`
 	Elements []Element `xml:"element"`
@@ -37,14 +47,27 @@ type Sequence struct {
 type SimpleType struct {
 	XMLName xml.Name `xml:"http://www.w3.org/2001/XMLSchema simpleType"`
 	Name    string   `xml:"name,attr"`
+	schema  *Schema  `xml:"-"`
 }
 
 func (st *SimpleType) GoName() string {
 	return strcase.ToCamel(st.Name)
 }
 
+func (st *SimpleType) Schema() *Schema {
+	return st.schema
+}
+
+func (st *SimpleType) compile(sch *Schema) {
+	st.schema = sch
+}
+
 type staticType string
 
 func (st staticType) GoName() string {
 	return string(st)
+}
+
+func (st staticType) Schema() *Schema {
+	return nil
 }

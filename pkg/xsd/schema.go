@@ -46,6 +46,14 @@ func (sch *Schema) compile() {
 		el := &sch.Elements[idx]
 		el.compile(sch)
 	}
+	for idx, _ := range sch.ComplexTypes {
+		el := &sch.ComplexTypes[idx]
+		el.compile(sch)
+	}
+	for idx, _ := range sch.SimpleTypes {
+		el := &sch.SimpleTypes[idx]
+		el.compile(sch)
+	}
 }
 
 func (sch *Schema) findReferencedAttribute(ref reference) *Attribute {

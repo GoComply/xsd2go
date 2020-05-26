@@ -48,8 +48,15 @@ func (e *Element) GoTypeName() string {
 }
 
 func (e *Element) GoForeignModule() string {
-	if e.refElm != nil && e.schema != e.refElm.schema {
-		return e.refElm.schema.GoPackageName() + "."
+	foreignSchema := (*Schema)(nil)
+	if e.refElm != nil {
+		foreignSchema = e.refElm.schema
+	} else if e.refType != nil {
+		foreignSchema = e.refType.Schema()
+	}
+
+	if foreignSchema != nil && foreignSchema != e.schema {
+		return foreignSchema.GoPackageName() + "."
 	}
 	return ""
 }
