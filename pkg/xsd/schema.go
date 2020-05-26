@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"path/filepath"
+	"strings"
 )
 
 // Schema is the root XSD element
@@ -121,7 +122,8 @@ func (sch *Schema) GetElement(name string) *Element {
 }
 
 func (sch *Schema) GoPackageName() string {
-	return sch.Xmlns.PrefixByUri(sch.TargetNamespace)
+	xmlnsPrefix := sch.Xmlns.PrefixByUri(sch.TargetNamespace)
+	return strings.ReplaceAll(xmlnsPrefix, "-", "_")
 }
 
 func (sch *Schema) GoImportsNeeded() []string {
