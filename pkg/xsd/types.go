@@ -42,3 +42,9 @@ type SimpleType struct {
 func (st *SimpleType) GoName() string {
 	return strcase.ToCamel(st.Name)
 }
+
+type staticType string
+
+func (st staticType) GoName() string {
+	return string(st)
+}
