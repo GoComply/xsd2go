@@ -21,6 +21,7 @@ type Schema struct {
 	SimpleTypes     []SimpleType       `xml:"simpleType"`
 	importedModules map[string]*Schema `xml:"-"`
 	ModulesPath     string             `xml:"-"`
+	filePath        string             `xml:"-"`
 }
 
 func parseSchema(f io.Reader) (*Schema, error) {
@@ -161,6 +162,9 @@ func (sch *Schema) GetType(name string) Type {
 
 func (sch *Schema) GoPackageName() string {
 	xmlnsPrefix := sch.Xmlns.PrefixByUri(sch.TargetNamespace)
+	if xmlnsPrefix == "" {
+		xmlnsPrefix = strings.TrimSuffix(filepath.Base(sch.filePath), ".xsd")
+	}
 	return strings.ReplaceAll(xmlnsPrefix, "-", "_")
 }
 

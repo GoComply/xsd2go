@@ -39,6 +39,7 @@ func (ws *Workspace) loadXsd(xsdPath string) (*Schema, error) {
 		return nil, err
 	}
 	schema.ModulesPath = ws.GoModulesPath
+	schema.filePath = xsdPath
 	ws.Cache[xsdPath] = schema
 
 	dir := filepath.Dir(xsdPath)
