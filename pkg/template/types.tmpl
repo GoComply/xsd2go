@@ -26,6 +26,6 @@ import (
 
 
 // XSD ComplexType declarations
-{{range .ComplexTypes }}
+{{range .ExportableComplexTypes }}
   type {{ .GoName }} string
 {{end}}

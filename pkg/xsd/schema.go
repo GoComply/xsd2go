@@ -125,6 +125,22 @@ func (sch *Schema) Empty() bool {
 	return len(sch.Elements) == 0 && len(sch.ComplexTypes) == 0
 }
 
+func (sch *Schema) ExportableComplexTypes() []ComplexType {
+	elCache := map[string]bool{}
+	for _, el := range sch.Elements {
+		elCache[el.GoName()] = true
+	}
+
+	var res []ComplexType
+	for _, typ := range sch.ComplexTypes {
+		_, found := elCache[typ.GoName()]
+		if !found {
+			res = append(res, typ)
+		}
+	}
+	return res
+}
+
 func (sch *Schema) GetAttribute(name string) *Attribute {
 	for idx, attr := range sch.Attributes {
 		if attr.Name == name {
