@@ -27,6 +27,9 @@ func (e *Element) Attributes() []Attribute {
 }
 
 func (e *Element) Elements() []Element {
+	if e.ComplexType != nil && e.refType != nil {
+		panic("Not implemented: element " + e.GoName() + "defines complexType and refType")
+	}
 	if e.ComplexType != nil {
 		return e.ComplexType.Elements()
 	}
