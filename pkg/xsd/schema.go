@@ -189,6 +189,8 @@ type Import struct {
 }
 
 func (i *Import) load(ws *Workspace, baseDir string) (err error) {
-	i.ImportedSchema, err = ws.loadXsd(filepath.Join(baseDir, i.SchemaLocation))
+	if i.SchemaLocation != "" {
+		i.ImportedSchema, err = ws.loadXsd(filepath.Join(baseDir, i.SchemaLocation))
+	}
 	return
 }
