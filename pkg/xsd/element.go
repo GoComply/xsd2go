@@ -12,6 +12,7 @@ type Element struct {
 	Name        string       `xml:"name,attr"`
 	Type        reference    `xml:"type,attr"`
 	Ref         reference    `xml:"ref,attr"`
+	MaxOccurs   string       `xml:"maxOccurs,attr"`
 	refElm      *Element     `xml:"-"`
 	ComplexType *ComplexType `xml:"complexType"`
 	refType     Type         `xml:"-"`
@@ -38,6 +39,13 @@ func (e *Element) GoName() string {
 		return e.refElm.GoName()
 	}
 	return strcase.ToCamel(name)
+}
+
+func (e *Element) GoMemLayout() string {
+	if e.MaxOccurs == "unbounded" {
+		return "[]"
+	}
+	return ""
 }
 
 func (e *Element) GoTypeName() string {
