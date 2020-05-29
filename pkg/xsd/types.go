@@ -9,6 +9,7 @@ import (
 type Type interface {
 	GoName() string
 	Schema() *Schema
+	Elements() []Element
 }
 
 type ComplexType struct {
@@ -72,10 +73,18 @@ func (st *SimpleType) compile(sch *Schema) {
 	st.schema = sch
 }
 
+func (st *SimpleType) Elements() []Element {
+	return []Element{}
+}
+
 type staticType string
 
 func (st staticType) GoName() string {
 	return string(st)
+}
+
+func (st staticType) Elements() []Element {
+	return []Element{}
 }
 
 func (st staticType) Schema() *Schema {
