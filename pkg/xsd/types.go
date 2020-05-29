@@ -37,11 +37,21 @@ func (ct *ComplexType) Schema() *Schema {
 
 func (ct *ComplexType) compile(sch *Schema) {
 	ct.schema = sch
+	if ct.Sequence != nil {
+		ct.Sequence.compile(sch)
+	}
 }
 
 type Sequence struct {
 	XMLName  xml.Name  `xml:"http://www.w3.org/2001/XMLSchema sequence"`
 	Elements []Element `xml:"element"`
+}
+
+func (s *Sequence) compile(sch *Schema) {
+	for idx, _ := range s.Elements {
+		el := &s.Elements[idx]
+		el.compile(sch)
+	}
 }
 
 type SimpleType struct {
