@@ -86,7 +86,7 @@ func (e *Element) XmlName() string {
 }
 
 func (e *Element) isPlainString() bool {
-	return e.SimpleType != nil
+	return e.SimpleType != nil || (e.Type == "" && e.Ref == "" && e.ComplexType == nil)
 }
 
 func (e *Element) compile(s *Schema) {
