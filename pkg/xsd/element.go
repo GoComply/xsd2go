@@ -53,7 +53,7 @@ func (e *Element) GoMemLayout() string {
 
 func (e *Element) GoTypeName() string {
 	if e.Type != "" {
-		return strcase.ToCamel(e.Type.Name())
+		return e.refType.GoName()
 	}
 	return e.GoName()
 }
