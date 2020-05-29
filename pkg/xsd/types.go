@@ -73,8 +73,10 @@ func (st staticType) Schema() *Schema {
 }
 
 func StaticType(name string) staticType {
-	if name == "string" {
-		return staticType(name)
+	if name == "string" || name == "dateTime" || name == "base64Binary" || name == "normalizedString" {
+		return staticType("string")
+	} else if name == "decimal" {
+		return "uint64"
 	}
 	panic("Type xsd:" + name + " not implemented")
 	return staticType(name)
