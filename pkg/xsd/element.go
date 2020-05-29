@@ -15,6 +15,7 @@ type Element struct {
 	MaxOccurs   string       `xml:"maxOccurs,attr"`
 	refElm      *Element     `xml:"-"`
 	ComplexType *ComplexType `xml:"complexType"`
+	SimpleType  *SimpleType  `xml:"simpleType"`
 	refType     Type         `xml:"-"`
 	schema      *Schema      `xml:"-"`
 }
@@ -56,6 +57,8 @@ func (e *Element) GoMemLayout() string {
 func (e *Element) GoTypeName() string {
 	if e.Type != "" {
 		return e.refType.GoName()
+	} else if e.SimpleType != nil {
+		return "string"
 	}
 	return e.GoName()
 }
