@@ -57,7 +57,7 @@ func (e *Element) GoMemLayout() string {
 func (e *Element) GoTypeName() string {
 	if e.Type != "" {
 		return e.refType.GoTypeName()
-	} else if e.SimpleType != nil {
+	} else if e.isPlainString() {
 		return "string"
 	}
 	return e.GoName()
@@ -83,6 +83,10 @@ func (e *Element) XmlName() string {
 		return e.refElm.XmlName()
 	}
 	return name
+}
+
+func (e *Element) isPlainString() bool {
+	return e.SimpleType != nil
 }
 
 func (e *Element) compile(s *Schema) {
