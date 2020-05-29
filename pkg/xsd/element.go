@@ -56,7 +56,7 @@ func (e *Element) GoMemLayout() string {
 
 func (e *Element) GoTypeName() string {
 	if e.Type != "" {
-		return e.refType.GoName()
+		return e.refType.GoTypeName()
 	} else if e.SimpleType != nil {
 		return "string"
 	}

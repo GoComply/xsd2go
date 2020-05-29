@@ -8,6 +8,7 @@ import (
 
 type Type interface {
 	GoName() string
+	GoTypeName() string
 	Schema() *Schema
 	Elements() []Element
 }
@@ -30,6 +31,10 @@ func (ct *ComplexType) Elements() []Element {
 
 func (ct *ComplexType) GoName() string {
 	return strcase.ToCamel(ct.Name)
+}
+
+func (ct *ComplexType) GoTypeName() string {
+	return ct.GoName()
 }
 
 func (ct *ComplexType) Schema() *Schema {
@@ -65,6 +70,10 @@ func (st *SimpleType) GoName() string {
 	return strcase.ToCamel(st.Name)
 }
 
+func (st *SimpleType) GoTypeName() string {
+	return st.GoName()
+}
+
 func (st *SimpleType) Schema() *Schema {
 	return st.schema
 }
@@ -81,6 +90,10 @@ type staticType string
 
 func (st staticType) GoName() string {
 	return string(st)
+}
+
+func (ct staticType) GoTypeName() string {
+	return ct.GoName()
 }
 
 func (st staticType) Elements() []Element {
