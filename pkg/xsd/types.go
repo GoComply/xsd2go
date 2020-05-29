@@ -71,3 +71,11 @@ func (st staticType) GoName() string {
 func (st staticType) Schema() *Schema {
 	return nil
 }
+
+func StaticType(name string) staticType {
+	if name == "string" {
+		return staticType(name)
+	}
+	panic("Type xsd:" + name + " not implemented")
+	return staticType(name)
+}

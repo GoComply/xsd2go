@@ -83,9 +83,7 @@ func (sch *Schema) findReferencedType(ref reference) Type {
 	if innerSchema == nil {
 		xmlnsUri := sch.Xmlns.UriByPrefix(ref.NsPrefix())
 		if xmlnsUri == "http://www.w3.org/2001/XMLSchema" {
-			if ref.Name() == "string" {
-				return staticType("string")
-			}
+			return StaticType(ref.Name())
 		}
 		panic("Internal error: referenced type '" + string(ref) + "' cannot be found.")
 	}
@@ -167,7 +165,7 @@ func (sch *Schema) GetElement(name string) *Element {
 
 func (sch *Schema) GetType(name string) Type {
 	if name == "string" {
-		return staticType("string")
+		return StaticType("string")
 	}
 	for idx, typ := range sch.ComplexTypes {
 		if typ.Name == name {
