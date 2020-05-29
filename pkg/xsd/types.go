@@ -71,7 +71,7 @@ func (st *SimpleType) GoName() string {
 }
 
 func (st *SimpleType) GoTypeName() string {
-	return st.GoName()
+	return "string"
 }
 
 func (st *SimpleType) Schema() *Schema {
