@@ -27,5 +27,9 @@ import (
 
 // XSD ComplexType declarations
 {{range .ExportableComplexTypes }}
-  type {{ .GoName }} string
+  type {{ .GoName }} struct {
+  {{ range .Elements }}
+    {{ .GoName}} {{.GoForeignModule}}{{ .GoTypeName }}
+  {{end}}
+  }
 {{end}}
