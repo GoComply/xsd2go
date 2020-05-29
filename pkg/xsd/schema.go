@@ -81,7 +81,13 @@ func (sch *Schema) findReferencedElement(ref reference) *Element {
 func (sch *Schema) findReferencedType(ref reference) Type {
 	innerSchema := sch.findReferencedSchemaByPrefix(ref.NsPrefix())
 	if innerSchema == nil {
-		panic("Internal error: referenced type '" + ref + "' cannot be found.")
+		xmlnsUri := sch.Xmlns.UriByPrefix(ref.NsPrefix())
+		if xmlnsUri == "http://www.w3.org/2001/XMLSchema" {
+			if ref.Name() == "string" {
+				return staticType("string")
+			}
+		}
+		panic("Internal error: referenced type '" + string(ref) + "' cannot be found.")
 	}
 	if innerSchema != sch {
 		sch.registerImportedModule(innerSchema)
