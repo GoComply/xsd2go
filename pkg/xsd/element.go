@@ -49,7 +49,7 @@ func (e *Element) GoName() string {
 }
 
 func (e *Element) GoMemLayout() string {
-	if e.MaxOccurs == "unbounded" {
+	if e.isArray() {
 		return "[]"
 	}
 	if e.MaxOccurs == "1" && e.MinOccurs == "0" && e.GoTypeName() != "string" {
@@ -91,6 +91,10 @@ func (e *Element) XmlName() string {
 
 func (e *Element) isPlainString() bool {
 	return e.SimpleType != nil || (e.Type == "" && e.Ref == "" && e.ComplexType == nil)
+}
+
+func (e *Element) isArray() bool {
+	return e.MaxOccurs == "unbounded"
 }
 
 func (e *Element) compile(s *Schema) {
