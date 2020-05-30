@@ -29,7 +29,7 @@ import (
 {{range .ExportableComplexTypes }}
   type {{ .GoName }} struct {
   {{ range .Elements }}
-    {{ .GoName}} {{.GoForeignModule}}{{ .GoTypeName }}
+    {{ .GoName}} {{.GoMemLayout}}{{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}"`
   {{end}}
   }
 {{end}}
