@@ -14,12 +14,13 @@ type Type interface {
 }
 
 type ComplexType struct {
-	XMLName    xml.Name    `xml:"http://www.w3.org/2001/XMLSchema complexType"`
-	Name       string      `xml:"name,attr"`
-	Mixed      string      `xml:"mixed,attr"`
-	Attributes []Attribute `xml:"attribute"`
-	Sequence   *Sequence   `xml:"sequence"`
-	schema     *Schema     `xml:"-"`
+	XMLName       xml.Name       `xml:"http://www.w3.org/2001/XMLSchema complexType"`
+	Name          string         `xml:"name,attr"`
+	Mixed         string         `xml:"mixed,attr"`
+	Attributes    []Attribute    `xml:"attribute"`
+	Sequence      *Sequence      `xml:"sequence"`
+	schema        *Schema        `xml:"-"`
+	SimpleContent *SimpleContent `xml:"simpleContent"`
 }
 
 func (ct *ComplexType) Elements() []Element {
@@ -58,6 +59,10 @@ func (s *Sequence) compile(sch *Schema) {
 		el := &s.Elements[idx]
 		el.compile(sch)
 	}
+}
+
+type SimpleContent struct {
+	XMLName xml.Name `xml:"http://www.w3.org/2001/XMLSchema simpleContent"`
 }
 
 type SimpleType struct {
