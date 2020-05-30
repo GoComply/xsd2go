@@ -201,6 +201,21 @@ func (sch *Schema) registerImportedModule(module *Schema) {
 	sch.importedModules[module.GoPackageName()] = module
 }
 
+// Some elements are not defined at the top-level, rather these are inlined in the complexType definitions
+func (sch *Schema) registerInlinedElement(el *Element) {
+	found := false
+	for idx, _ := range sch.Elements {
+		e := &sch.Elements[idx]
+		if e == el {
+			found = true
+			break
+		}
+	}
+	if !found {
+		sch.Elements = append(sch.Elements, *el)
+	}
+}
+
 type Import struct {
 	XMLName        xml.Name `xml:"http://www.w3.org/2001/XMLSchema import"`
 	Namespace      string   `xml:"namespace,attr"`

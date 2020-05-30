@@ -125,4 +125,7 @@ func (e *Element) compile(s *Schema) {
 			el.compile(s)
 		}
 	}
+	if e.Ref == "" && e.Type == "" && !e.isPlainString() {
+		e.schema.registerInlinedElement(e)
+	}
 }
