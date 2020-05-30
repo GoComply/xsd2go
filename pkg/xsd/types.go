@@ -113,7 +113,7 @@ func StaticType(name string) staticType {
 	if name == "string" || name == "dateTime" || name == "base64Binary" || name == "normalizedString" {
 		return staticType("string")
 	} else if name == "decimal" {
-		return "uint64"
+		return "float64"
 	}
 	panic("Type xsd:" + name + " not implemented")
 	return staticType(name)
