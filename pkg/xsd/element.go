@@ -2,6 +2,7 @@ package xsd
 
 import (
 	"encoding/xml"
+	"strconv"
 
 	"github.com/iancoleman/strcase"
 )
@@ -94,7 +95,11 @@ func (e *Element) isPlainString() bool {
 }
 
 func (e *Element) isArray() bool {
-	return e.MaxOccurs == "unbounded"
+	if e.MaxOccurs == "unbounded" {
+		return true
+	}
+	occurs, err := strconv.Atoi(e.MaxOccurs)
+	return err == nil && occurs > 1
 }
 
 func (e *Element) compile(s *Schema) {
