@@ -52,7 +52,7 @@ func (e *Element) GoMemLayout() string {
 	if e.MaxOccurs == "unbounded" {
 		return "[]"
 	}
-	if e.MaxOccurs == "1" && e.MinOccurs == "0" {
+	if e.MaxOccurs == "1" && e.MinOccurs == "0" && e.GoTypeName() != "string" {
 		return "*"
 	}
 	return ""
