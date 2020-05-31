@@ -15,16 +15,16 @@ func (s *Sequence) Elements() []Element {
 	return s.allElements
 }
 
-func (s *Sequence) compile(sch *Schema) {
+func (s *Sequence) compile(sch *Schema, parentElement *Element) {
 	for idx, _ := range s.ElementList {
 		el := &s.ElementList[idx]
-		el.compile(sch)
+		el.compile(sch, parentElement)
 	}
 
 	s.allElements = s.ElementList
 	for idx, _ := range s.Choices {
 		c := &s.Choices[idx]
-		c.compile(sch)
+		c.compile(sch, parentElement)
 
 		s.allElements = append(s.allElements, c.Elements...)
 	}

@@ -12,12 +12,12 @@ type Choice struct {
 	schema    *Schema   `xml:"-"`
 }
 
-func (c *Choice) compile(sch *Schema) {
+func (c *Choice) compile(sch *Schema, parentElement *Element) {
 	c.schema = sch
 	for idx, _ := range c.Elements {
 		el := &c.Elements[idx]
 
-		el.compile(sch)
+		el.compile(sch, parentElement)
 		// Propagate array cardinality downwards
 		if c.MaxOccurs == "unbounded" {
 			el.MaxOccurs = "unbounded"

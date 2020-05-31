@@ -7,7 +7,7 @@ import (
 type GenericContent interface {
 	Attributes() []Attribute
 	Elements() []Element
-	compile(*Schema)
+	compile(*Schema, *Element)
 }
 type SimpleContent struct {
 	XMLName   xml.Name   `xml:"http://www.w3.org/2001/XMLSchema simpleContent"`
@@ -28,7 +28,7 @@ func (sc *SimpleContent) Elements() []Element {
 	return []Element{}
 }
 
-func (sc *SimpleContent) compile(sch *Schema) {
+func (sc *SimpleContent) compile(sch *Schema, parentElement *Element) {
 }
 
 type Extension struct {
@@ -46,9 +46,9 @@ func (ext *Extension) Elements() []Element {
 	return []Element{}
 }
 
-func (ext *Extension) compile(sch *Schema) {
+func (ext *Extension) compile(sch *Schema, parentElement *Element) {
 	if ext.Sequence != nil {
-		ext.Sequence.compile(sch)
+		ext.Sequence.compile(sch, parentElement)
 	}
 
 }
@@ -72,8 +72,8 @@ func (cc *ComplexContent) Elements() []Element {
 	return []Element{}
 }
 
-func (c *ComplexContent) compile(sch *Schema) {
+func (c *ComplexContent) compile(sch *Schema, parentElement *Element) {
 	if c.Extension != nil {
-		c.Extension.compile(sch)
+		c.Extension.compile(sch, parentElement)
 	}
 }

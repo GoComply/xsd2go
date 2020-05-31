@@ -2,6 +2,7 @@ package xsd
 
 import (
 	"encoding/xml"
+	"fmt"
 	"strconv"
 
 	"github.com/iancoleman/strcase"
@@ -9,17 +10,18 @@ import (
 
 // Element defines single XML element
 type Element struct {
-	XMLName     xml.Name     `xml:"http://www.w3.org/2001/XMLSchema element"`
-	Name        string       `xml:"name,attr"`
-	Type        reference    `xml:"type,attr"`
-	Ref         reference    `xml:"ref,attr"`
-	MinOccurs   string       `xml:"minOccurs,attr"`
-	MaxOccurs   string       `xml:"maxOccurs,attr"`
-	refElm      *Element     `xml:"-"`
-	ComplexType *ComplexType `xml:"complexType"`
-	SimpleType  *SimpleType  `xml:"simpleType"`
-	refType     Type         `xml:"-"`
-	schema      *Schema      `xml:"-"`
+	XMLName      xml.Name     `xml:"http://www.w3.org/2001/XMLSchema element"`
+	Name         string       `xml:"name,attr"`
+	nameOverride string       `xml:"-"`
+	Type         reference    `xml:"type,attr"`
+	Ref          reference    `xml:"ref,attr"`
+	MinOccurs    string       `xml:"minOccurs,attr"`
+	MaxOccurs    string       `xml:"maxOccurs,attr"`
+	refElm       *Element     `xml:"-"`
+	ComplexType  *ComplexType `xml:"complexType"`
+	SimpleType   *SimpleType  `xml:"simpleType"`
+	refType      Type         `xml:"-"`
+	schema       *Schema      `xml:"-"`
 }
 
 func (e *Element) Attributes() []Attribute {
@@ -42,7 +44,10 @@ func (e *Element) Elements() []Element {
 }
 
 func (e *Element) GoName() string {
-	name := e.Name
+	name := e.nameOverride
+	if name == "" {
+		name = e.Name
+	}
 	if name == "" {
 		return e.refElm.GoName()
 	}
@@ -102,7 +107,7 @@ func (e *Element) isArray() bool {
 	return err == nil && occurs > 1
 }
 
-func (e *Element) compile(s *Schema) {
+func (e *Element) compile(s *Schema, parentElement *Element) {
 	e.schema = s
 	if e.Ref != "" {
 		e.refElm = e.schema.findReferencedElement(e.Ref)
@@ -117,9 +122,17 @@ func (e *Element) compile(s *Schema) {
 		}
 	}
 	if e.ComplexType != nil {
-		e.ComplexType.compile(s)
+		e.ComplexType.compile(s, e)
 	}
 	if e.Ref == "" && e.Type == "" && !e.isPlainString() {
-		e.schema.registerInlinedElement(e)
+		e.schema.registerInlinedElement(e, parentElement)
+	}
+}
+
+func (e *Element) prefixNameWithParent(parentElement *Element) {
+	// In case there are inlined xsd:elements within another xsd:elements, it may happen that two top-level xsd:elements
+	// define child xsd:element of a same name. In such case, we need to override children name to avoid name clashes.
+	if parentElement != nil {
+		e.nameOverride = fmt.Sprintf("%s-%s", parentElement.GoName(), e.GoName())
 	}
 }

@@ -54,10 +54,10 @@ func (ct *ComplexType) Schema() *Schema {
 	return ct.schema
 }
 
-func (ct *ComplexType) compile(sch *Schema) {
+func (ct *ComplexType) compile(sch *Schema, parentElement *Element) {
 	ct.schema = sch
 	if ct.Sequence != nil {
-		ct.Sequence.compile(sch)
+		ct.Sequence.compile(sch, parentElement)
 	}
 
 	// Handle improbable name clash. Consider XSD defining two attributes on the element:
@@ -91,7 +91,7 @@ func (ct *ComplexType) compile(sch *Schema) {
 		if ct.Sequence != nil {
 			panic("Not implemented: xsd:complexType " + ct.Name + " defines xsd:sequence and xsd:*Content")
 		}
-		ct.content.compile(sch)
+		ct.content.compile(sch, parentElement)
 	}
 
 }
