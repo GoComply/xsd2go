@@ -15,13 +15,14 @@ type Type interface {
 }
 
 type ComplexType struct {
-	XMLName          xml.Name       `xml:"http://www.w3.org/2001/XMLSchema complexType"`
-	Name             string         `xml:"name,attr"`
-	Mixed            string         `xml:"mixed,attr"`
-	AttributesDirect []Attribute    `xml:"attribute"`
-	Sequence         *Sequence      `xml:"sequence"`
-	schema           *Schema        `xml:"-"`
-	SimpleContent    *SimpleContent `xml:"simpleContent"`
+	XMLName          xml.Name        `xml:"http://www.w3.org/2001/XMLSchema complexType"`
+	Name             string          `xml:"name,attr"`
+	Mixed            string          `xml:"mixed,attr"`
+	AttributesDirect []Attribute     `xml:"attribute"`
+	Sequence         *Sequence       `xml:"sequence"`
+	schema           *Schema         `xml:"-"`
+	SimpleContent    *SimpleContent  `xml:"simpleContent"`
+	ComplexContent   *ComplexContent `xml:"complexContent"`
 }
 
 func (ct *ComplexType) Attributes() []Attribute {
@@ -70,9 +71,15 @@ func (ct *ComplexType) compile(sch *Schema) {
 		// Second GoName may be different depending on the DuplicateCount
 		goNames[attribute.GoName()] = count
 	}
+	if ct.ComplexContent != nil {
+		ct.ComplexContent.compile(sch)
+	}
 
-	if ct.SimpleContent != nil && len(ct.AttributesDirect) > 1 {
-		panic("Not implemented: complexType " + ct.Name + " defines direct attribute and simple content")
+	if ct.ComplexContent != nil && ct.SimpleContent != nil {
+		panic("Not implemented: xsd:complexType " + ct.Name + " defines xsd:simpleContent and xsd:complexContent together")
+	}
+	if (ct.ComplexContent != nil || ct.SimpleContent != nil) && len(ct.AttributesDirect) > 1 {
+		panic("Not implemented: xsd:complexType " + ct.Name + " defines direct attribute and xsd:*Content")
 	}
 }
 
