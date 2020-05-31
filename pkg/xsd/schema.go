@@ -22,6 +22,7 @@ type Schema struct {
 	importedModules map[string]*Schema `xml:"-"`
 	ModulesPath     string             `xml:"-"`
 	filePath        string             `xml:"-"`
+	inlinedElements []Element          `xml:"-"`
 }
 
 func parseSchema(f io.Reader) (*Schema, error) {
@@ -129,6 +130,10 @@ func (sch *Schema) Empty() bool {
 	return len(sch.Elements) == 0 && len(sch.ComplexTypes) == 0
 }
 
+func (sch *Schema) ExportableElements() []Element {
+	return append(sch.Elements, sch.inlinedElements...)
+}
+
 func (sch *Schema) ExportableComplexTypes() []ComplexType {
 	elCache := map[string]bool{}
 	for _, el := range sch.Elements {
@@ -212,7 +217,7 @@ func (sch *Schema) registerInlinedElement(el *Element) {
 		}
 	}
 	if !found {
-		sch.Elements = append(sch.Elements, *el)
+		sch.inlinedElements = append(sch.inlinedElements, *el)
 	}
 }
 

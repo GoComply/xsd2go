@@ -9,7 +9,7 @@ import (
     {{ end }}
 )
 
-{{range .Elements }}
+{{range .ExportableElements }}
   // Element
   type {{ .GoName }} struct {
     XMLName xml.Name `xml:{{.Name}}`
