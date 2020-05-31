@@ -25,6 +25,9 @@ type ComplexType struct {
 }
 
 func (ct *ComplexType) Attributes() []Attribute {
+	if ct.SimpleContent != nil {
+		return ct.SimpleContent.Attributes()
+	}
 	return ct.AttributesDirect
 }
 
@@ -52,6 +55,9 @@ func (ct *ComplexType) compile(sch *Schema) {
 	if ct.Sequence != nil {
 		ct.Sequence.compile(sch)
 	}
+	if ct.SimpleContent != nil && len(ct.AttributesDirect) > 1 {
+		panic("Not implemented: complexType " + ct.Name + " defines direct attribute and simple content")
+	}
 }
 
 type Sequence struct {
@@ -67,7 +73,21 @@ func (s *Sequence) compile(sch *Schema) {
 }
 
 type SimpleContent struct {
-	XMLName xml.Name `xml:"http://www.w3.org/2001/XMLSchema simpleContent"`
+	XMLName   xml.Name   `xml:"http://www.w3.org/2001/XMLSchema simpleContent"`
+	Extension *Extension `xml:"extension"`
+}
+
+func (sc *SimpleContent) Attributes() []Attribute {
+	if sc.Extension != nil {
+		return sc.Extension.Attributes
+	}
+	return []Attribute{}
+}
+
+type Extension struct {
+	XMLName    xml.Name    `xml:"http://www.w3.org/2001/XMLSchema extension"`
+	Base       string      `xml:"base,attr"`
+	Attributes []Attribute `xml:"attribute"`
 }
 
 type SimpleType struct {
