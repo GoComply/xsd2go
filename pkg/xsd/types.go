@@ -10,17 +10,22 @@ type Type interface {
 	GoName() string
 	GoTypeName() string
 	Schema() *Schema
+	Attributes() []Attribute
 	Elements() []Element
 }
 
 type ComplexType struct {
-	XMLName       xml.Name       `xml:"http://www.w3.org/2001/XMLSchema complexType"`
-	Name          string         `xml:"name,attr"`
-	Mixed         string         `xml:"mixed,attr"`
-	Attributes    []Attribute    `xml:"attribute"`
-	Sequence      *Sequence      `xml:"sequence"`
-	schema        *Schema        `xml:"-"`
-	SimpleContent *SimpleContent `xml:"simpleContent"`
+	XMLName          xml.Name       `xml:"http://www.w3.org/2001/XMLSchema complexType"`
+	Name             string         `xml:"name,attr"`
+	Mixed            string         `xml:"mixed,attr"`
+	AttributesDirect []Attribute    `xml:"attribute"`
+	Sequence         *Sequence      `xml:"sequence"`
+	schema           *Schema        `xml:"-"`
+	SimpleContent    *SimpleContent `xml:"simpleContent"`
+}
+
+func (ct *ComplexType) Attributes() []Attribute {
+	return ct.AttributesDirect
 }
 
 func (ct *ComplexType) Elements() []Element {
@@ -87,6 +92,10 @@ func (st *SimpleType) compile(sch *Schema) {
 	st.schema = sch
 }
 
+func (st *SimpleType) Attributes() []Attribute {
+	return []Attribute{}
+}
+
 func (st *SimpleType) Elements() []Element {
 	return []Element{}
 }
@@ -99,6 +108,10 @@ func (st staticType) GoName() string {
 
 func (ct staticType) GoTypeName() string {
 	return ct.GoName()
+}
+
+func (st staticType) Attributes() []Attribute {
+	return []Attribute{}
 }
 
 func (st staticType) Elements() []Element {

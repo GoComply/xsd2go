@@ -24,7 +24,7 @@ type Element struct {
 
 func (e *Element) Attributes() []Attribute {
 	if e.ComplexType != nil {
-		return e.ComplexType.Attributes
+		return e.ComplexType.Attributes()
 	}
 	return []Attribute{}
 }
@@ -120,8 +120,8 @@ func (e *Element) compile(s *Schema) {
 		// Handle improbable name clash. Consider XSD defining two attributes on the element:
 		// "id" and "Id", this would create name clash given the camelization we do.
 		goNames := map[string]uint{}
-		for idx, _ := range e.ComplexType.Attributes {
-			attribute := &e.ComplexType.Attributes[idx]
+		for idx, _ := range e.ComplexType.Attributes() {
+			attribute := &e.ComplexType.Attributes()[idx]
 			attribute.compile(s)
 
 			count := goNames[attribute.GoName()]
