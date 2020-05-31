@@ -28,6 +28,10 @@ import (
 // XSD ComplexType declarations
 {{range .ExportableComplexTypes }}
   type {{ .GoName }} struct {
+  {{ range .Attributes }}
+      {{ .GoName }} string `xml:"{{.Name}},attr"`
+  {{end }}
+
   {{ range .Elements }}
     {{ .GoName}} {{.GoMemLayout}}{{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}"`
   {{end}}
