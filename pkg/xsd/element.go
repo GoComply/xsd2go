@@ -118,12 +118,6 @@ func (e *Element) compile(s *Schema) {
 	}
 	if e.ComplexType != nil {
 		e.ComplexType.compile(s)
-
-		elements := e.Elements()
-		for idx, _ := range elements {
-			el := &elements[idx]
-			el.compile(s)
-		}
 	}
 	if e.Ref == "" && e.Type == "" && !e.isPlainString() {
 		e.schema.registerInlinedElement(e)
