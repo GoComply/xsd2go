@@ -16,6 +16,11 @@ func (c *Choice) compile(sch *Schema) {
 	c.schema = sch
 	for idx, _ := range c.Elements {
 		el := &c.Elements[idx]
+
 		el.compile(sch)
+		// Propagate array cardinality downwards
+		if c.MaxOccurs == "unbounded" {
+			el.MaxOccurs = "unbounded"
+		}
 	}
 }
