@@ -33,7 +33,7 @@ func (ct *ComplexType) Attributes() []Attribute {
 
 func (ct *ComplexType) Elements() []Element {
 	if ct.Sequence != nil {
-		return ct.Sequence.Elements
+		return ct.Sequence.Elements()
 	}
 	return []Element{}
 }
