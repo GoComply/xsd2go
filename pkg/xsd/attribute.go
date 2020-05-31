@@ -32,6 +32,9 @@ func (a *Attribute) GoName() string {
 }
 
 func (a *Attribute) XmlName() string {
+	if a.Name == "" {
+		return a.Ref.Name()
+	}
 	return a.Name
 }
 
