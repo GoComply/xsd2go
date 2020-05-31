@@ -43,15 +43,20 @@ func (e *Element) Elements() []Element {
 	return []Element{}
 }
 
-func (e *Element) GoName() string {
-	name := e.nameOverride
-	if name == "" {
-		name = e.Name
-	}
+func (e *Element) GoFieldName() string {
+	name := e.Name
 	if name == "" {
 		return e.refElm.GoName()
 	}
 	return strcase.ToCamel(name)
+}
+
+func (e *Element) GoName() string {
+	if e.nameOverride != "" {
+		return strcase.ToCamel(e.nameOverride)
+	}
+	return e.GoFieldName()
+
 }
 
 func (e *Element) GoMemLayout() string {
