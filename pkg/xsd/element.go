@@ -117,20 +117,7 @@ func (e *Element) compile(s *Schema) {
 		}
 	}
 	if e.ComplexType != nil {
-		// Handle improbable name clash. Consider XSD defining two attributes on the element:
-		// "id" and "Id", this would create name clash given the camelization we do.
-		goNames := map[string]uint{}
-		for idx, _ := range e.ComplexType.Attributes() {
-			attribute := &e.ComplexType.Attributes()[idx]
-			attribute.compile(s)
-
-			count := goNames[attribute.GoName()]
-			count += 1
-			goNames[attribute.GoName()] = count
-			attribute.DuplicateCount = count
-			// Second GoName may be different depending on the DuplicateCount
-			goNames[attribute.GoName()] = count
-		}
+		e.ComplexType.compile(s)
 
 		elements := e.Elements()
 		for idx, _ := range elements {

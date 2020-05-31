@@ -55,6 +55,22 @@ func (ct *ComplexType) compile(sch *Schema) {
 	if ct.Sequence != nil {
 		ct.Sequence.compile(sch)
 	}
+
+	// Handle improbable name clash. Consider XSD defining two attributes on the element:
+	// "id" and "Id", this would create name clash given the camelization we do.
+	goNames := map[string]uint{}
+	for idx, _ := range ct.Attributes() {
+		attribute := &ct.Attributes()[idx]
+		attribute.compile(sch)
+
+		count := goNames[attribute.GoName()]
+		count += 1
+		goNames[attribute.GoName()] = count
+		attribute.DuplicateCount = count
+		// Second GoName may be different depending on the DuplicateCount
+		goNames[attribute.GoName()] = count
+	}
+
 	if ct.SimpleContent != nil && len(ct.AttributesDirect) > 1 {
 		panic("Not implemented: complexType " + ct.Name + " defines direct attribute and simple content")
 	}
