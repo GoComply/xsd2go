@@ -36,6 +36,8 @@ func (ct *ComplexType) Attributes() []Attribute {
 func (ct *ComplexType) Elements() []Element {
 	if ct.Sequence != nil {
 		return ct.Sequence.Elements()
+	} else if ct.content != nil {
+		return ct.content.Elements()
 	}
 	return []Element{}
 }
@@ -82,11 +84,13 @@ func (ct *ComplexType) compile(sch *Schema) {
 		ct.content = ct.SimpleContent
 	}
 
-	if (ct.content != nil) && len(ct.AttributesDirect) > 1 {
-		panic("Not implemented: xsd:complexType " + ct.Name + " defines direct attribute and xsd:*Content")
-	}
-
 	if ct.content != nil {
+		if len(ct.AttributesDirect) > 1 {
+			panic("Not implemented: xsd:complexType " + ct.Name + " defines direct attribute and xsd:*Content")
+		}
+		if ct.Sequence != nil {
+			panic("Not implemented: xsd:complexType " + ct.Name + " defines xsd:sequence and xsd:*Content")
+		}
 		ct.content.compile(sch)
 	}
 
@@ -145,10 +149,12 @@ func (st staticType) Schema() *Schema {
 }
 
 func StaticType(name string) staticType {
-	if name == "string" || name == "dateTime" || name == "base64Binary" || name == "normalizedString" {
+	if name == "string" || name == "dateTime" || name == "base64Binary" || name == "normalizedString" || name == "token" {
 		return staticType("string")
 	} else if name == "decimal" {
 		return "float64"
+	} else if name == "boolean" {
+		return "bool"
 	}
 	panic("Type xsd:" + name + " not implemented")
 	return staticType(name)

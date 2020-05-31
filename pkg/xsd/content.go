@@ -6,6 +6,7 @@ import (
 
 type GenericContent interface {
 	Attributes() []Attribute
+	Elements() []Element
 	compile(*Schema)
 }
 type SimpleContent struct {
@@ -20,6 +21,13 @@ func (sc *SimpleContent) Attributes() []Attribute {
 	return []Attribute{}
 }
 
+func (sc *SimpleContent) Elements() []Element {
+	if sc.Extension != nil {
+		return sc.Extension.Elements()
+	}
+	return []Element{}
+}
+
 func (sc *SimpleContent) compile(sch *Schema) {
 }
 
@@ -27,12 +35,27 @@ type Extension struct {
 	XMLName    xml.Name    `xml:"http://www.w3.org/2001/XMLSchema extension"`
 	Base       string      `xml:"base,attr"`
 	Attributes []Attribute `xml:"attribute"`
+	Sequence   *Sequence   `xml:"sequence"`
+}
+
+func (ext *Extension) Elements() []Element {
+	if ext.Sequence != nil {
+		l := ext.Sequence.Elements()
+		return l
+	}
+	return []Element{}
+}
+
+func (ext *Extension) compile(sch *Schema) {
+	if ext.Sequence != nil {
+		ext.Sequence.compile(sch)
+	}
+
 }
 
 type ComplexContent struct {
 	XMLName   xml.Name   `xml:"http://www.w3.org/2001/XMLSchema complexContent"`
 	Extension *Extension `xml:"extension"`
-	schema    *Schema    `xml:"-"`
 }
 
 func (cc *ComplexContent) Attributes() []Attribute {
@@ -42,6 +65,15 @@ func (cc *ComplexContent) Attributes() []Attribute {
 	return []Attribute{}
 }
 
+func (cc *ComplexContent) Elements() []Element {
+	if cc.Extension != nil {
+		return cc.Extension.Elements()
+	}
+	return []Element{}
+}
+
 func (c *ComplexContent) compile(sch *Schema) {
-	c.schema = sch
+	if c.Extension != nil {
+		c.Extension.compile(sch)
+	}
 }
