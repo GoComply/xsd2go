@@ -23,11 +23,12 @@ type ComplexType struct {
 	schema           *Schema         `xml:"-"`
 	SimpleContent    *SimpleContent  `xml:"simpleContent"`
 	ComplexContent   *ComplexContent `xml:"complexContent"`
+	content          GenericContent  `xml:"-"`
 }
 
 func (ct *ComplexType) Attributes() []Attribute {
-	if ct.SimpleContent != nil {
-		return ct.SimpleContent.Attributes()
+	if ct.content != nil {
+		return ct.content.Attributes()
 	}
 	return ct.AttributesDirect
 }
@@ -71,16 +72,24 @@ func (ct *ComplexType) compile(sch *Schema) {
 		// Second GoName may be different depending on the DuplicateCount
 		goNames[attribute.GoName()] = count
 	}
+
 	if ct.ComplexContent != nil {
-		ct.ComplexContent.compile(sch)
+		ct.content = ct.ComplexContent
+		if ct.SimpleContent != nil {
+			panic("Not implemented: xsd:complexType " + ct.Name + " defines xsd:simpleContent and xsd:complexContent together")
+		}
+	} else if ct.SimpleContent != nil {
+		ct.content = ct.SimpleContent
 	}
 
-	if ct.ComplexContent != nil && ct.SimpleContent != nil {
-		panic("Not implemented: xsd:complexType " + ct.Name + " defines xsd:simpleContent and xsd:complexContent together")
-	}
-	if (ct.ComplexContent != nil || ct.SimpleContent != nil) && len(ct.AttributesDirect) > 1 {
+	if (ct.content != nil) && len(ct.AttributesDirect) > 1 {
 		panic("Not implemented: xsd:complexType " + ct.Name + " defines direct attribute and xsd:*Content")
 	}
+
+	if ct.content != nil {
+		ct.content.compile(sch)
+	}
+
 }
 
 type SimpleType struct {
