@@ -49,12 +49,12 @@ func (sch *Schema) compile() {
 		el.compile(sch)
 	}
 	for idx, _ := range sch.ComplexTypes {
-		el := &sch.ComplexTypes[idx]
-		el.compile(sch)
+		ct := &sch.ComplexTypes[idx]
+		ct.compile(sch)
 	}
 	for idx, _ := range sch.SimpleTypes {
-		el := &sch.SimpleTypes[idx]
-		el.compile(sch)
+		st := &sch.SimpleTypes[idx]
+		st.compile(sch)
 	}
 }
 
