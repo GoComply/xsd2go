@@ -1,6 +1,10 @@
 # XSD2Go - Automatically generate golang xml parser based on XSD
 
-## Introduction
+:warning: **You should run xsd2go, before ever importing `encoding/xml` to your project.** :warning:
+
+You may want to start reading [blog introduction](http://isimluk.com/posts/2020/05/xsd2go-automatically-generate-golang-xml-parsers/) to this project.
+
+## Motivation
 
 Did you ever got to implement XML parser? Perhaps for atom, or scap? You may have got XSD
 (XML Schema Definition) files to verify adherence to given xml application? Wouldn't it be
@@ -9,6 +13,7 @@ are up to here.
 
 ### Related projects:
  - ![Metaschema](https://github.com/gocomply/metaschema) - generate golang code based on NIST metaschema input
+ - ![SCAP](https://github.com/gocomply/scap) - parsers of NIST SCAP family of standards
 
 ## Exemplary Usage
 
