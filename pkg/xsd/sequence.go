@@ -12,7 +12,7 @@ type Sequence struct {
 }
 
 func (s *Sequence) Elements() []Element {
-	return s.allElement
+	return s.allElements
 }
 
 func (s *Sequence) compile(sch *Schema) {
