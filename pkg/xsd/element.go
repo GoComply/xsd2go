@@ -32,9 +32,6 @@ func (e *Element) Attributes() []Attribute {
 }
 
 func (e *Element) Elements() []Element {
-	if e.ComplexType != nil && e.refType != nil {
-		panic("Not implemented: element " + e.GoName() + "defines complexType and refType")
-	}
 	if e.ComplexType != nil {
 		return e.ComplexType.Elements()
 	} else if e.refType != nil {
@@ -126,6 +123,11 @@ func (e *Element) compile(s *Schema, parentElement *Element) {
 			panic("Cannot resolve type reference: " + string(e.Type))
 		}
 	}
+
+	if e.ComplexType != nil && e.refType != nil {
+		panic("Not implemented: element " + e.GoName() + "defines complexType and refType")
+	}
+
 	if e.ComplexType != nil {
 		e.ComplexType.compile(s, e)
 	}
