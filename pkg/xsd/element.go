@@ -95,6 +95,10 @@ func (e *Element) XmlName() string {
 	return name
 }
 
+func (e *Element) ContainsText() bool {
+	return e.typ != nil && e.typ.ContainsText()
+}
+
 func (e *Element) isPlainString() bool {
 	return e.SimpleType != nil || (e.Type == "" && e.Ref == "" && e.ComplexType == nil)
 }

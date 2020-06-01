@@ -12,6 +12,7 @@ type Type interface {
 	Schema() *Schema
 	Attributes() []Attribute
 	Elements() []Element
+	ContainsText() bool
 	compile(*Schema, *Element)
 }
 
@@ -135,6 +136,10 @@ func (st *SimpleType) Elements() []Element {
 	return []Element{}
 }
 
+func (st *SimpleType) ContainsText() bool {
+	return false
+}
+
 type staticType string
 
 func (st staticType) GoName() string {
@@ -155,6 +160,10 @@ func (st staticType) Elements() []Element {
 
 func (st staticType) Schema() *Schema {
 	return nil
+}
+
+func (staticType) ContainsText() bool {
+	return false
 }
 
 func (st staticType) compile(*Schema, *Element) {

@@ -20,6 +20,10 @@ import (
     {{ range .Elements }}
       {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}"`
     {{ end }}
+
+    {{- if .ContainsText }}
+      Text string `xml:",chardata"`
+    {{- end}}
   }
 
 {{end}}
