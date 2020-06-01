@@ -17,7 +17,7 @@ type Type interface {
 type ComplexType struct {
 	XMLName          xml.Name        `xml:"http://www.w3.org/2001/XMLSchema complexType"`
 	Name             string          `xml:"name,attr"`
-	Mixed            string          `xml:"mixed,attr"`
+	Mixed            bool            `xml:"mixed,attr"`
 	AttributesDirect []Attribute     `xml:"attribute"`
 	Sequence         *Sequence       `xml:"sequence"`
 	schema           *Schema         `xml:"-"`
@@ -48,6 +48,10 @@ func (ct *ComplexType) GoName() string {
 
 func (ct *ComplexType) GoTypeName() string {
 	return ct.GoName()
+}
+
+func (ct *ComplexType) ContainsInnerXml() bool {
+	return ct.Mixed
 }
 
 func (ct *ComplexType) ContainsText() bool {
