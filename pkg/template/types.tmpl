@@ -35,5 +35,9 @@ import (
   {{ range .Elements }}
     {{ .GoName}} {{.GoMemLayout}}{{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}"`
   {{end}}
+
+  {{- if .ContainsText }}
+    Text string `xml:",chardata"`
+  {{- end}}
   }
 {{end}}

@@ -7,6 +7,7 @@ import (
 type GenericContent interface {
 	Attributes() []Attribute
 	Elements() []Element
+	ContainsText() bool
 	compile(*Schema, *Element)
 }
 type SimpleContent struct {
@@ -19,6 +20,10 @@ func (sc *SimpleContent) Attributes() []Attribute {
 		return sc.Extension.Attributes
 	}
 	return []Attribute{}
+}
+
+func (sc *SimpleContent) ContainsText() bool {
+	return sc.Extension != nil && sc.Extension.ContainsText()
 }
 
 func (sc *SimpleContent) Elements() []Element {
@@ -46,6 +51,10 @@ func (ext *Extension) Elements() []Element {
 	return []Element{}
 }
 
+func (ext *Extension) ContainsText() bool {
+	return ext.Base == "xsd:string"
+}
+
 func (ext *Extension) compile(sch *Schema, parentElement *Element) {
 	if ext.Sequence != nil {
 		ext.Sequence.compile(sch, parentElement)
@@ -70,6 +79,10 @@ func (cc *ComplexContent) Elements() []Element {
 		return cc.Extension.Elements()
 	}
 	return []Element{}
+}
+
+func (cc *ComplexContent) ContainsText() bool {
+	return cc.Extension != nil && cc.Extension.ContainsText()
 }
 
 func (c *ComplexContent) compile(sch *Schema, parentElement *Element) {

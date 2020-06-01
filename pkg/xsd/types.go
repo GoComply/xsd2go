@@ -50,6 +50,10 @@ func (ct *ComplexType) GoTypeName() string {
 	return ct.GoName()
 }
 
+func (ct *ComplexType) ContainsText() bool {
+	return ct.content != nil && ct.content.ContainsText()
+}
+
 func (ct *ComplexType) Schema() *Schema {
 	return ct.schema
 }
