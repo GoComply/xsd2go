@@ -22,6 +22,7 @@ type Element struct {
 	SimpleType   *SimpleType  `xml:"simpleType"`
 	refType      Type         `xml:"-"`
 	schema       *Schema      `xml:"-"`
+	typ          Type         `xml:"-"`
 }
 
 func (e *Element) Attributes() []Attribute {
@@ -32,10 +33,8 @@ func (e *Element) Attributes() []Attribute {
 }
 
 func (e *Element) Elements() []Element {
-	if e.ComplexType != nil {
-		return e.ComplexType.Elements()
-	} else if e.refType != nil {
-		return e.refType.Elements()
+	if e.typ != nil {
+		return e.typ.Elements()
 	}
 	return []Element{}
 }
@@ -79,8 +78,8 @@ func (e *Element) GoForeignModule() string {
 	foreignSchema := (*Schema)(nil)
 	if e.refElm != nil {
 		foreignSchema = e.refElm.schema
-	} else if e.refType != nil {
-		foreignSchema = e.refType.Schema()
+	} else if e.typ != nil {
+		foreignSchema = e.typ.Schema()
 	}
 
 	if foreignSchema != nil && foreignSchema != e.schema {
@@ -111,26 +110,35 @@ func (e *Element) isArray() bool {
 
 func (e *Element) compile(s *Schema, parentElement *Element) {
 	e.schema = s
+	if e.ComplexType != nil {
+		e.typ = e.ComplexType
+		if e.SimpleType != nil {
+			panic("Not implemented: xsd:element " + e.Name + " defines ./xsd:simpleType and ./xsd:complexType together")
+		} else if e.Type != "" {
+			panic("Not implemented: xsd:element " + e.Name + " defines ./@type= and ./xsd:complexType together")
+		}
+		e.typ.compile(s, e)
+	} else if e.SimpleType != nil {
+		e.typ = e.SimpleType
+		if e.Type != "" {
+			panic("Not implemented: xsd:element " + e.Name + " defines ./@type= and ./xsd:simpleType together")
+		}
+		e.typ.compile(s, e)
+	} else if e.Type != "" {
+		e.refType = e.schema.findReferencedType(e.Type)
+		if e.refType == nil {
+			panic("Cannot resolve type reference: " + string(e.Type))
+		}
+		e.typ = e.refType
+	}
+
 	if e.Ref != "" {
 		e.refElm = e.schema.findReferencedElement(e.Ref)
 		if e.refElm == nil {
 			panic("Cannot resolve element reference: " + e.Ref)
 		}
 	}
-	if e.Type != "" {
-		e.refType = e.schema.findReferencedType(e.Type)
-		if e.refType == nil {
-			panic("Cannot resolve type reference: " + string(e.Type))
-		}
-	}
 
-	if e.ComplexType != nil && e.refType != nil {
-		panic("Not implemented: element " + e.GoName() + "defines complexType and refType")
-	}
-
-	if e.ComplexType != nil {
-		e.ComplexType.compile(s, e)
-	}
 	if e.Ref == "" && e.Type == "" && !e.isPlainString() {
 		e.schema.registerInlinedElement(e, parentElement)
 	}
