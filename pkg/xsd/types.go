@@ -12,6 +12,7 @@ type Type interface {
 	Schema() *Schema
 	Attributes() []Attribute
 	Elements() []Element
+	compile(*Schema, *Element)
 }
 
 type ComplexType struct {
@@ -122,7 +123,7 @@ func (st *SimpleType) Schema() *Schema {
 	return st.schema
 }
 
-func (st *SimpleType) compile(sch *Schema) {
+func (st *SimpleType) compile(sch *Schema, parentElement *Element) {
 	st.schema = sch
 }
 
@@ -154,6 +155,9 @@ func (st staticType) Elements() []Element {
 
 func (st staticType) Schema() *Schema {
 	return nil
+}
+
+func (st staticType) compile(*Schema, *Element) {
 }
 
 func StaticType(name string) staticType {

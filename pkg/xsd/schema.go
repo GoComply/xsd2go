@@ -55,7 +55,7 @@ func (sch *Schema) compile() {
 	}
 	for idx, _ := range sch.SimpleTypes {
 		st := &sch.SimpleTypes[idx]
-		st.compile(sch)
+		st.compile(sch, nil)
 	}
 }
 
