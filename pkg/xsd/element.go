@@ -20,7 +20,6 @@ type Element struct {
 	refElm       *Element     `xml:"-"`
 	ComplexType  *ComplexType `xml:"complexType"`
 	SimpleType   *SimpleType  `xml:"simpleType"`
-	refType      Type         `xml:"-"`
 	schema       *Schema      `xml:"-"`
 	typ          Type         `xml:"-"`
 }
@@ -67,7 +66,7 @@ func (e *Element) GoMemLayout() string {
 
 func (e *Element) GoTypeName() string {
 	if e.Type != "" {
-		return e.refType.GoTypeName()
+		return e.typ.GoTypeName()
 	} else if e.isPlainString() {
 		return "string"
 	}
@@ -125,11 +124,10 @@ func (e *Element) compile(s *Schema, parentElement *Element) {
 		}
 		e.typ.compile(s, e)
 	} else if e.Type != "" {
-		e.refType = e.schema.findReferencedType(e.Type)
-		if e.refType == nil {
+		e.typ = e.schema.findReferencedType(e.Type)
+		if e.typ == nil {
 			panic("Cannot resolve type reference: " + string(e.Type))
 		}
-		e.typ = e.refType
 	}
 
 	if e.Ref != "" {
