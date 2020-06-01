@@ -38,9 +38,10 @@ func (sc *SimpleContent) compile(sch *Schema, parentElement *Element) {
 
 type Extension struct {
 	XMLName    xml.Name    `xml:"http://www.w3.org/2001/XMLSchema extension"`
-	Base       string      `xml:"base,attr"`
+	Base       reference   `xml:"base,attr"`
 	Attributes []Attribute `xml:"attribute"`
 	Sequence   *Sequence   `xml:"sequence"`
+	typ        Type
 }
 
 func (ext *Extension) Elements() []Element {
@@ -59,7 +60,14 @@ func (ext *Extension) compile(sch *Schema, parentElement *Element) {
 	if ext.Sequence != nil {
 		ext.Sequence.compile(sch, parentElement)
 	}
+	if ext.Base == "" {
+		panic("Not implemented: xsd:extension/@base empty, cannot extend unknown type")
+	}
 
+	ext.typ = sch.findReferencedType(ext.Base)
+	if ext.typ == nil {
+		panic("Cannot build xsd:extension: unknown type: " + string(ext.Base))
+	}
 }
 
 type ComplexContent struct {
