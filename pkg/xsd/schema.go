@@ -99,17 +99,21 @@ func (sch *Schema) findReferencedSchemaByPrefix(xmlnsPrefix string) *Schema {
 }
 
 func (sch *Schema) xmlnsByPrefix(xmlnsPrefix string) string {
+	uri := sch.xmlnsByPrefixInternal(xmlnsPrefix)
+	if uri == "" {
+		panic("Internal error: Unknown xmlns prefix: " + xmlnsPrefix)
+	}
+	return uri
+}
+
+func (sch *Schema) xmlnsByPrefixInternal(xmlnsPrefix string) string {
 	switch xmlnsPrefix {
 	case "":
 		return sch.TargetNamespace
 	case "xml":
 		return "http://www.w3.org/XML/1998/namespace"
 	default:
-		uri := sch.Xmlns.UriByPrefix(xmlnsPrefix)
-		if uri == "" {
-			panic("Internal error: Unknown xmlns prefix: " + xmlnsPrefix)
-		}
-		return uri
+		return sch.Xmlns.UriByPrefix(xmlnsPrefix)
 	}
 	return ""
 }
