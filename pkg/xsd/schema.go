@@ -113,7 +113,16 @@ func (sch *Schema) xmlnsByPrefixInternal(xmlnsPrefix string) string {
 	case "xml":
 		return "http://www.w3.org/XML/1998/namespace"
 	default:
-		return sch.Xmlns.UriByPrefix(xmlnsPrefix)
+		uri := sch.Xmlns.UriByPrefix(xmlnsPrefix)
+		if uri == "" {
+			for _, imported := range sch.importedModules {
+				uri = imported.xmlnsByPrefixInternal(xmlnsPrefix)
+				if uri != "" {
+					return uri
+				}
+			}
+		}
+		return uri
 	}
 	return ""
 }
