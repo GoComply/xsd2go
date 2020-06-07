@@ -70,7 +70,7 @@ func (sch *Schema) findReferencedAttribute(ref reference) *Attribute {
 func (sch *Schema) findReferencedElement(ref reference) *Element {
 	innerSchema := sch.findReferencedSchemaByPrefix(ref.NsPrefix())
 	if innerSchema == nil {
-		panic("Internal error: referenced element '" + ref + "' cannot be found.")
+		panic("Internal error: referenced element '" + string(ref) + "' cannot be found.")
 	}
 	if innerSchema != sch {
 		sch.registerImportedModule(innerSchema)
