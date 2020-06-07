@@ -136,6 +136,12 @@ func (sch *Schema) findReferencedSchemaByXmlns(xmlns string) *Schema {
 			return imp.ImportedSchema
 		}
 	}
+	for _, imp := range sch.importedModules {
+		s := imp.findReferencedSchemaByXmlns(xmlns)
+		if s != nil {
+			return s
+		}
+	}
 	return nil
 }
 
