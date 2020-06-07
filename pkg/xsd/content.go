@@ -53,7 +53,7 @@ func (ext *Extension) Elements() []Element {
 }
 
 func (ext *Extension) ContainsText() bool {
-	return ext.Base == "xsd:string"
+	return ext.Base == "xsd:string" || (ext.typ != nil && ext.typ.ContainsText())
 }
 
 func (ext *Extension) compile(sch *Schema, parentElement *Element) {

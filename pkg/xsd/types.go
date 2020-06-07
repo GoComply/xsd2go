@@ -137,7 +137,7 @@ func (st *SimpleType) Elements() []Element {
 }
 
 func (st *SimpleType) ContainsText() bool {
-	return false
+	return true
 }
 
 type staticType string
@@ -163,7 +163,7 @@ func (st staticType) Schema() *Schema {
 }
 
 func (staticType) ContainsText() bool {
-	return false
+	return true
 }
 
 func (st staticType) compile(*Schema, *Element) {
