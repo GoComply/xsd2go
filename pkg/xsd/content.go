@@ -34,6 +34,9 @@ func (sc *SimpleContent) Elements() []Element {
 }
 
 func (sc *SimpleContent) compile(sch *Schema, parentElement *Element) {
+	if sc.Extension != nil {
+		sc.Extension.compile(sch, parentElement)
+	}
 }
 
 type Extension struct {
