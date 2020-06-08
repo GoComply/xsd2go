@@ -13,7 +13,23 @@ type Extension struct {
 }
 
 func (ext *Extension) Attributes() []Attribute {
-	return ext.AttributesDirect
+	elements := ext.Elements()
+	goNames := make(map[string]struct{}, len(elements)+len(ext.AttributesDirect))
+	for _, el := range ext.Elements() {
+		goNames[el.GoName()] = struct{}{}
+	}
+	attributes := []Attribute{}
+	for _, attr := range ext.AttributesDirect {
+		if _, found := goNames[attr.GoName()]; found {
+			if attr.DuplicateCount == 0 {
+				attr.DuplicateCount += 1
+			}
+			attr.DuplicateCount += 1
+		}
+		goNames[attr.GoName()] = struct{}{}
+		attributes = append(attributes, attr)
+	}
+	return attributes
 }
 
 func (ext *Extension) Elements() []Element {
