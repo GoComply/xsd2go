@@ -5,11 +5,15 @@ import (
 )
 
 type Extension struct {
-	XMLName    xml.Name    `xml:"http://www.w3.org/2001/XMLSchema extension"`
-	Base       reference   `xml:"base,attr"`
-	Attributes []Attribute `xml:"attribute"`
-	Sequence   *Sequence   `xml:"sequence"`
-	typ        Type
+	XMLName          xml.Name    `xml:"http://www.w3.org/2001/XMLSchema extension"`
+	Base             reference   `xml:"base,attr"`
+	AttributesDirect []Attribute `xml:"attribute"`
+	Sequence         *Sequence   `xml:"sequence"`
+	typ              Type
+}
+
+func (ext *Extension) Attributes() []Attribute {
+	return ext.AttributesDirect
 }
 
 func (ext *Extension) Elements() []Element {

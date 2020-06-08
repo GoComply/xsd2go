@@ -17,7 +17,7 @@ type SimpleContent struct {
 
 func (sc *SimpleContent) Attributes() []Attribute {
 	if sc.Extension != nil {
-		return sc.Extension.Attributes
+		return sc.Extension.Attributes()
 	}
 	return []Attribute{}
 }
@@ -46,7 +46,7 @@ type ComplexContent struct {
 
 func (cc *ComplexContent) Attributes() []Attribute {
 	if cc.Extension != nil {
-		return cc.Extension.Attributes
+		return cc.Extension.Attributes()
 	}
 	return []Attribute{}
 }
