@@ -13,13 +13,19 @@ type Extension struct {
 }
 
 func (ext *Extension) Attributes() []Attribute {
+	attrs := ext.AttributesDirect
+	if ext.typ != nil {
+		attrs = append(attrs, ext.typ.Attributes()...)
+		attrs = deduplicateAttributes(attrs)
+	}
+
 	elements := ext.Elements()
-	goNames := make(map[string]struct{}, len(elements)+len(ext.AttributesDirect))
+	goNames := make(map[string]struct{}, len(elements)+len(attrs))
 	for _, el := range ext.Elements() {
 		goNames[el.GoName()] = struct{}{}
 	}
 	attributes := []Attribute{}
-	for _, attr := range ext.AttributesDirect {
+	for _, attr := range attrs {
 		if _, found := goNames[attr.GoName()]; found {
 			if attr.DuplicateCount == 0 {
 				attr.DuplicateCount += 1
@@ -44,6 +50,20 @@ func (ext *Extension) Elements() []Element {
 		}
 	}
 	return elements
+}
+
+func deduplicateAttributes(attributes []Attribute) []Attribute {
+	seen := make(map[string]struct{}, len(attributes))
+	j := 0
+	for _, attribute := range attributes {
+		if _, ok := seen[attribute.GoName()]; ok {
+			continue
+		}
+		seen[attribute.GoName()] = struct{}{}
+		attributes[j] = attribute
+		j++
+	}
+	return attributes[:j]
 }
 
 func deduplicateElements(elements []Element) []Element {
