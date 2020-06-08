@@ -4,9 +4,9 @@
 package {{ $packageName }}
 
 import (
-    {{ range .GoImportsNeeded}}
+    {{- range .GoImportsNeeded}}
         "{{ . }}"
-    {{ end }}
+    {{- end }}
 )
 
 {{range .ExportableElements }}
