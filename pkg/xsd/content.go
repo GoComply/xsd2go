@@ -48,11 +48,31 @@ type Extension struct {
 }
 
 func (ext *Extension) Elements() []Element {
-	if ext.Sequence != nil {
-		l := ext.Sequence.Elements()
-		return l
+	elements := []Element{}
+	if ext.typ != nil {
+		elements = append(elements, ext.typ.Elements()...)
 	}
-	return []Element{}
+	if ext.Sequence != nil {
+		elements = append(elements, ext.Sequence.Elements()...)
+		if ext.typ != nil {
+			elements = deduplicateElements(elements)
+		}
+	}
+	return elements
+}
+
+func deduplicateElements(elements []Element) []Element {
+	seen := make(map[string]struct{}, len(elements))
+	j := 0
+	for _, element := range elements {
+		if _, ok := seen[element.GoName()]; ok {
+			continue
+		}
+		seen[element.GoName()] = struct{}{}
+		elements[j] = element
+		j++
+	}
+	return elements[:j]
 }
 
 func (ext *Extension) ContainsText() bool {
@@ -71,6 +91,7 @@ func (ext *Extension) compile(sch *Schema, parentElement *Element) {
 	if ext.typ == nil {
 		panic("Cannot build xsd:extension: unknown type: " + string(ext.Base))
 	}
+	ext.typ.compile(sch, parentElement)
 }
 
 type ComplexContent struct {
