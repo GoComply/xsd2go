@@ -40,13 +40,16 @@ func (sc *SimpleContent) compile(sch *Schema, parentElement *Element) {
 }
 
 type ComplexContent struct {
-	XMLName   xml.Name   `xml:"http://www.w3.org/2001/XMLSchema complexContent"`
-	Extension *Extension `xml:"extension"`
+	XMLName     xml.Name     `xml:"http://www.w3.org/2001/XMLSchema complexContent"`
+	Extension   *Extension   `xml:"extension"`
+	Restriction *Restriction `xml:"restriction"`
 }
 
 func (cc *ComplexContent) Attributes() []Attribute {
 	if cc.Extension != nil {
 		return cc.Extension.Attributes()
+	} else if cc.Restriction != nil {
+		return cc.Restriction.Attributes
 	}
 	return []Attribute{}
 }
@@ -65,5 +68,11 @@ func (cc *ComplexContent) ContainsText() bool {
 func (c *ComplexContent) compile(sch *Schema, parentElement *Element) {
 	if c.Extension != nil {
 		c.Extension.compile(sch, parentElement)
+	}
+	if c.Restriction != nil {
+		if c.Extension != nil {
+			panic("Not implemented: xsd:complexContent defines xsd:restriction and xsd:extension")
+		}
+		c.Restriction.compile(sch)
 	}
 }
