@@ -26,8 +26,8 @@ type Element struct {
 }
 
 func (e *Element) Attributes() []Attribute {
-	if e.ComplexType != nil {
-		return e.ComplexType.Attributes()
+	if e.typ != nil {
+		return e.typ.Attributes()
 	}
 	return []Attribute{}
 }
