@@ -18,24 +18,7 @@ func (ext *Extension) Attributes() []Attribute {
 		attrs = append(attrs, ext.typ.Attributes()...)
 		attrs = deduplicateAttributes(attrs)
 	}
-
-	elements := ext.Elements()
-	goNames := make(map[string]struct{}, len(elements)+len(attrs))
-	for _, el := range ext.Elements() {
-		goNames[el.GoName()] = struct{}{}
-	}
-	attributes := []Attribute{}
-	for _, attr := range attrs {
-		if _, found := goNames[attr.GoName()]; found {
-			if attr.DuplicateCount == 0 {
-				attr.DuplicateCount += 1
-			}
-			attr.DuplicateCount += 1
-		}
-		goNames[attr.GoName()] = struct{}{}
-		attributes = append(attributes, attr)
-	}
-	return attributes
+	return attrs
 }
 
 func (ext *Extension) Elements() []Element {
@@ -47,7 +30,22 @@ func (ext *Extension) Elements() []Element {
 		elements = append(elements, ext.typ.Elements()...)
 		elements = deduplicateElements(elements)
 	}
-	return elements
+
+	attrs := ext.Attributes()
+	goNames := make(map[string]struct{}, len(elements)+len(attrs))
+	for _, attr := range attrs {
+		goNames[attr.GoName()] = struct{}{}
+	}
+
+	final := []Element{}
+	for _, element := range elements {
+		if _, found := goNames[element.GoFieldName()]; found {
+			element.FieldOverride = true
+		}
+		goNames[element.GoFieldName()] = struct{}{}
+		final = append(final, element)
+	}
+	return final
 }
 
 func deduplicateAttributes(attributes []Attribute) []Attribute {

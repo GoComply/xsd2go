@@ -10,18 +10,19 @@ import (
 
 // Element defines single XML element
 type Element struct {
-	XMLName      xml.Name     `xml:"http://www.w3.org/2001/XMLSchema element"`
-	Name         string       `xml:"name,attr"`
-	nameOverride string       `xml:"-"`
-	Type         reference    `xml:"type,attr"`
-	Ref          reference    `xml:"ref,attr"`
-	MinOccurs    string       `xml:"minOccurs,attr"`
-	MaxOccurs    string       `xml:"maxOccurs,attr"`
-	refElm       *Element     `xml:"-"`
-	ComplexType  *ComplexType `xml:"complexType"`
-	SimpleType   *SimpleType  `xml:"simpleType"`
-	schema       *Schema      `xml:"-"`
-	typ          Type         `xml:"-"`
+	XMLName       xml.Name     `xml:"http://www.w3.org/2001/XMLSchema element"`
+	Name          string       `xml:"name,attr"`
+	nameOverride  string       `xml:"-"`
+	FieldOverride bool         `xml:"-"`
+	Type          reference    `xml:"type,attr"`
+	Ref           reference    `xml:"ref,attr"`
+	MinOccurs     string       `xml:"minOccurs,attr"`
+	MaxOccurs     string       `xml:"maxOccurs,attr"`
+	refElm        *Element     `xml:"-"`
+	ComplexType   *ComplexType `xml:"complexType"`
+	SimpleType    *SimpleType  `xml:"simpleType"`
+	schema        *Schema      `xml:"-"`
+	typ           Type         `xml:"-"`
 }
 
 func (e *Element) Attributes() []Attribute {
@@ -43,6 +44,9 @@ func (e *Element) GoFieldName() string {
 	if name == "" {
 		return e.refElm.GoName()
 	}
+	if e.FieldOverride {
+		name += "Elm"
+	}
 	return strcase.ToCamel(name)
 }
 
@@ -51,7 +55,6 @@ func (e *Element) GoName() string {
 		return strcase.ToCamel(e.nameOverride)
 	}
 	return e.GoFieldName()
-
 }
 
 func (e *Element) GoMemLayout() string {
