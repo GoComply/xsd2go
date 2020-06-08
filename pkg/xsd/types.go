@@ -25,6 +25,7 @@ type ComplexType struct {
 	schema           *Schema         `xml:"-"`
 	SimpleContent    *SimpleContent  `xml:"simpleContent"`
 	ComplexContent   *ComplexContent `xml:"complexContent"`
+	Choice           *Choice         `xml:"choice"`
 	content          GenericContent  `xml:"-"`
 }
 
@@ -40,6 +41,8 @@ func (ct *ComplexType) Elements() []Element {
 		return ct.Sequence.Elements()
 	} else if ct.content != nil {
 		return ct.content.Elements()
+	} else if ct.Choice != nil {
+		return ct.Choice.Elements
 	}
 	return []Element{}
 }
@@ -104,6 +107,15 @@ func (ct *ComplexType) compile(sch *Schema, parentElement *Element) {
 		ct.content.compile(sch, parentElement)
 	}
 
+	if ct.Choice != nil {
+		if ct.content != nil {
+			panic("Not implemented: xsd:complexType " + ct.Name + " defines xsd:choice and xsd:*content")
+		}
+		if ct.Sequence != nil {
+			panic("Not implemented: xsd:complexType " + ct.Name + " defines xsd:choice and xsd:sequence")
+		}
+		ct.Choice.compile(sch, parentElement)
+	}
 }
 
 type SimpleType struct {
