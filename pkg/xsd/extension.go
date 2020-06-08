@@ -40,14 +40,12 @@ func (ext *Extension) Attributes() []Attribute {
 
 func (ext *Extension) Elements() []Element {
 	elements := []Element{}
-	if ext.typ != nil {
-		elements = append(elements, ext.typ.Elements()...)
-	}
 	if ext.Sequence != nil {
 		elements = append(elements, ext.Sequence.Elements()...)
-		if ext.typ != nil {
-			elements = deduplicateElements(elements)
-		}
+	}
+	if ext.typ != nil {
+		elements = append(elements, ext.typ.Elements()...)
+		elements = deduplicateElements(elements)
 	}
 	return elements
 }
