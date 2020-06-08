@@ -37,7 +37,7 @@ import (
   {{end }}
 
   {{ range .Elements }}
-    {{ .GoName}} {{.GoMemLayout}}{{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}"`
+    {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}"`
   {{end}}
 
   {{- if .ContainsText }}
