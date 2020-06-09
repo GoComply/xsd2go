@@ -22,5 +22,8 @@ func (c *Choice) compile(sch *Schema, parentElement *Element) {
 		if c.MaxOccurs == "unbounded" {
 			el.MaxOccurs = "unbounded"
 		}
+		if el.MinOccurs == "" {
+			el.MinOccurs = "0"
+		}
 	}
 }
