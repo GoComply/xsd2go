@@ -1,4 +1,4 @@
-name: XSD2Go Build CI
+name: Build CI
 
 on:
   push:
