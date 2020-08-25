@@ -1,4 +1,4 @@
-# XSD2Go - Automatically generate golang xml parser based on XSD
+# XSD2Go - Automatically generate golang xml parser based on XSD ![Build CI](https://github.com/GoComply/xsd2go/workflows/Build%20CI/badge.svg)
 
 :warning: **You should run xsd2go, before ever importing `encoding/xml` to your project.** :warning:
 
