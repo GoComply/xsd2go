@@ -1,0 +1,69 @@
+# This is an example goreleaser.yaml file with some sane defaults.
+# Make sure to check the documentation at http://goreleaser.com
+#before:
+#  hooks:
+#    # You may remove this if you don't use go modules.
+#    - go mod download
+#    # you may remove this if you don't need go generate
+#    - go generate ./...
+
+builds:
+- env:
+  - CGO_ENABLED=0
+  main: ./cli/gocomply_xsd2go/main.go
+  binary: gocomply_xsd2go
+
+  goos:
+    - windows
+    - darwin
+    - linux
+  goarch:
+    - 386
+    - amd64
+    - arm
+    - arm64
+
+archives:
+- replacements:
+    darwin: macOS
+    linux: Linux
+    windows: Windows
+    386: i386
+    amd64: x86_64
+
+  format_overrides:
+    - goos: windows
+      format: zip
+
+checksum:
+  name_template: 'checksums.txt'
+  algorithm: sha256
+snapshot:
+  name_template: "{{ .Tag }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+    - '^docs:'
+    - '^test:'
+
+nfpms:
+  - id: gocomply_xsd2go
+
+    file_name_template: "{{ .ProjectName }}-{{ .Version }}-{{ .Release }}.{{ .Arch }}"
+    replacements:
+      386: i686
+      amd64: x86_64
+      arm: aarch32
+      arm64: aarch64
+
+    formats:
+      - deb
+      - rpm
+
+    bindir: /usr/bin
+
+    homepage: github.com/GoComply/xsd2go
+    license: The Unlicense
+    description: Automatically generate golang xml parser based on XSD
+    release: 1
