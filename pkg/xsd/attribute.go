@@ -31,6 +31,10 @@ func (a *Attribute) GoName() string {
 	return strcase.ToCamel(name)
 }
 
+func (a *Attribute) Modifiers() string {
+	return "attr"
+}
+
 func (a *Attribute) XmlName() string {
 	if a.Name == "" {
 		return a.Ref.Name()
