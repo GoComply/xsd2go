@@ -32,7 +32,11 @@ func (a *Attribute) GoName() string {
 }
 
 func (a *Attribute) Modifiers() string {
-	return "attr"
+	res := "attr"
+	if a.optional() {
+		res += ",omitempty"
+	}
+	return res
 }
 
 func (a *Attribute) XmlName() string {
@@ -40,6 +44,10 @@ func (a *Attribute) XmlName() string {
 		return a.Ref.Name()
 	}
 	return a.Name
+}
+
+func (a *Attribute) optional() bool {
+	return a.Use == "optional"
 }
 
 func (a *Attribute) compile(s *Schema) {
