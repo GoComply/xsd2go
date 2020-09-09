@@ -184,6 +184,10 @@ func (st staticType) compile(*Schema, *Element) {
 func StaticType(name string) staticType {
 	if name == "string" || name == "dateTime" || name == "base64Binary" || name == "normalizedString" || name == "token" || name == "NCName" || name == "anySimpleType" {
 		return staticType("string")
+	} else if name == "int" {
+		return "int"
+	} else if name == "integer" {
+		return "int64"
 	} else if name == "decimal" {
 		return "float64"
 	} else if name == "boolean" {
