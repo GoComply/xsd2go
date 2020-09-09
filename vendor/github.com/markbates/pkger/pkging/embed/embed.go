@@ -7,8 +7,6 @@ import (
 	"io"
 
 	"github.com/markbates/pkger/here"
-	"github.com/markbates/pkger/internal/takeon/github.com/markbates/hepa"
-	"github.com/markbates/pkger/internal/takeon/github.com/markbates/hepa/filters"
 )
 
 func Decode(src []byte) ([]byte, error) {
@@ -46,16 +44,7 @@ func Encode(b []byte) ([]byte, error) {
 		return nil, err
 	}
 
-	hep := hepa.New()
-	hep = hepa.With(hep, filters.Home())
-	hep = hepa.With(hep, filters.Golang())
-
-	b, err := hep.Filter(bb.Bytes())
-	if err != nil {
-		return nil, err
-	}
-
-	s := hex.EncodeToString(b)
+	s := hex.EncodeToString(bb.Bytes())
 	return []byte(s), nil
 }
 
