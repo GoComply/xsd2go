@@ -1,5 +1,7 @@
 # github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d
 github.com/cpuguy83/go-md2man/v2/md2man
+# github.com/davecgh/go-spew v1.1.1
+github.com/davecgh/go-spew/spew
 # github.com/gobuffalo/here v0.6.0
 github.com/gobuffalo/here
 # github.com/iancoleman/strcase v0.0.0-20191112232945-16388991a334
@@ -14,9 +16,15 @@ github.com/markbates/pkger/pkging
 github.com/markbates/pkger/pkging/embed
 github.com/markbates/pkger/pkging/mem
 github.com/markbates/pkger/pkging/stdos
+# github.com/pmezard/go-difflib v1.0.0
+github.com/pmezard/go-difflib/difflib
 # github.com/russross/blackfriday/v2 v2.0.1
 github.com/russross/blackfriday/v2
 # github.com/shurcooL/sanitized_anchor_name v1.0.0
 github.com/shurcooL/sanitized_anchor_name
+# github.com/stretchr/testify v1.4.0
+github.com/stretchr/testify/assert
 # github.com/urfave/cli v1.22.4
 github.com/urfave/cli
+# gopkg.in/yaml.v2 v2.2.7
+gopkg.in/yaml.v2
