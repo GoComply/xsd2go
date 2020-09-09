@@ -6,12 +6,10 @@ github.com/davecgh/go-spew/spew
 github.com/gobuffalo/here
 # github.com/iancoleman/strcase v0.0.0-20191112232945-16388991a334
 github.com/iancoleman/strcase
-# github.com/markbates/pkger v0.16.0
+# github.com/markbates/pkger v0.17.1
 github.com/markbates/pkger
 github.com/markbates/pkger/here
 github.com/markbates/pkger/internal/maps
-github.com/markbates/pkger/internal/takeon/github.com/markbates/hepa
-github.com/markbates/pkger/internal/takeon/github.com/markbates/hepa/filters
 github.com/markbates/pkger/pkging
 github.com/markbates/pkger/pkging/embed
 github.com/markbates/pkger/pkging/mem
