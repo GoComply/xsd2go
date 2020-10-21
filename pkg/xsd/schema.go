@@ -188,9 +188,6 @@ func (sch *Schema) GetElement(name string) *Element {
 }
 
 func (sch *Schema) GetType(name string) Type {
-	if IsStaticType(name) {
-		return StaticType("string")
-	}
 	for idx, typ := range sch.ComplexTypes {
 		if typ.Name == name {
 			return &sch.ComplexTypes[idx]
@@ -200,6 +197,9 @@ func (sch *Schema) GetType(name string) Type {
 		if typ.Name == name {
 			return &sch.SimpleTypes[idx]
 		}
+	}
+	if IsStaticType(name) {
+		return StaticType("string")
 	}
 	return nil
 }
