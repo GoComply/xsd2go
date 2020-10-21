@@ -181,17 +181,24 @@ func (staticType) ContainsText() bool {
 func (st staticType) compile(*Schema, *Element) {
 }
 
+var staticTypes = map[string]staticType{
+	"string":           "string",
+	"dateTime":         "string",
+	"base64Binary":     "string",
+	"normalizedString": "string",
+	"token":            "string",
+	"NCName":           "string",
+	"anySimpleType":    "string",
+	"int":              "int",
+	"integer":          "int64",
+	"decimal":          "float64",
+	"boolean":          "bool",
+}
+
 func StaticType(name string) staticType {
-	if name == "string" || name == "dateTime" || name == "base64Binary" || name == "normalizedString" || name == "token" || name == "NCName" || name == "anySimpleType" {
-		return staticType("string")
-	} else if name == "int" {
-		return "int"
-	} else if name == "integer" {
-		return "int64"
-	} else if name == "decimal" {
-		return "float64"
-	} else if name == "boolean" {
-		return "bool"
+	typ, found := staticTypes[name]
+	if found {
+		return typ
 	}
 	panic("Type xsd:" + name + " not implemented")
 	return staticType(name)
