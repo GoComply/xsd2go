@@ -188,7 +188,7 @@ func (sch *Schema) GetElement(name string) *Element {
 }
 
 func (sch *Schema) GetType(name string) Type {
-	if name == "string" || name == "base64Binary" {
+	if IsStaticType(name) {
 		return StaticType("string")
 	}
 	for idx, typ := range sch.ComplexTypes {

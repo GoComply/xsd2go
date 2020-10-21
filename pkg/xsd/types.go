@@ -196,3 +196,7 @@ func StaticType(name string) staticType {
 	panic("Type xsd:" + name + " not implemented")
 	return staticType(name)
 }
+
+func IsStaticType(name string) bool {
+	return name == "string" || name == "base64Binary"
+}
