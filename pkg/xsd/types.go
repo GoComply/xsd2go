@@ -205,5 +205,6 @@ func StaticType(name string) staticType {
 }
 
 func IsStaticType(name string) bool {
-	return name == "string" || name == "base64Binary"
+	_, found := staticTypes[name]
+	return found
 }
