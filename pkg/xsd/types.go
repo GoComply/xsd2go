@@ -55,10 +55,6 @@ func (ct *ComplexType) GoTypeName() string {
 	return ct.GoName()
 }
 
-func (ct *ComplexType) ContainsInnerXml() bool {
-	return ct.Mixed
-}
-
 func (ct *ComplexType) ContainsText() bool {
 	return ct.content != nil && ct.content.ContainsText()
 }
