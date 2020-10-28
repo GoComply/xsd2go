@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/gocomply/xsd2go/pkg/xsd2go"
@@ -26,7 +27,7 @@ func TestSequenceWithinChoice(t *testing.T) {
 	actual := assertConvertsFine(t, xsdPath)
 	expected, err := ioutil.ReadFile("xsd-examples/complex_result.xsd")
 	require.NoError(t, err)
-	assert.Equal(t, string(expected), string(actual))
+	assert.Equal(t, strings.ReplaceAll(string(expected), "\r\n", "\n"), string(actual))
 }
 
 func assertConvertsFine(t *testing.T, xsdPath string) []byte {
