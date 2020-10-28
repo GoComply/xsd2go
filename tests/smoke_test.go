@@ -8,6 +8,7 @@ import (
 
 	"github.com/gocomply/xsd2go/pkg/xsd2go"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestSanity(t *testing.T) {
@@ -20,7 +21,15 @@ func TestSanity(t *testing.T) {
 	}
 }
 
-func assertConvertsFine(t *testing.T, xsdPath string) {
+func TestSequenceWithinChoice(t *testing.T) {
+	xsdPath := "xsd-examples/valid/complex.xsd"
+	actual := assertConvertsFine(t, xsdPath)
+	expected, err := ioutil.ReadFile("xsd-examples/complex_result.xsd")
+	require.NoError(t, err)
+	assert.Equal(t, string(expected), string(actual))
+}
+
+func assertConvertsFine(t *testing.T, xsdPath string) []byte {
 	dname, err := ioutil.TempDir("", "xsd2go_tests_")
 	assert.Nil(t, err)
 	defer os.RemoveAll(dname)
@@ -30,4 +39,11 @@ func assertConvertsFine(t *testing.T, xsdPath string) {
 	goModule := "user.com/private"
 
 	err = xsd2go.Convert(xsdPath, goModule, outputDir)
+	require.NoError(t, err)
+
+	result, err := ioutil.ReadFile(filepath.Join(outputDir, "simple_schema", "models.go"))
+	require.NoError(t, err)
+
+	return result
+
 }
