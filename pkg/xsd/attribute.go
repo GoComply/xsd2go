@@ -31,6 +31,13 @@ func (a *Attribute) GoName() string {
 	return strcase.ToCamel(name)
 }
 
+func (a *Attribute) GoMemLayout() string {
+	if a.optional() {
+		return "*"
+	}
+	return ""
+}
+
 func (a *Attribute) Modifiers() string {
 	res := "attr"
 	if a.optional() {

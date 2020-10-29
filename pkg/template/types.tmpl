@@ -33,7 +33,7 @@ import (
 {{range .ExportableComplexTypes }}
   type {{ .GoName }} struct {
   {{ range .Attributes }}
-      {{ .GoName }} string `xml:"{{.XmlName}},{{.Modifiers}}"`
+      {{ .GoName }} {{.GoMemLayout}}string `xml:"{{.XmlName}},{{.Modifiers}}"`
   {{end }}
 
   {{ range .Elements }}
