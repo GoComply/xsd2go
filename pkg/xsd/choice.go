@@ -11,6 +11,7 @@ type Choice struct {
 	ElementList []Element  `xml:"element"`
 	Sequences   []Sequence `xml:"sequence"`
 	schema      *Schema    `xml:"-"`
+	allElements []Element  `xml:"-"`
 }
 
 func (c *Choice) compile(sch *Schema, parentElement *Element) {
@@ -27,6 +28,8 @@ func (c *Choice) compile(sch *Schema, parentElement *Element) {
 			el.MinOccurs = "0"
 		}
 	}
+
+	c.allElements = c.ElementList
 	for idx, _ := range c.Sequences {
 		el := &c.Sequences[idx]
 		el.compile(sch, parentElement)
@@ -37,11 +40,11 @@ func (c *Choice) compile(sch *Schema, parentElement *Element) {
 			if el2.MinOccurs == "" {
 				el2.MinOccurs = "0"
 			}
-			c.ElementList = append(c.ElementList, el2)
+			c.allElements = append(c.allElements, el2)
 		}
 	}
 }
 
 func (c *Choice) Elements() []Element {
-	return c.ElementList
+	return c.allElements
 }
