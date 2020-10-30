@@ -77,6 +77,10 @@ func (e *Element) GoTypeName() string {
 }
 
 func (e *Element) GoForeignModule() string {
+	if e.isPlainString() {
+		return ""
+	}
+
 	foreignSchema := (*Schema)(nil)
 	if e.refElm != nil {
 		foreignSchema = e.refElm.schema
