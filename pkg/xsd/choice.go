@@ -5,18 +5,18 @@ import (
 )
 
 type Choice struct {
-	XMLName   xml.Name   `xml:"http://www.w3.org/2001/XMLSchema choice"`
-	MinOccurs string     `xml:"minOccurs,attr"`
-	MaxOccurs string     `xml:"maxOccurs,attr"`
-	Elements  []Element  `xml:"element"`
-	Sequences []Sequence `xml:"sequence"`
-	schema    *Schema    `xml:"-"`
+	XMLName     xml.Name   `xml:"http://www.w3.org/2001/XMLSchema choice"`
+	MinOccurs   string     `xml:"minOccurs,attr"`
+	MaxOccurs   string     `xml:"maxOccurs,attr"`
+	ElementList []Element  `xml:"element"`
+	Sequences   []Sequence `xml:"sequence"`
+	schema      *Schema    `xml:"-"`
 }
 
 func (c *Choice) compile(sch *Schema, parentElement *Element) {
 	c.schema = sch
-	for idx, _ := range c.Elements {
-		el := &c.Elements[idx]
+	for idx, _ := range c.ElementList {
+		el := &c.ElementList[idx]
 
 		el.compile(sch, parentElement)
 		// Propagate array cardinality downwards
@@ -37,7 +37,11 @@ func (c *Choice) compile(sch *Schema, parentElement *Element) {
 			if el2.MinOccurs == "" {
 				el2.MinOccurs = "0"
 			}
-			c.Elements = append(c.Elements, el2)
+			c.ElementList = append(c.ElementList, el2)
 		}
 	}
+}
+
+func (c *Choice) Elements() []Element {
+	return c.ElementList
 }

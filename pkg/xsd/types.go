@@ -42,7 +42,7 @@ func (ct *ComplexType) Elements() []Element {
 	} else if ct.content != nil {
 		return ct.content.Elements()
 	} else if ct.Choice != nil {
-		return ct.Choice.Elements
+		return ct.Choice.Elements()
 	}
 	return []Element{}
 }

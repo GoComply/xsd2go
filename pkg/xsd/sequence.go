@@ -26,6 +26,6 @@ func (s *Sequence) compile(sch *Schema, parentElement *Element) {
 		c := &s.Choices[idx]
 		c.compile(sch, parentElement)
 
-		s.allElements = append(s.allElements, c.Elements...)
+		s.allElements = append(s.allElements, c.Elements()...)
 	}
 }
