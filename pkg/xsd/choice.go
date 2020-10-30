@@ -30,10 +30,15 @@ func (c *Choice) compile(sch *Schema, parentElement *Element) {
 	}
 
 	c.allElements = c.ElementList
+	uniq := map[string]struct{}{}
 	for idx, _ := range c.Sequences {
 		el := &c.Sequences[idx]
 		el.compile(sch, parentElement)
 		for _, el2 := range el.Elements() {
+			if _, found := uniq[el2.GoFieldName()]; found {
+				// disregard elements that represent duplicate within xsd:choice/xsd:sequence structure
+				continue
+			}
 			if c.MaxOccurs == "unbounded" {
 				el2.MaxOccurs = "unbounded"
 			}
@@ -41,6 +46,7 @@ func (c *Choice) compile(sch *Schema, parentElement *Element) {
 				el2.MinOccurs = "0"
 			}
 			c.allElements = append(c.allElements, el2)
+			uniq[el2.GoFieldName()] = struct{}{}
 		}
 	}
 }
