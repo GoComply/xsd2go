@@ -9,6 +9,7 @@ type Choice struct {
 	MinOccurs string    `xml:"minOccurs,attr"`
 	MaxOccurs string    `xml:"maxOccurs,attr"`
 	Elements  []Element `xml:"element"`
+	Sequence  *Sequence `xml:"sequence"`
 	schema    *Schema   `xml:"-"`
 }
 
@@ -24,6 +25,19 @@ func (c *Choice) compile(sch *Schema, parentElement *Element) {
 		}
 		if el.MinOccurs == "" {
 			el.MinOccurs = "0"
+		}
+	}
+	if c.Sequence != nil {
+		el := c.Sequence
+		el.compile(sch, parentElement)
+		for _, el2 := range el.Elements() {
+			if c.MaxOccurs == "unbounded" {
+				el2.MaxOccurs = "unbounded"
+			}
+			if el2.MinOccurs == "" {
+				el2.MinOccurs = "0"
+			}
+			c.Elements = append(c.Elements, el2)
 		}
 	}
 }
