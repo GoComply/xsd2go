@@ -46,3 +46,14 @@ import (
   InnerXml string `xml:",innerxml"`
   }
 {{end}}
+
+// XSD SimpleType declarations
+{{range .ExportableSimpleTypes }}
+  type {{ .GoName }} string
+
+  {{ $simpleType := . }}
+  {{ range .Enums }}
+  const {{ $simpleType.GoName -}} {{- .GoName }} {{ $simpleType.GoName }} = "{{ .XmlName }}"
+  {{end }}
+
+{{end}}

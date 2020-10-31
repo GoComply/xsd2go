@@ -115,9 +115,10 @@ func (ct *ComplexType) compile(sch *Schema, parentElement *Element) {
 }
 
 type SimpleType struct {
-	XMLName xml.Name `xml:"http://www.w3.org/2001/XMLSchema simpleType"`
-	Name    string   `xml:"name,attr"`
-	schema  *Schema  `xml:"-"`
+	XMLName     xml.Name     `xml:"http://www.w3.org/2001/XMLSchema simpleType"`
+	Name        string       `xml:"name,attr"`
+	Restriction *Restriction `xml:"restriction"`
+	schema      *Schema      `xml:"-"`
 }
 
 func (st *SimpleType) GoName() string {
@@ -142,6 +143,13 @@ func (st *SimpleType) Attributes() []Attribute {
 
 func (st *SimpleType) Elements() []Element {
 	return []Element{}
+}
+
+func (st *SimpleType) Enums() []Enumeration {
+	if st.Restriction != nil {
+		return st.Restriction.Enums()
+	}
+	return []Enumeration{}
 }
 
 func (st *SimpleType) ContainsText() bool {
