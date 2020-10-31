@@ -77,6 +77,10 @@ func (e *Element) GoTypeName() string {
 }
 
 func (e *Element) GoForeignModule() string {
+	if e.isPlainString() {
+		return ""
+	}
+
 	foreignSchema := (*Schema)(nil)
 	if e.refElm != nil {
 		foreignSchema = e.refElm.schema
@@ -103,7 +107,7 @@ func (e *Element) ContainsText() bool {
 }
 
 func (e *Element) isPlainString() bool {
-	return e.SimpleType != nil || (e.Type == "" && e.Ref == "" && e.ComplexType == nil)
+	return e.SimpleType != nil || (e.Type == "" && e.Ref == "" && e.ComplexType == nil) || (e.typ != nil && e.typ.GoTypeName() == "string")
 }
 
 func (e *Element) isArray() bool {
