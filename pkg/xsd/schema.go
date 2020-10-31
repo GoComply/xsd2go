@@ -17,6 +17,7 @@ type Schema struct {
 	Imports         []Import           `xml:"import"`
 	Elements        []Element          `xml:"element"`
 	Attributes      []Attribute        `xml:"attribute"`
+	AttributeGroups []AttributeGroup   `xml:"attributeGroup"`
 	ComplexTypes    []ComplexType      `xml:"complexType"`
 	SimpleTypes     []SimpleType       `xml:"simpleType"`
 	importedModules map[string]*Schema `xml:"-"`
@@ -48,6 +49,10 @@ func (sch *Schema) compile() {
 	for idx, _ := range sch.Elements {
 		el := &sch.Elements[idx]
 		el.compile(sch, nil)
+	}
+	for idx, _ := range sch.AttributeGroups {
+		att := &sch.AttributeGroups[idx]
+		att.compile(sch, nil)
 	}
 	for idx, _ := range sch.ComplexTypes {
 		ct := &sch.ComplexTypes[idx]
@@ -196,6 +201,11 @@ func (sch *Schema) GetType(name string) Type {
 	for idx, typ := range sch.SimpleTypes {
 		if typ.Name == name {
 			return &sch.SimpleTypes[idx]
+		}
+	}
+	for idx, typ := range sch.AttributeGroups {
+		if typ.Name == name {
+			return &sch.AttributeGroups[idx]
 		}
 	}
 	if IsStaticType(name) {

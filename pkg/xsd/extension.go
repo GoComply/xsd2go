@@ -5,10 +5,11 @@ import (
 )
 
 type Extension struct {
-	XMLName          xml.Name    `xml:"http://www.w3.org/2001/XMLSchema extension"`
-	Base             reference   `xml:"base,attr"`
-	AttributesDirect []Attribute `xml:"attribute"`
-	Sequence         *Sequence   `xml:"sequence"`
+	XMLName          xml.Name         `xml:"http://www.w3.org/2001/XMLSchema extension"`
+	Base             reference        `xml:"base,attr"`
+	AttributesDirect []Attribute      `xml:"attribute"`
+	AttributeGroups  []AttributeGroup `xml:"attributeGroup"`
+	Sequence         *Sequence        `xml:"sequence"`
 	typ              Type
 }
 
@@ -16,6 +17,11 @@ func (ext *Extension) Attributes() []Attribute {
 	attrs := ext.AttributesDirect
 	if ext.typ != nil {
 		attrs = append(attrs, ext.typ.Attributes()...)
+		attrs = deduplicateAttributes(attrs)
+	}
+	for idx, _ := range ext.AttributeGroups {
+		attrGroup := ext.AttributeGroups[idx]
+		attrs = append(attrs, attrGroup.Attributes()...)
 		attrs = deduplicateAttributes(attrs)
 	}
 	return attrs
@@ -93,4 +99,11 @@ func (ext *Extension) compile(sch *Schema, parentElement *Element) {
 		panic("Cannot build xsd:extension: unknown type: " + string(ext.Base))
 	}
 	ext.typ.compile(sch, parentElement)
+
+	for idx, _ := range ext.AttributeGroups {
+		attrGroup := ext.AttributeGroups[idx]
+		attrGroup.compile(sch, parentElement)
+		ext.AttributeGroups[idx] = attrGroup
+
+	}
 }

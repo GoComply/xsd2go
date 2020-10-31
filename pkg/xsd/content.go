@@ -11,13 +11,16 @@ type GenericContent interface {
 	compile(*Schema, *Element)
 }
 type SimpleContent struct {
-	XMLName   xml.Name   `xml:"http://www.w3.org/2001/XMLSchema simpleContent"`
-	Extension *Extension `xml:"extension"`
+	XMLName     xml.Name     `xml:"http://www.w3.org/2001/XMLSchema simpleContent"`
+	Extension   *Extension   `xml:"extension"`
+	Restriction *Restriction `xml:"restriction"`
 }
 
 func (sc *SimpleContent) Attributes() []Attribute {
 	if sc.Extension != nil {
 		return sc.Extension.Attributes()
+	} else if sc.Restriction != nil {
+		return sc.Restriction.Attributes()
 	}
 	return []Attribute{}
 }
@@ -49,7 +52,7 @@ func (cc *ComplexContent) Attributes() []Attribute {
 	if cc.Extension != nil {
 		return cc.Extension.Attributes()
 	} else if cc.Restriction != nil {
-		return cc.Restriction.Attributes
+		return cc.Restriction.Attributes()
 	}
 	return []Attribute{}
 }
@@ -73,6 +76,6 @@ func (c *ComplexContent) compile(sch *Schema, parentElement *Element) {
 		if c.Extension != nil {
 			panic("Not implemented: xsd:complexContent defines xsd:restriction and xsd:extension")
 		}
-		c.Restriction.compile(sch)
+		c.Restriction.compile(sch, parentElement)
 	}
 }

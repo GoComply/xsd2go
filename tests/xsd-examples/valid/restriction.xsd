@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:simple-schema="https://simple.example.com/" targetNamespace="https://simple.example.com/" elementFormDefault="qualified">
+    <xsd:attributeGroup name="EntityAttributeGroup">
+        <xsd:attribute name="datatype" type="oval:DatatypeEnumeration" use="optional" default="string">
+        </xsd:attribute>
+        <xsd:attribute name="operation" type="oval:OperationEnumeration" use="optional" default="equals">
+        </xsd:attribute>
+    </xsd:attributeGroup>
+    <xsd:simpleType name="DatatypeEnumeration">
+        <xsd:annotation>
+        </xsd:annotation>
+        <xsd:union memberTypes="oval:SimpleDatatypeEnumeration oval:ComplexDatatypeEnumeration"/>
+    </xsd:simpleType>
+    <xsd:simpleType name="OperationEnumeration">
+        <xsd:annotation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="equals">
+                <xsd:annotation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="not equal">
+                <xsd:annotation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="case insensitive equals">
+                <xsd:annotation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="case insensitive not equal">
+                <xsd:annotation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="greater than">
+                <xsd:annotation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="less than">
+                <xsd:annotation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="greater than or equal">
+                <xsd:annotation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="less than or equal">
+                <xsd:annotation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="bitwise and">
+                <xsd:annotation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="bitwise or">
+                <xsd:annotation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="pattern match">
+                <xsd:annotation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="subset of">
+                <xsd:annotation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="superset of">
+                <xsd:annotation>
+                </xsd:annotation>
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:complexType name="MySimpleBaseType" abstract="true">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:anySimpleType">
+                <xsd:attributeGroup ref="simple-schema:EntityAttributeGroup"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:element name="myelement" type="simple-schema:MyElementType" />
+    <xsd:complexType name="MyElementType">
+        <xsd:simpleContent>
+            <xsd:restriction base="simple-schema:MySimpleBaseType">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string"/>
+                </xsd:simpleType>
+                <xsd:attribute name="datatype" type="SimpleDatatypeEnumeration" use="optional" fixed="string"/>
+            </xsd:restriction>
+        </xsd:simpleContent>
+    </xsd:complexType>
+</xsd:schema>

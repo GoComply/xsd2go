@@ -37,7 +37,8 @@ func (c *Choice) compile(sch *Schema, parentElement *Element) {
 			if el2.MinOccurs == "" {
 				el2.MinOccurs = "0"
 			}
-			c.Elements = append(c.Elements, el2)
+			c.Elements = deduplicateElements(append(c.Elements, el2))
 		}
 	}
+
 }
