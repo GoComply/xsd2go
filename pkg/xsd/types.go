@@ -36,6 +36,15 @@ func (ct *ComplexType) Attributes() []Attribute {
 	return ct.AttributesDirect
 }
 
+func (ct *ComplexType) HasXmlNameAttribute() bool {
+	for _, attribute := range ct.Attributes() {
+		if attribute.GoName() == "XMLName" {
+			return true
+		}
+	}
+	return false
+}
+
 func (ct *ComplexType) Elements() []Element {
 	if ct.Sequence != nil {
 		return ct.Sequence.Elements()
