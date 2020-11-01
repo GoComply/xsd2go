@@ -126,6 +126,9 @@ func (st *SimpleType) GoName() string {
 }
 
 func (st *SimpleType) GoTypeName() string {
+	if st.Restriction != nil && st.Restriction.typ != nil {
+		return st.Restriction.typ.GoTypeName()
+	}
 	return "string"
 }
 
@@ -134,7 +137,9 @@ func (st *SimpleType) Schema() *Schema {
 }
 
 func (st *SimpleType) compile(sch *Schema, parentElement *Element) {
-	st.schema = sch
+	if st.schema == nil {
+		st.schema = sch
+	}
 }
 
 func (st *SimpleType) Attributes() []Attribute {

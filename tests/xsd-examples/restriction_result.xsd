@@ -17,6 +17,12 @@ type Myelement struct {
 
 // XSD ComplexType declarations
 
+type StateRefType struct {
+	StateRef StateIDPattern `xml:"state_ref,attr"`
+
+	InnerXml string `xml:",innerxml"`
+}
+
 type MySimpleBaseType struct {
 	Datatype DatatypeEnumeration `xml:"datatype,attr,omitempty"`
 
@@ -35,6 +41,8 @@ type MyElementType struct {
 }
 
 // XSD SimpleType declarations
+
+type StateIDPattern string
 
 type SimpleDatatypeEnumeration string
 

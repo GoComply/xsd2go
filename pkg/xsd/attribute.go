@@ -92,7 +92,7 @@ func (a *Attribute) compile(s *Schema) {
 			panic("Cannot resolve attribute reference: " + a.Ref)
 		}
 	}
-	if a.Type != "" {
+	if a.Type != "" && a.typ == nil {
 		a.typ = a.schema.findReferencedType(a.Type)
 		if a.typ == nil {
 			panic("Cannot resolve attribute type: " + a.Type)

@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:simple-schema="https://simple.example.com/" targetNamespace="https://simple.example.com/" elementFormDefault="qualified">
+    <xsd:complexType name="StateRefType">
+        <xsd:attribute name="state_ref" type="StateIDPattern" use="required"/>
+    </xsd:complexType>
+    <xsd:simpleType name="StateIDPattern">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[A-Za-z0-9_\-\.]+:ste:[1-9][0-9]*"/>
+        </xsd:restriction>
+    </xsd:simpleType>
     <xsd:simpleType name="SimpleDatatypeEnumeration">
         <xsd:restriction base="xsd:string">
             <xsd:enumeration value="binary">
