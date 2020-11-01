@@ -30,6 +30,14 @@ func TestSequenceWithinChoice(t *testing.T) {
 	assert.Equal(t, strings.ReplaceAll(string(expected), "\r\n", "\n"), string(actual))
 }
 
+func TestRestriction(t *testing.T) {
+	xsdPath := "xsd-examples/valid/restriction.xsd"
+	actual := assertConvertsFine(t, xsdPath)
+	expected, err := ioutil.ReadFile("xsd-examples/restriction_result.xsd")
+	require.NoError(t, err)
+	assert.Equal(t, strings.ReplaceAll(string(expected), "\r\n", "\n"), string(actual))
+}
+
 func assertConvertsFine(t *testing.T, xsdPath string) []byte {
 	dname, err := ioutil.TempDir("", "xsd2go_tests_")
 	assert.Nil(t, err)

@@ -184,9 +184,7 @@ func (sch *Schema) ExportableSimpleTypes() []SimpleType {
 	for _, typ := range sch.SimpleTypes {
 		_, found := elCache[typ.GoName()]
 		if !found {
-			if len(typ.Enums()) > 0 {
-				res = append(res, typ)
-			}
+			res = append(res, typ)
 		}
 	}
 	return res

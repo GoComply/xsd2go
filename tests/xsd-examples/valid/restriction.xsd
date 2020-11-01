@@ -1,16 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:simple-schema="https://simple.example.com/" targetNamespace="https://simple.example.com/" elementFormDefault="qualified">
-    <xsd:attributeGroup name="EntityAttributeGroup">
-        <xsd:attribute name="datatype" type="oval:DatatypeEnumeration" use="optional" default="string">
-        </xsd:attribute>
-        <xsd:attribute name="operation" type="oval:OperationEnumeration" use="optional" default="equals">
-        </xsd:attribute>
-    </xsd:attributeGroup>
+    <xsd:simpleType name="SimpleDatatypeEnumeration">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="binary">
+            </xsd:enumeration>
+            <xsd:enumeration value="boolean">
+            </xsd:enumeration>
+            <xsd:enumeration value="evr_string">
+            </xsd:enumeration>
+            <xsd:enumeration value="debian_evr_string">
+            </xsd:enumeration>
+            <xsd:enumeration value="fileset_revision">
+            </xsd:enumeration>
+            <xsd:enumeration value="float">
+            </xsd:enumeration>
+            <xsd:enumeration value="ios_version">
+            </xsd:enumeration>
+            <xsd:enumeration value="int">
+            </xsd:enumeration>
+            <xsd:enumeration value="ipv4_address">
+            </xsd:enumeration>
+            <xsd:enumeration value="ipv6_address">
+            </xsd:enumeration>
+            <xsd:enumeration value="string">
+            </xsd:enumeration>
+            <xsd:enumeration value="version">
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="ComplexDatatypeEnumeration">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="record">
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
     <xsd:simpleType name="DatatypeEnumeration">
-        <xsd:annotation>
-        </xsd:annotation>
-        <xsd:union memberTypes="oval:SimpleDatatypeEnumeration oval:ComplexDatatypeEnumeration"/>
+        <xsd:union memberTypes="SimpleDatatypeEnumeration ComplexDatatypeEnumeration"/>
     </xsd:simpleType>
     <xsd:simpleType name="OperationEnumeration">
         <xsd:annotation>
@@ -70,6 +96,12 @@
             </xsd:enumeration>
         </xsd:restriction>
     </xsd:simpleType>
+    <xsd:attributeGroup name="EntityAttributeGroup">
+        <xsd:attribute name="datatype" type="DatatypeEnumeration" use="optional" default="string">
+        </xsd:attribute>
+        <xsd:attribute name="operation" type="OperationEnumeration" use="optional" default="equals">
+        </xsd:attribute>
+    </xsd:attributeGroup>
     <xsd:complexType name="MySimpleBaseType" abstract="true">
         <xsd:simpleContent>
             <xsd:extension base="xsd:anySimpleType">

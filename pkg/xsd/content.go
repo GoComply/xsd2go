@@ -40,6 +40,9 @@ func (sc *SimpleContent) compile(sch *Schema, parentElement *Element) {
 	if sc.Extension != nil {
 		sc.Extension.compile(sch, parentElement)
 	}
+	if sc.Restriction != nil {
+		sc.Restriction.compile(sch, parentElement)
+	}
 }
 
 type ComplexContent struct {

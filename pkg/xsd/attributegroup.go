@@ -11,8 +11,8 @@ type AttributeGroup struct {
 	Name             string      `xml:"name,attr"`
 	Ref              reference   `xml:"ref,attr"`
 	AttributesDirect []Attribute `xml:"attribute"`
-	typ              Type
-	schema           *Schema `xml:"-"`
+	typ              Type        `xml:"-"`
+	schema           *Schema     `xml:"-"`
 }
 
 func (att *AttributeGroup) Attributes() []Attribute {
@@ -32,6 +32,22 @@ func (att *AttributeGroup) compile(sch *Schema, parentElement *Element) {
 		}
 		att.typ.compile(sch, parentElement)
 	}
+
+	// Handle improbable name clash. Consider XSD defining two attributes on the element:
+	// "id" and "Id", this would create name clash given the camelization we do.
+	goNames := map[string]uint{}
+	for idx, _ := range att.Attributes() {
+		attribute := &att.Attributes()[idx]
+		attribute.compile(sch)
+
+		count := goNames[attribute.GoName()]
+		count += 1
+		goNames[attribute.GoName()] = count
+		attribute.DuplicateCount = count
+		// Second GoName may be different depending on the DuplicateCount
+		goNames[attribute.GoName()] = count
+	}
+
 }
 
 func (att *AttributeGroup) GoName() string {

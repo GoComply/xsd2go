@@ -186,17 +186,20 @@ func (st staticType) compile(*Schema, *Element) {
 }
 
 var staticTypes = map[string]staticType{
-	"string":           "string",
-	"dateTime":         "string",
-	"base64Binary":     "string",
-	"normalizedString": "string",
-	"token":            "string",
-	"NCName":           "string",
-	"anySimpleType":    "string",
-	"int":              "int",
-	"integer":          "int64",
-	"decimal":          "float64",
-	"boolean":          "bool",
+	"string":             "string",
+	"dateTime":           "string",
+	"base64Binary":       "string",
+	"normalizedString":   "string",
+	"token":              "string",
+	"NCName":             "string",
+	"anySimpleType":      "string",
+	"int":                "int",
+	"integer":            "int64",
+	"nonNegativeInteger": "int",
+	"anyURI":             "string",
+	"decimal":            "float64",
+	"boolean":            "bool",
+	"ID":                 "string",
 }
 
 func StaticType(name string) staticType {
