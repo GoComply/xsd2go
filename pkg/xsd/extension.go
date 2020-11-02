@@ -101,9 +101,23 @@ func (ext *Extension) compile(sch *Schema, parentElement *Element) {
 	ext.typ.compile(sch, parentElement)
 
 	for idx, _ := range ext.AttributeGroups {
-		attrGroup := ext.AttributeGroups[idx]
+		attrGroup := &ext.AttributeGroups[idx]
 		attrGroup.compile(sch, parentElement)
-		ext.AttributeGroups[idx] = attrGroup
 
+	}
+
+	// Handle improbable name clash. Consider XSD defining two attributes on the element:
+	// "id" and "Id", this would create name clash given the camelization we do.
+	goNames := map[string]uint{}
+	for idx, _ := range ext.Attributes() {
+		attribute := &ext.Attributes()[idx]
+		attribute.compile(sch)
+
+		count := goNames[attribute.GoName()]
+		count += 1
+		goNames[attribute.GoName()] = count
+		attribute.DuplicateCount = count
+		// Second GoName may be different depending on the DuplicateCount
+		goNames[attribute.GoName()] = count
 	}
 }

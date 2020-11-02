@@ -115,9 +115,10 @@ func (ct *ComplexType) compile(sch *Schema, parentElement *Element) {
 }
 
 type SimpleType struct {
-	XMLName xml.Name `xml:"http://www.w3.org/2001/XMLSchema simpleType"`
-	Name    string   `xml:"name,attr"`
-	schema  *Schema  `xml:"-"`
+	XMLName     xml.Name     `xml:"http://www.w3.org/2001/XMLSchema simpleType"`
+	Name        string       `xml:"name,attr"`
+	Restriction *Restriction `xml:"restriction"`
+	schema      *Schema      `xml:"-"`
 }
 
 func (st *SimpleType) GoName() string {
@@ -125,6 +126,9 @@ func (st *SimpleType) GoName() string {
 }
 
 func (st *SimpleType) GoTypeName() string {
+	if st.Restriction != nil && st.Restriction.typ != nil {
+		return st.Restriction.typ.GoTypeName()
+	}
 	return "string"
 }
 
@@ -133,7 +137,9 @@ func (st *SimpleType) Schema() *Schema {
 }
 
 func (st *SimpleType) compile(sch *Schema, parentElement *Element) {
-	st.schema = sch
+	if st.schema == nil {
+		st.schema = sch
+	}
 }
 
 func (st *SimpleType) Attributes() []Attribute {
@@ -142,6 +148,13 @@ func (st *SimpleType) Attributes() []Attribute {
 
 func (st *SimpleType) Elements() []Element {
 	return []Element{}
+}
+
+func (st *SimpleType) Enums() []Enumeration {
+	if st.Restriction != nil {
+		return st.Restriction.Enums()
+	}
+	return []Enumeration{}
 }
 
 func (st *SimpleType) ContainsText() bool {
@@ -178,17 +191,20 @@ func (st staticType) compile(*Schema, *Element) {
 }
 
 var staticTypes = map[string]staticType{
-	"string":           "string",
-	"dateTime":         "string",
-	"base64Binary":     "string",
-	"normalizedString": "string",
-	"token":            "string",
-	"NCName":           "string",
-	"anySimpleType":    "string",
-	"int":              "int",
-	"integer":          "int64",
-	"decimal":          "float64",
-	"boolean":          "bool",
+	"string":             "string",
+	"dateTime":           "string",
+	"base64Binary":       "string",
+	"normalizedString":   "string",
+	"token":              "string",
+	"NCName":             "string",
+	"anySimpleType":      "string",
+	"int":                "int",
+	"integer":            "int64",
+	"nonNegativeInteger": "int",
+	"anyURI":             "string",
+	"decimal":            "float64",
+	"boolean":            "bool",
+	"ID":                 "string",
 }
 
 func StaticType(name string) staticType {

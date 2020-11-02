@@ -174,6 +174,22 @@ func (sch *Schema) ExportableComplexTypes() []ComplexType {
 	return res
 }
 
+func (sch *Schema) ExportableSimpleTypes() []SimpleType {
+	elCache := map[string]bool{}
+	for _, el := range sch.Elements {
+		elCache[el.GoName()] = true
+	}
+
+	var res []SimpleType
+	for _, typ := range sch.SimpleTypes {
+		_, found := elCache[typ.GoName()]
+		if !found {
+			res = append(res, typ)
+		}
+	}
+	return res
+}
+
 func (sch *Schema) GetAttribute(name string) *Attribute {
 	for idx, attr := range sch.Attributes {
 		if attr.Name == name {
