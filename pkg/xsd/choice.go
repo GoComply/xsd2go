@@ -49,6 +49,7 @@ func (c *Choice) compile(sch *Schema, parentElement *Element) {
 			uniq[el2.GoFieldName()] = struct{}{}
 		}
 	}
+
 }
 
 func (c *Choice) Elements() []Element {
