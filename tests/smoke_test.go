@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -39,14 +40,24 @@ func assertConvertsFine(t *testing.T, xsdPath string) []byte {
 	err = xsd2go.Convert(xsdPath, goModule, outputDir)
 	require.NoError(t, err)
 
-	generatedFile := filepath.Join(outputDir, "simple_schema", "models.go")
-	result, err := ioutil.ReadFile(generatedFile)
+	generatedFilePath, err := locateGeneratedFile(outputDir)
+	result, err := ioutil.ReadFile(generatedFilePath)
 	require.NoError(t, err)
 
-	out, err := exec.Command("go", "build", generatedFile).Output()
+	out, err := exec.Command("go", "build", generatedFilePath).Output()
 	require.NoError(t, err)
 	assert.Equal(t, string(out), "")
 
 	return result
+}
 
+func locateGeneratedFile(outputDir string) (string, error) {
+	golangFiles, err := filepath.Glob(outputDir + "/*/models.go")
+	if err != nil {
+		return "", err
+	}
+	if len(golangFiles) != 1 {
+		return "", fmt.Errorf("Expected to find single generated file but found %s", golangFiles)
+	}
+	return golangFiles[0], nil
 }
