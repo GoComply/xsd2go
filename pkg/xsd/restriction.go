@@ -10,10 +10,12 @@ type Restriction struct {
 	AttributesDirect []Attribute    `xml:"attribute"`
 	EnumsDirect      []Enumeration  `xml:"enumeration"`
 	SimpleContent    *SimpleContent `xml:"simpleContent"`
+	schema           *Schema        `xml:"-"`
 	typ              Type
 }
 
 func (r *Restriction) compile(sch *Schema, parentElement *Element) {
+	r.schema = sch
 	for idx, _ := range r.AttributesDirect {
 		attribute := &r.AttributesDirect[idx]
 		attribute.compile(sch)
@@ -43,7 +45,7 @@ func (r *Restriction) Attributes() []Attribute {
 	}
 	result = deduplicateAttributes(append(result, r.AttributesDirect...))
 
-	return result
+	return injectSchemaIntoAttributes(r.schema, result)
 }
 
 func (r *Restriction) Enums() []Enumeration {

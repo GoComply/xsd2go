@@ -10,24 +10,25 @@ import (
 
 // Element defines single XML element
 type Element struct {
-	XMLName       xml.Name     `xml:"http://www.w3.org/2001/XMLSchema element"`
-	Name          string       `xml:"name,attr"`
-	nameOverride  string       `xml:"-"`
-	FieldOverride bool         `xml:"-"`
-	Type          reference    `xml:"type,attr"`
-	Ref           reference    `xml:"ref,attr"`
-	MinOccurs     string       `xml:"minOccurs,attr"`
-	MaxOccurs     string       `xml:"maxOccurs,attr"`
-	refElm        *Element     `xml:"-"`
-	ComplexType   *ComplexType `xml:"complexType"`
-	SimpleType    *SimpleType  `xml:"simpleType"`
-	schema        *Schema      `xml:"-"`
-	typ           Type         `xml:"-"`
+	XMLName         xml.Name     `xml:"http://www.w3.org/2001/XMLSchema element"`
+	Name            string       `xml:"name,attr"`
+	nameOverride    string       `xml:"-"`
+	XmlNameOverride string       `xml:"-"`
+	FieldOverride   bool         `xml:"-"`
+	Type            reference    `xml:"type,attr"`
+	Ref             reference    `xml:"ref,attr"`
+	MinOccurs       string       `xml:"minOccurs,attr"`
+	MaxOccurs       string       `xml:"maxOccurs,attr"`
+	refElm          *Element     `xml:"-"`
+	ComplexType     *ComplexType `xml:"complexType"`
+	SimpleType      *SimpleType  `xml:"simpleType"`
+	schema          *Schema      `xml:"-"`
+	typ             Type         `xml:"-"`
 }
 
 func (e *Element) Attributes() []Attribute {
 	if e.typ != nil {
-		return e.typ.Attributes()
+		return injectSchemaIntoAttributes(e.schema, e.typ.Attributes())
 	}
 	return []Attribute{}
 }
@@ -70,6 +71,8 @@ func (e *Element) GoMemLayout() string {
 func (e *Element) GoTypeName() string {
 	if e.Type != "" {
 		return e.typ.GoTypeName()
+	} else if e.Ref != "" {
+		return e.refElm.GoTypeName()
 	} else if e.isPlainString() {
 		return "string"
 	}
@@ -95,6 +98,9 @@ func (e *Element) GoForeignModule() string {
 }
 
 func (e *Element) XmlName() string {
+	if e.XmlNameOverride != "" {
+		return e.XmlNameOverride
+	}
 	name := e.Name
 	if name == "" {
 		return e.refElm.XmlName()
@@ -139,9 +145,7 @@ func (e *Element) compile(s *Schema, parentElement *Element) {
 		if e.typ == nil {
 			panic("Cannot resolve type reference: " + string(e.Type))
 		}
-	}
-
-	if e.Ref != "" {
+	} else if e.Ref != "" {
 		e.refElm = e.schema.findReferencedElement(e.Ref)
 		if e.refElm == nil {
 			panic("Cannot resolve element reference: " + e.Ref)
