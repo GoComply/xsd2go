@@ -3,6 +3,7 @@ package tests
 import (
 	"io/ioutil"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -38,8 +39,13 @@ func assertConvertsFine(t *testing.T, xsdPath string) []byte {
 	err = xsd2go.Convert(xsdPath, goModule, outputDir)
 	require.NoError(t, err)
 
-	result, err := ioutil.ReadFile(filepath.Join(outputDir, "simple_schema", "models.go"))
+	generatedFile := filepath.Join(outputDir, "simple_schema", "models.go")
+	result, err := ioutil.ReadFile(generatedFile)
 	require.NoError(t, err)
+
+	out, err := exec.Command("go", "build", generatedFile).Output()
+	require.NoError(t, err)
+	assert.Equal(t, string(out), "")
 
 	return result
 
