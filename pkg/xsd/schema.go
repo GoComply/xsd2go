@@ -151,7 +151,7 @@ func (sch *Schema) findReferencedSchemaByXmlns(xmlns string) *Schema {
 }
 
 func (sch *Schema) Empty() bool {
-	return len(sch.Elements) == 0 && len(sch.ComplexTypes) == 0
+	return len(sch.Elements) == 0 && len(sch.ComplexTypes) == 0 && len(sch.ExportableSimpleTypes()) == 0
 }
 
 func (sch *Schema) ExportableElements() []Element {
