@@ -25,7 +25,7 @@ func TestSanity(t *testing.T) {
 func TestSequenceWithinChoice(t *testing.T) {
 	xsdPath := "xsd-examples/valid/complex.xsd"
 	actual := assertConvertsFine(t, xsdPath)
-	expected, err := ioutil.ReadFile("xsd-examples/complex_result.xsd")
+	expected, err := ioutil.ReadFile(xsdPath + ".out")
 	require.NoError(t, err)
 	assert.Equal(t, strings.ReplaceAll(string(expected), "\r\n", "\n"), string(actual))
 }
@@ -33,7 +33,7 @@ func TestSequenceWithinChoice(t *testing.T) {
 func TestRestriction(t *testing.T) {
 	xsdPath := "xsd-examples/valid/restriction.xsd"
 	actual := assertConvertsFine(t, xsdPath)
-	expected, err := ioutil.ReadFile("xsd-examples/restriction_result.xsd")
+	expected, err := ioutil.ReadFile(xsdPath + ".out")
 	require.NoError(t, err)
 	assert.Equal(t, strings.ReplaceAll(string(expected), "\r\n", "\n"), string(actual))
 }
