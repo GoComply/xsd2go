@@ -24,6 +24,8 @@ type Myelement struct {
 // XSD ComplexType declarations
 
 type MyElementType struct {
+	XMLName xml.Name
+
 	Id int64 `xml:"id"`
 
 	ExternalId *int64 `xml:"external_id"`

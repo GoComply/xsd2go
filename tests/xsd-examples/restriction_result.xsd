@@ -18,12 +18,16 @@ type Myelement struct {
 // XSD ComplexType declarations
 
 type StateRefType struct {
+	XMLName xml.Name
+
 	StateRef StateIDPattern `xml:"state_ref,attr"`
 
 	InnerXml string `xml:",innerxml"`
 }
 
 type MySimpleBaseType struct {
+	XMLName xml.Name
+
 	Datatype DatatypeEnumeration `xml:"datatype,attr,omitempty"`
 
 	Operation OperationEnumeration `xml:"operation,attr,omitempty"`
@@ -33,6 +37,8 @@ type MySimpleBaseType struct {
 }
 
 type MyElementType struct {
+	XMLName xml.Name
+
 	Datatype DatatypeEnumeration `xml:"datatype,attr,omitempty"`
 
 	Operation OperationEnumeration `xml:"operation,attr,omitempty"`
