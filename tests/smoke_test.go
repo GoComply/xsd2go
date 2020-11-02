@@ -18,24 +18,12 @@ func TestSanity(t *testing.T) {
 	assert.NotEmpty(t, xsdFiles)
 
 	for _, xsdPath := range xsdFiles {
-		assertConvertsFine(t, xsdPath)
+		actual := assertConvertsFine(t, xsdPath)
+
+		expected, err := ioutil.ReadFile(xsdPath + ".out")
+		require.NoError(t, err)
+		assert.Equal(t, strings.ReplaceAll(string(expected), "\r\n", "\n"), string(actual))
 	}
-}
-
-func TestSequenceWithinChoice(t *testing.T) {
-	xsdPath := "xsd-examples/valid/complex.xsd"
-	actual := assertConvertsFine(t, xsdPath)
-	expected, err := ioutil.ReadFile(xsdPath + ".out")
-	require.NoError(t, err)
-	assert.Equal(t, strings.ReplaceAll(string(expected), "\r\n", "\n"), string(actual))
-}
-
-func TestRestriction(t *testing.T) {
-	xsdPath := "xsd-examples/valid/restriction.xsd"
-	actual := assertConvertsFine(t, xsdPath)
-	expected, err := ioutil.ReadFile(xsdPath + ".out")
-	require.NoError(t, err)
-	assert.Equal(t, strings.ReplaceAll(string(expected), "\r\n", "\n"), string(actual))
 }
 
 func assertConvertsFine(t *testing.T, xsdPath string) []byte {
