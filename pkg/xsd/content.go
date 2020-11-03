@@ -14,6 +14,7 @@ type SimpleContent struct {
 	XMLName     xml.Name     `xml:"http://www.w3.org/2001/XMLSchema simpleContent"`
 	Extension   *Extension   `xml:"extension"`
 	Restriction *Restriction `xml:"restriction"`
+	schema      *Schema      `xml:"-"`
 }
 
 func (sc *SimpleContent) Attributes() []Attribute {
@@ -37,6 +38,7 @@ func (sc *SimpleContent) Elements() []Element {
 }
 
 func (sc *SimpleContent) compile(sch *Schema, parentElement *Element) {
+	sc.schema = sch
 	if sc.Extension != nil {
 		sc.Extension.compile(sch, parentElement)
 	}
@@ -49,6 +51,7 @@ type ComplexContent struct {
 	XMLName     xml.Name     `xml:"http://www.w3.org/2001/XMLSchema complexContent"`
 	Extension   *Extension   `xml:"extension"`
 	Restriction *Restriction `xml:"restriction"`
+	schema      *Schema      `xml:"-"`
 }
 
 func (cc *ComplexContent) Attributes() []Attribute {
@@ -72,6 +75,7 @@ func (cc *ComplexContent) ContainsText() bool {
 }
 
 func (c *ComplexContent) compile(sch *Schema, parentElement *Element) {
+	c.schema = sch
 	if c.Extension != nil {
 		c.Extension.compile(sch, parentElement)
 	}

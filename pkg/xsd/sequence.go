@@ -20,8 +20,8 @@ func (s *Sequence) compile(sch *Schema, parentElement *Element) {
 		el := &s.ElementList[idx]
 		el.compile(sch, parentElement)
 	}
-
 	s.allElements = s.ElementList
+
 	for idx, _ := range s.Choices {
 		c := &s.Choices[idx]
 		c.compile(sch, parentElement)

@@ -10,13 +10,15 @@ import (
 type Myelement struct {
 	XMLName xml.Name `xml:myelement`
 
-	Id int64 `xml:"id"`
+	Id int64 `xml:",any"`
 }
 
 // XSD ComplexType declarations
 
 type MyElementType struct {
-	Id int64 `xml:"id"`
+	XMLName xml.Name
+
+	Id int64 `xml:",any"`
 
 	InnerXml string `xml:",innerxml"`
 }

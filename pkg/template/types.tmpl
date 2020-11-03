@@ -32,6 +32,9 @@ import (
 // XSD ComplexType declarations
 {{range .ExportableComplexTypes }}
   type {{ .GoName }} struct {
+  {{- if not .HasXmlNameAttribute }}
+    XMLName xml.Name
+  {{- end}}
   {{ range .Attributes }}
       {{ .GoName }} {{.GoForeignModule}}{{.GoType}} `xml:"{{.XmlName}},{{.Modifiers}}"`
   {{end }}
