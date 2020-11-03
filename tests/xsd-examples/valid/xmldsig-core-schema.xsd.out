@@ -12,13 +12,13 @@ type Signature struct {
 
 	Id string `xml:"Id,attr,omitempty"`
 
-	SignedInfo SignedInfo `xml:"SignedInfo"`
+	SignedInfo SignedInfoType `xml:"SignedInfo"`
 
-	SignatureValue SignatureValue `xml:"SignatureValue"`
+	SignatureValue SignatureValueType `xml:"SignatureValue"`
 
-	KeyInfo *KeyInfo `xml:"KeyInfo"`
+	KeyInfo *KeyInfoType `xml:"KeyInfo"`
 
-	Object []Object `xml:"Object"`
+	Object []ObjectType `xml:"Object"`
 }
 
 // Element
@@ -36,11 +36,11 @@ type SignedInfo struct {
 
 	Id string `xml:"Id,attr,omitempty"`
 
-	CanonicalizationMethod CanonicalizationMethod `xml:"CanonicalizationMethod"`
+	CanonicalizationMethod CanonicalizationMethodType `xml:"CanonicalizationMethod"`
 
-	SignatureMethod SignatureMethod `xml:"SignatureMethod"`
+	SignatureMethod SignatureMethodType `xml:"SignatureMethod"`
 
-	Reference []Reference `xml:"Reference"`
+	Reference []ReferenceType `xml:"Reference"`
 }
 
 // Element
@@ -56,7 +56,7 @@ type SignatureMethod struct {
 
 	Algorithm string `xml:"Algorithm,attr"`
 
-	HMACOutputLength string `xml:"HMACOutputLength"`
+	HMACOutputLength string `xml:",any"`
 }
 
 // Element
@@ -69,18 +69,18 @@ type Reference struct {
 
 	Type string `xml:"Type,attr,omitempty"`
 
-	Transforms *Transforms `xml:"Transforms"`
+	Transforms *TransformsType `xml:"Transforms"`
 
-	DigestMethod DigestMethod `xml:"DigestMethod"`
+	DigestMethod DigestMethodType `xml:"DigestMethod"`
 
-	DigestValue DigestValue `xml:"DigestValue"`
+	DigestValue string `xml:"DigestValue"`
 }
 
 // Element
 type Transforms struct {
 	XMLName xml.Name `xml:Transforms`
 
-	Transform []Transform `xml:"Transform"`
+	Transform []TransformType `xml:",any"`
 }
 
 // Element
@@ -112,19 +112,19 @@ type KeyInfo struct {
 
 	Id string `xml:"Id,attr,omitempty"`
 
-	KeyName []KeyName `xml:"KeyName"`
+	KeyName []string `xml:"KeyName"`
 
-	KeyValue []KeyValue `xml:"KeyValue"`
+	KeyValue []KeyValueType `xml:"KeyValue"`
 
-	RetrievalMethod []RetrievalMethod `xml:"RetrievalMethod"`
+	RetrievalMethod []RetrievalMethodType `xml:"RetrievalMethod"`
 
-	X509Data []X509Data `xml:"X509Data"`
+	X509Data []X509DataType `xml:"X509Data"`
 
-	PGPData []PGPData `xml:"PGPData"`
+	PGPData []PGPDataType `xml:"PGPData"`
 
-	SPKIData []SPKIData `xml:"SPKIData"`
+	SPKIData []SPKIDataType `xml:"SPKIData"`
 
-	MgmtData []MgmtData `xml:"MgmtData"`
+	MgmtData []string `xml:"MgmtData"`
 }
 
 // Element
@@ -145,9 +145,9 @@ type MgmtData struct {
 type KeyValue struct {
 	XMLName xml.Name `xml:KeyValue`
 
-	DSAKeyValue *DSAKeyValue `xml:"DSAKeyValue"`
+	DSAKeyValue *DSAKeyValueType `xml:"DSAKeyValue"`
 
-	RSAKeyValue *RSAKeyValue `xml:"RSAKeyValue"`
+	RSAKeyValue *RSAKeyValueType `xml:"RSAKeyValue"`
 }
 
 // Element
@@ -158,7 +158,7 @@ type RetrievalMethod struct {
 
 	Type string `xml:"Type,attr,omitempty"`
 
-	Transforms *Transforms `xml:"Transforms"`
+	Transforms *TransformsType `xml:",any"`
 }
 
 // Element
@@ -189,7 +189,7 @@ type PGPData struct {
 type SPKIData struct {
 	XMLName xml.Name `xml:SPKIData`
 
-	SPKISexp string `xml:"SPKISexp"`
+	SPKISexp string `xml:",any"`
 }
 
 // Element
@@ -209,7 +209,7 @@ type Manifest struct {
 
 	Id string `xml:"Id,attr,omitempty"`
 
-	Reference []Reference `xml:"Reference"`
+	Reference []ReferenceType `xml:",any"`
 }
 
 // Element
@@ -218,7 +218,7 @@ type SignatureProperties struct {
 
 	Id string `xml:"Id,attr,omitempty"`
 
-	SignatureProperty []SignatureProperty `xml:"SignatureProperty"`
+	SignatureProperty []SignaturePropertyType `xml:",any"`
 }
 
 // Element
@@ -253,20 +253,24 @@ type RSAKeyValue struct {
 // XSD ComplexType declarations
 
 type SignatureType struct {
+	XMLName xml.Name
+
 	Id string `xml:"Id,attr,omitempty"`
 
-	SignedInfo SignedInfo `xml:"SignedInfo"`
+	SignedInfo SignedInfoType `xml:"SignedInfo"`
 
-	SignatureValue SignatureValue `xml:"SignatureValue"`
+	SignatureValue SignatureValueType `xml:"SignatureValue"`
 
-	KeyInfo *KeyInfo `xml:"KeyInfo"`
+	KeyInfo *KeyInfoType `xml:"KeyInfo"`
 
-	Object []Object `xml:"Object"`
+	Object []ObjectType `xml:"Object"`
 
 	InnerXml string `xml:",innerxml"`
 }
 
 type SignatureValueType struct {
+	XMLName xml.Name
+
 	Id string `xml:"Id,attr,omitempty"`
 
 	Text     string `xml:",chardata"`
@@ -274,54 +278,66 @@ type SignatureValueType struct {
 }
 
 type SignedInfoType struct {
+	XMLName xml.Name
+
 	Id string `xml:"Id,attr,omitempty"`
 
-	CanonicalizationMethod CanonicalizationMethod `xml:"CanonicalizationMethod"`
+	CanonicalizationMethod CanonicalizationMethodType `xml:"CanonicalizationMethod"`
 
-	SignatureMethod SignatureMethod `xml:"SignatureMethod"`
+	SignatureMethod SignatureMethodType `xml:"SignatureMethod"`
 
-	Reference []Reference `xml:"Reference"`
+	Reference []ReferenceType `xml:"Reference"`
 
 	InnerXml string `xml:",innerxml"`
 }
 
 type CanonicalizationMethodType struct {
+	XMLName xml.Name
+
 	Algorithm string `xml:"Algorithm,attr"`
 
 	InnerXml string `xml:",innerxml"`
 }
 
 type SignatureMethodType struct {
+	XMLName xml.Name
+
 	Algorithm string `xml:"Algorithm,attr"`
 
-	HMACOutputLength string `xml:"HMACOutputLength"`
+	HMACOutputLength string `xml:",any"`
 
 	InnerXml string `xml:",innerxml"`
 }
 
 type ReferenceType struct {
+	XMLName xml.Name
+
 	Id string `xml:"Id,attr,omitempty"`
 
 	URI string `xml:"URI,attr,omitempty"`
 
 	Type string `xml:"Type,attr,omitempty"`
 
-	Transforms *Transforms `xml:"Transforms"`
+	Transforms *TransformsType `xml:"Transforms"`
 
-	DigestMethod DigestMethod `xml:"DigestMethod"`
+	DigestMethod DigestMethodType `xml:"DigestMethod"`
 
-	DigestValue DigestValue `xml:"DigestValue"`
+	DigestValue string `xml:"DigestValue"`
 
 	InnerXml string `xml:",innerxml"`
 }
 
 type TransformsType struct {
-	Transform []Transform `xml:"Transform"`
+	XMLName xml.Name
+
+	Transform []TransformType `xml:",any"`
 
 	InnerXml string `xml:",innerxml"`
 }
 
 type TransformType struct {
+	XMLName xml.Name
+
 	Algorithm string `xml:"Algorithm,attr"`
 
 	XPath []string `xml:"XPath"`
@@ -330,50 +346,60 @@ type TransformType struct {
 }
 
 type DigestMethodType struct {
+	XMLName xml.Name
+
 	Algorithm string `xml:"Algorithm,attr"`
 
 	InnerXml string `xml:",innerxml"`
 }
 
 type KeyInfoType struct {
+	XMLName xml.Name
+
 	Id string `xml:"Id,attr,omitempty"`
 
-	KeyName []KeyName `xml:"KeyName"`
+	KeyName []string `xml:"KeyName"`
 
-	KeyValue []KeyValue `xml:"KeyValue"`
+	KeyValue []KeyValueType `xml:"KeyValue"`
 
-	RetrievalMethod []RetrievalMethod `xml:"RetrievalMethod"`
+	RetrievalMethod []RetrievalMethodType `xml:"RetrievalMethod"`
 
-	X509Data []X509Data `xml:"X509Data"`
+	X509Data []X509DataType `xml:"X509Data"`
 
-	PGPData []PGPData `xml:"PGPData"`
+	PGPData []PGPDataType `xml:"PGPData"`
 
-	SPKIData []SPKIData `xml:"SPKIData"`
+	SPKIData []SPKIDataType `xml:"SPKIData"`
 
-	MgmtData []MgmtData `xml:"MgmtData"`
+	MgmtData []string `xml:"MgmtData"`
 
 	InnerXml string `xml:",innerxml"`
 }
 
 type KeyValueType struct {
-	DSAKeyValue *DSAKeyValue `xml:"DSAKeyValue"`
+	XMLName xml.Name
 
-	RSAKeyValue *RSAKeyValue `xml:"RSAKeyValue"`
+	DSAKeyValue *DSAKeyValueType `xml:"DSAKeyValue"`
+
+	RSAKeyValue *RSAKeyValueType `xml:"RSAKeyValue"`
 
 	InnerXml string `xml:",innerxml"`
 }
 
 type RetrievalMethodType struct {
+	XMLName xml.Name
+
 	URI string `xml:"URI,attr"`
 
 	Type string `xml:"Type,attr,omitempty"`
 
-	Transforms *Transforms `xml:"Transforms"`
+	Transforms *TransformsType `xml:",any"`
 
 	InnerXml string `xml:",innerxml"`
 }
 
 type X509DataType struct {
+	XMLName xml.Name
+
 	X509IssuerSerial *X509IssuerSerialType `xml:"X509IssuerSerial"`
 
 	X509SKI string `xml:"X509SKI"`
@@ -388,6 +414,8 @@ type X509DataType struct {
 }
 
 type X509IssuerSerialType struct {
+	XMLName xml.Name
+
 	X509IssuerName string `xml:"X509IssuerName"`
 
 	X509SerialNumber string `xml:"X509SerialNumber"`
@@ -396,6 +424,8 @@ type X509IssuerSerialType struct {
 }
 
 type PGPDataType struct {
+	XMLName xml.Name
+
 	PGPKeyID string `xml:"PGPKeyID"`
 
 	PGPKeyPacket string `xml:"PGPKeyPacket"`
@@ -404,12 +434,16 @@ type PGPDataType struct {
 }
 
 type SPKIDataType struct {
-	SPKISexp string `xml:"SPKISexp"`
+	XMLName xml.Name
+
+	SPKISexp string `xml:",any"`
 
 	InnerXml string `xml:",innerxml"`
 }
 
 type ObjectType struct {
+	XMLName xml.Name
+
 	Id string `xml:"Id,attr,omitempty"`
 
 	MimeType string `xml:"MimeType,attr,omitempty"`
@@ -420,22 +454,28 @@ type ObjectType struct {
 }
 
 type ManifestType struct {
+	XMLName xml.Name
+
 	Id string `xml:"Id,attr,omitempty"`
 
-	Reference []Reference `xml:"Reference"`
+	Reference []ReferenceType `xml:",any"`
 
 	InnerXml string `xml:",innerxml"`
 }
 
 type SignaturePropertiesType struct {
+	XMLName xml.Name
+
 	Id string `xml:"Id,attr,omitempty"`
 
-	SignatureProperty []SignatureProperty `xml:"SignatureProperty"`
+	SignatureProperty []SignaturePropertyType `xml:",any"`
 
 	InnerXml string `xml:",innerxml"`
 }
 
 type SignaturePropertyType struct {
+	XMLName xml.Name
+
 	Target string `xml:"Target,attr"`
 
 	Id string `xml:"Id,attr,omitempty"`
@@ -444,6 +484,8 @@ type SignaturePropertyType struct {
 }
 
 type DSAKeyValueType struct {
+	XMLName xml.Name
+
 	G string `xml:"G"`
 
 	Y string `xml:"Y"`
@@ -454,6 +496,8 @@ type DSAKeyValueType struct {
 }
 
 type RSAKeyValueType struct {
+	XMLName xml.Name
+
 	Modulus string `xml:"Modulus"`
 
 	Exponent string `xml:"Exponent"`
