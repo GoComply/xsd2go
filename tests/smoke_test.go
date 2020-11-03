@@ -1,8 +1,10 @@
 package tests
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -18,24 +20,12 @@ func TestSanity(t *testing.T) {
 	assert.NotEmpty(t, xsdFiles)
 
 	for _, xsdPath := range xsdFiles {
-		assertConvertsFine(t, xsdPath)
+		actual := assertConvertsFine(t, xsdPath)
+
+		expected, err := ioutil.ReadFile(xsdPath + ".out")
+		require.NoError(t, err)
+		assert.Equal(t, strings.ReplaceAll(string(expected), "\r\n", "\n"), string(actual))
 	}
-}
-
-func TestSequenceWithinChoice(t *testing.T) {
-	xsdPath := "xsd-examples/valid/complex.xsd"
-	actual := assertConvertsFine(t, xsdPath)
-	expected, err := ioutil.ReadFile("xsd-examples/complex_result.xsd")
-	require.NoError(t, err)
-	assert.Equal(t, strings.ReplaceAll(string(expected), "\r\n", "\n"), string(actual))
-}
-
-func TestRestriction(t *testing.T) {
-	xsdPath := "xsd-examples/valid/restriction.xsd"
-	actual := assertConvertsFine(t, xsdPath)
-	expected, err := ioutil.ReadFile("xsd-examples/restriction_result.xsd")
-	require.NoError(t, err)
-	assert.Equal(t, strings.ReplaceAll(string(expected), "\r\n", "\n"), string(actual))
 }
 
 func assertConvertsFine(t *testing.T, xsdPath string) []byte {
@@ -50,9 +40,24 @@ func assertConvertsFine(t *testing.T, xsdPath string) []byte {
 	err = xsd2go.Convert(xsdPath, goModule, outputDir)
 	require.NoError(t, err)
 
-	result, err := ioutil.ReadFile(filepath.Join(outputDir, "simple_schema", "models.go"))
+	generatedFilePath, err := locateGeneratedFile(outputDir)
+	result, err := ioutil.ReadFile(generatedFilePath)
 	require.NoError(t, err)
 
-	return result
+	out, err := exec.Command("go", "build", generatedFilePath).Output()
+	require.NoError(t, err)
+	assert.Equal(t, string(out), "")
 
+	return result
+}
+
+func locateGeneratedFile(outputDir string) (string, error) {
+	golangFiles, err := filepath.Glob(outputDir + "/*/models.go")
+	if err != nil {
+		return "", err
+	}
+	if len(golangFiles) != 1 {
+		return "", fmt.Errorf("Expected to find single generated file but found %s", golangFiles)
+	}
+	return golangFiles[0], nil
 }

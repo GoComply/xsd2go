@@ -151,7 +151,11 @@ func (sch *Schema) findReferencedSchemaByXmlns(xmlns string) *Schema {
 }
 
 func (sch *Schema) Empty() bool {
-	return len(sch.Elements) == 0 && len(sch.ComplexTypes) == 0
+	return len(sch.Elements) == 0 && len(sch.ComplexTypes) == 0 && len(sch.ExportableSimpleTypes()) == 0
+}
+
+func (sch *Schema) encodingXmlImportNeeded() bool {
+	return len(sch.Elements) != 0 || len(sch.ComplexTypes) != 0
 }
 
 func (sch *Schema) ExportableElements() []Element {
@@ -239,7 +243,10 @@ func (sch *Schema) GoPackageName() string {
 }
 
 func (sch *Schema) GoImportsNeeded() []string {
-	imports := []string{"encoding/xml"}
+	imports := []string{}
+	if sch.encodingXmlImportNeeded() {
+		imports = append(imports, "encoding/xml")
+	}
 	for _, importedMod := range sch.importedModules {
 		imports = append(imports, fmt.Sprintf("%s/%s", sch.ModulesPath, importedMod.GoPackageName()))
 	}
