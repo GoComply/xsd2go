@@ -40,6 +40,8 @@ func (ws *Workspace) loadXsd(xsdPath string, cache bool) (*Schema, error) {
 	}
 	schema.ModulesPath = ws.GoModulesPath
 	schema.filePath = xsdPath
+	// Won't cache included schemas - we need to append contents to the current
+	// schema.
 	if cache {
 		ws.Cache[xsdPath] = schema
 	}
