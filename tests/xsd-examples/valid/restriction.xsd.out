@@ -8,7 +8,7 @@ import (
 
 // Element
 type Myelement struct {
-	XMLName xml.Name `xml:myelement`
+	XMLName xml.Name `xml:"myelement"`
 
 	Datatype DatatypeEnumeration `xml:"datatype,attr,omitempty"`
 
