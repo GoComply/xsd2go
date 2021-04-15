@@ -14,6 +14,7 @@ type Schema struct {
 	XMLName         xml.Name           `xml:"http://www.w3.org/2001/XMLSchema schema"`
 	Xmlns           Xmlns              `xml:"-"`
 	TargetNamespace string             `xml:"targetNamespace,attr"`
+	Includes        []Include          `xml:"include"`
 	Imports         []Import           `xml:"import"`
 	Elements        []Element          `xml:"element"`
 	Attributes      []Attribute        `xml:"attribute"`
@@ -286,7 +287,23 @@ type Import struct {
 
 func (i *Import) load(ws *Workspace, baseDir string) (err error) {
 	if i.SchemaLocation != "" {
-		i.ImportedSchema, err = ws.loadXsd(filepath.Join(baseDir, i.SchemaLocation))
+		i.ImportedSchema, err =
+			ws.loadXsd(filepath.Join(baseDir, i.SchemaLocation), true)
+	}
+	return
+}
+
+type Include struct {
+	XMLName        xml.Name `xml:"http://www.w3.org/2001/XMLSchema include"`
+	Namespace      string   `xml:"namespace,attr"`
+	SchemaLocation string   `xml:"schemaLocation,attr"`
+	IncludedSchema *Schema  `xml:"-"`
+}
+
+func (i *Include) load(ws *Workspace, baseDir string) (err error) {
+	if i.SchemaLocation != "" {
+		i.IncludedSchema, err =
+			ws.loadXsd(filepath.Join(baseDir, i.SchemaLocation), false)
 	}
 	return
 }
