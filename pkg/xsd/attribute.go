@@ -22,9 +22,9 @@ type Attribute struct {
 
 // Public Go Name of this struct item
 func (a *Attribute) GoName() string {
-	name := a.Name
+	name := a.Name + "Attr"
 	if a.Name == "" {
-		name = a.Ref.GoName()
+		name = a.Ref.GoName() + "Attr"
 	}
 	if a.DuplicateCount >= 2 {
 		name = fmt.Sprintf("%s%d", name, a.DuplicateCount)

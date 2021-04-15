@@ -10,7 +10,7 @@ import (
 type Signature struct {
 	XMLName xml.Name `xml:"Signature"`
 
-	Id string `xml:"Id,attr,omitempty"`
+	IdAttr string `xml:"Id,attr,omitempty"`
 
 	SignedInfo SignedInfoType `xml:"SignedInfo"`
 
@@ -25,7 +25,7 @@ type Signature struct {
 type SignatureValue struct {
 	XMLName xml.Name `xml:"SignatureValue"`
 
-	Id string `xml:"Id,attr,omitempty"`
+	IdAttr string `xml:"Id,attr,omitempty"`
 
 	Text string `xml:",chardata"`
 }
@@ -34,7 +34,7 @@ type SignatureValue struct {
 type SignedInfo struct {
 	XMLName xml.Name `xml:"SignedInfo"`
 
-	Id string `xml:"Id,attr,omitempty"`
+	IdAttr string `xml:"Id,attr,omitempty"`
 
 	CanonicalizationMethod CanonicalizationMethodType `xml:"CanonicalizationMethod"`
 
@@ -47,14 +47,14 @@ type SignedInfo struct {
 type CanonicalizationMethod struct {
 	XMLName xml.Name `xml:"CanonicalizationMethod"`
 
-	Algorithm string `xml:"Algorithm,attr"`
+	AlgorithmAttr string `xml:"Algorithm,attr"`
 }
 
 // Element
 type SignatureMethod struct {
 	XMLName xml.Name `xml:"SignatureMethod"`
 
-	Algorithm string `xml:"Algorithm,attr"`
+	AlgorithmAttr string `xml:"Algorithm,attr"`
 
 	HMACOutputLength string `xml:",any"`
 }
@@ -63,11 +63,11 @@ type SignatureMethod struct {
 type Reference struct {
 	XMLName xml.Name `xml:"Reference"`
 
-	Id string `xml:"Id,attr,omitempty"`
+	IdAttr string `xml:"Id,attr,omitempty"`
 
-	URI string `xml:"URI,attr,omitempty"`
+	URIAttr string `xml:"URI,attr,omitempty"`
 
-	Type string `xml:"Type,attr,omitempty"`
+	TypeAttr string `xml:"Type,attr,omitempty"`
 
 	Transforms *TransformsType `xml:"Transforms"`
 
@@ -87,7 +87,7 @@ type Transforms struct {
 type Transform struct {
 	XMLName xml.Name `xml:"Transform"`
 
-	Algorithm string `xml:"Algorithm,attr"`
+	AlgorithmAttr string `xml:"Algorithm,attr"`
 
 	XPath []string `xml:"XPath"`
 }
@@ -96,7 +96,7 @@ type Transform struct {
 type DigestMethod struct {
 	XMLName xml.Name `xml:"DigestMethod"`
 
-	Algorithm string `xml:"Algorithm,attr"`
+	AlgorithmAttr string `xml:"Algorithm,attr"`
 }
 
 // Element
@@ -110,7 +110,7 @@ type DigestValue struct {
 type KeyInfo struct {
 	XMLName xml.Name `xml:"KeyInfo"`
 
-	Id string `xml:"Id,attr,omitempty"`
+	IdAttr string `xml:"Id,attr,omitempty"`
 
 	KeyName []string `xml:"KeyName"`
 
@@ -154,9 +154,9 @@ type KeyValue struct {
 type RetrievalMethod struct {
 	XMLName xml.Name `xml:"RetrievalMethod"`
 
-	URI string `xml:"URI,attr"`
+	URIAttr string `xml:"URI,attr"`
 
-	Type string `xml:"Type,attr,omitempty"`
+	TypeAttr string `xml:"Type,attr,omitempty"`
 
 	Transforms *TransformsType `xml:",any"`
 }
@@ -196,18 +196,18 @@ type SPKIData struct {
 type Object struct {
 	XMLName xml.Name `xml:"Object"`
 
-	Id string `xml:"Id,attr,omitempty"`
+	IdAttr string `xml:"Id,attr,omitempty"`
 
-	MimeType string `xml:"MimeType,attr,omitempty"`
+	MimeTypeAttr string `xml:"MimeType,attr,omitempty"`
 
-	Encoding string `xml:"Encoding,attr,omitempty"`
+	EncodingAttr string `xml:"Encoding,attr,omitempty"`
 }
 
 // Element
 type Manifest struct {
 	XMLName xml.Name `xml:"Manifest"`
 
-	Id string `xml:"Id,attr,omitempty"`
+	IdAttr string `xml:"Id,attr,omitempty"`
 
 	Reference []ReferenceType `xml:",any"`
 }
@@ -216,7 +216,7 @@ type Manifest struct {
 type SignatureProperties struct {
 	XMLName xml.Name `xml:"SignatureProperties"`
 
-	Id string `xml:"Id,attr,omitempty"`
+	IdAttr string `xml:"Id,attr,omitempty"`
 
 	SignatureProperty []SignaturePropertyType `xml:",any"`
 }
@@ -225,9 +225,9 @@ type SignatureProperties struct {
 type SignatureProperty struct {
 	XMLName xml.Name `xml:"SignatureProperty"`
 
-	Target string `xml:"Target,attr"`
+	TargetAttr string `xml:"Target,attr"`
 
-	Id string `xml:"Id,attr,omitempty"`
+	IdAttr string `xml:"Id,attr,omitempty"`
 }
 
 // Element
@@ -255,7 +255,7 @@ type RSAKeyValue struct {
 type SignatureType struct {
 	XMLName xml.Name
 
-	Id string `xml:"Id,attr,omitempty"`
+	IdAttr string `xml:"Id,attr,omitempty"`
 
 	SignedInfo SignedInfoType `xml:"SignedInfo"`
 
@@ -271,7 +271,7 @@ type SignatureType struct {
 type SignatureValueType struct {
 	XMLName xml.Name
 
-	Id string `xml:"Id,attr,omitempty"`
+	IdAttr string `xml:"Id,attr,omitempty"`
 
 	Text     string `xml:",chardata"`
 	InnerXml string `xml:",innerxml"`
@@ -280,7 +280,7 @@ type SignatureValueType struct {
 type SignedInfoType struct {
 	XMLName xml.Name
 
-	Id string `xml:"Id,attr,omitempty"`
+	IdAttr string `xml:"Id,attr,omitempty"`
 
 	CanonicalizationMethod CanonicalizationMethodType `xml:"CanonicalizationMethod"`
 
@@ -294,7 +294,7 @@ type SignedInfoType struct {
 type CanonicalizationMethodType struct {
 	XMLName xml.Name
 
-	Algorithm string `xml:"Algorithm,attr"`
+	AlgorithmAttr string `xml:"Algorithm,attr"`
 
 	InnerXml string `xml:",innerxml"`
 }
@@ -302,7 +302,7 @@ type CanonicalizationMethodType struct {
 type SignatureMethodType struct {
 	XMLName xml.Name
 
-	Algorithm string `xml:"Algorithm,attr"`
+	AlgorithmAttr string `xml:"Algorithm,attr"`
 
 	HMACOutputLength string `xml:",any"`
 
@@ -312,11 +312,11 @@ type SignatureMethodType struct {
 type ReferenceType struct {
 	XMLName xml.Name
 
-	Id string `xml:"Id,attr,omitempty"`
+	IdAttr string `xml:"Id,attr,omitempty"`
 
-	URI string `xml:"URI,attr,omitempty"`
+	URIAttr string `xml:"URI,attr,omitempty"`
 
-	Type string `xml:"Type,attr,omitempty"`
+	TypeAttr string `xml:"Type,attr,omitempty"`
 
 	Transforms *TransformsType `xml:"Transforms"`
 
@@ -338,7 +338,7 @@ type TransformsType struct {
 type TransformType struct {
 	XMLName xml.Name
 
-	Algorithm string `xml:"Algorithm,attr"`
+	AlgorithmAttr string `xml:"Algorithm,attr"`
 
 	XPath []string `xml:"XPath"`
 
@@ -348,7 +348,7 @@ type TransformType struct {
 type DigestMethodType struct {
 	XMLName xml.Name
 
-	Algorithm string `xml:"Algorithm,attr"`
+	AlgorithmAttr string `xml:"Algorithm,attr"`
 
 	InnerXml string `xml:",innerxml"`
 }
@@ -356,7 +356,7 @@ type DigestMethodType struct {
 type KeyInfoType struct {
 	XMLName xml.Name
 
-	Id string `xml:"Id,attr,omitempty"`
+	IdAttr string `xml:"Id,attr,omitempty"`
 
 	KeyName []string `xml:"KeyName"`
 
@@ -388,9 +388,9 @@ type KeyValueType struct {
 type RetrievalMethodType struct {
 	XMLName xml.Name
 
-	URI string `xml:"URI,attr"`
+	URIAttr string `xml:"URI,attr"`
 
-	Type string `xml:"Type,attr,omitempty"`
+	TypeAttr string `xml:"Type,attr,omitempty"`
 
 	Transforms *TransformsType `xml:",any"`
 
@@ -444,11 +444,11 @@ type SPKIDataType struct {
 type ObjectType struct {
 	XMLName xml.Name
 
-	Id string `xml:"Id,attr,omitempty"`
+	IdAttr string `xml:"Id,attr,omitempty"`
 
-	MimeType string `xml:"MimeType,attr,omitempty"`
+	MimeTypeAttr string `xml:"MimeType,attr,omitempty"`
 
-	Encoding string `xml:"Encoding,attr,omitempty"`
+	EncodingAttr string `xml:"Encoding,attr,omitempty"`
 
 	InnerXml string `xml:",innerxml"`
 }
@@ -456,7 +456,7 @@ type ObjectType struct {
 type ManifestType struct {
 	XMLName xml.Name
 
-	Id string `xml:"Id,attr,omitempty"`
+	IdAttr string `xml:"Id,attr,omitempty"`
 
 	Reference []ReferenceType `xml:",any"`
 
@@ -466,7 +466,7 @@ type ManifestType struct {
 type SignaturePropertiesType struct {
 	XMLName xml.Name
 
-	Id string `xml:"Id,attr,omitempty"`
+	IdAttr string `xml:"Id,attr,omitempty"`
 
 	SignatureProperty []SignaturePropertyType `xml:",any"`
 
@@ -476,9 +476,9 @@ type SignaturePropertiesType struct {
 type SignaturePropertyType struct {
 	XMLName xml.Name
 
-	Target string `xml:"Target,attr"`
+	TargetAttr string `xml:"Target,attr"`
 
-	Id string `xml:"Id,attr,omitempty"`
+	IdAttr string `xml:"Id,attr,omitempty"`
 
 	InnerXml string `xml:",innerxml"`
 }

@@ -134,4 +134,10 @@
             <xsd:enumeration value="ThumbprintSHA1" />
         </xsd:restriction>
     </xsd:simpleType>
+    <xsd:complexType name="OverlappingAttrElemType">
+        <xsd:attribute name="DuplicateName" type="xsd:string" />
+        <xsd:sequence>
+            <xsd:element name="DuplicateName" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
 </xsd:schema>
