@@ -128,4 +128,10 @@
             </xsd:restriction>
         </xsd:simpleContent>
     </xsd:complexType>
+    <xsd:simpleType name="CaseSensitiveEnumeration">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="ThumbPrintSHA1" />
+            <xsd:enumeration value="ThumbprintSHA1" />
+        </xsd:restriction>
+    </xsd:simpleType>
 </xsd:schema>

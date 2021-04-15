@@ -2,7 +2,6 @@ package xsd
 
 import (
 	"encoding/xml"
-	"strings"
 
 	"github.com/iancoleman/strcase"
 )
@@ -15,7 +14,7 @@ type Enumeration struct {
 
 // Public Go Name of this struct item
 func (e *Enumeration) GoName() string {
-	return strcase.ToCamel(strings.ToLower(e.Value))
+	return strcase.ToCamel(e.Value)
 }
 
 func (e *Enumeration) Modifiers() string {

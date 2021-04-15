@@ -109,3 +109,9 @@ const OperationEnumerationPatternMatch OperationEnumeration = "pattern match"
 const OperationEnumerationSubsetOf OperationEnumeration = "subset of"
 
 const OperationEnumerationSupersetOf OperationEnumeration = "superset of"
+
+type CaseSensitiveEnumeration string
+
+const CaseSensitiveEnumerationThumbPrintSHA1 CaseSensitiveEnumeration = "ThumbPrintSHA1"
+
+const CaseSensitiveEnumerationThumbprintSHA1 CaseSensitiveEnumeration = "ThumbprintSHA1"
