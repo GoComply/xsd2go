@@ -52,6 +52,7 @@ type ComplexType struct {
 	ComplexContent   *ComplexContent `xml:"complexContent"`
 	Choice           *Choice         `xml:"choice"`
 	content          GenericContent  `xml:"-"`
+	goNameSuffix     string
 }
 
 func (ct *ComplexType) Attributes() []Attribute {
@@ -82,7 +83,7 @@ func (ct *ComplexType) Elements() []Element {
 }
 
 func (ct *ComplexType) GoName() string {
-	return strcase.ToCamel(ct.Name + "Type")
+	return strcase.ToCamel(ct.Name + "Type" + ct.goNameSuffix)
 }
 
 func (ct *ComplexType) GoTypeName() string {
@@ -149,14 +150,15 @@ func (ct *ComplexType) compile(sch *Schema, parentElement *Element) {
 }
 
 type SimpleType struct {
-	XMLName     xml.Name     `xml:"http://www.w3.org/2001/XMLSchema simpleType"`
-	Name        string       `xml:"name,attr"`
-	Restriction *Restriction `xml:"restriction"`
-	schema      *Schema      `xml:"-"`
+	XMLName      xml.Name     `xml:"http://www.w3.org/2001/XMLSchema simpleType"`
+	Name         string       `xml:"name,attr"`
+	Restriction  *Restriction `xml:"restriction"`
+	schema       *Schema      `xml:"-"`
+	goNameSuffix string
 }
 
 func (st *SimpleType) GoName() string {
-	return strcase.ToCamel(st.Name + "Type")
+	return strcase.ToCamel(st.Name + "Type" + st.goNameSuffix)
 }
 
 func (st *SimpleType) GoTypeName() string {

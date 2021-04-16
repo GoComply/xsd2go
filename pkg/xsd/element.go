@@ -24,6 +24,7 @@ type Element struct {
 	SimpleType      *SimpleType  `xml:"simpleType"`
 	schema          *Schema      `xml:"-"`
 	typ             Type         `xml:"-"`
+	goNameSuffix    string
 }
 
 func (e *Element) Attributes() []Attribute {
@@ -48,7 +49,7 @@ func (e *Element) GoFieldName() string {
 	if e.FieldOverride {
 		name += "Elm"
 	}
-	return strcase.ToCamel(name + "Elem")
+	return strcase.ToCamel(name + "Elem" + e.goNameSuffix)
 }
 
 func (e *Element) GoName() string {

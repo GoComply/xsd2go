@@ -25,10 +25,11 @@ type Schema struct {
 	ModulesPath     string             `xml:"-"`
 	filePath        string             `xml:"-"`
 	inlinedElements []Element          `xml:"-"`
+	goNames         map[string]string
 }
 
 func parseSchema(f io.Reader) (*Schema, error) {
-	schema := Schema{importedModules: map[string]*Schema{}}
+	schema := Schema{importedModules: map[string]*Schema{}, goNames: map[string]string{}}
 	d := xml.NewDecoder(f)
 
 	if err := d.Decode(&schema); err != nil {
@@ -46,7 +47,63 @@ func (sch *Schema) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	return d.DecodeElement(ss, &start)
 }
 
+func (sch *Schema) avoidDuplicateGoNames() {
+	for idx := range sch.Elements {
+		e := &sch.Elements[idx]
+		oldGoName := e.GoName()
+		if _, found := sch.goNames[oldGoName]; found {
+			i := 0
+			for i = 1; found; i++ {
+				_, found = sch.goNames[e.GoName()]
+			}
+			e.goNameSuffix = fmt.Sprintf("%d", i)
+		}
+		sch.goNames[e.GoName()] = oldGoName
+	}
+
+	for idx := range sch.SimpleTypes {
+		st := &sch.SimpleTypes[idx]
+		oldGoName := st.GoName()
+		if _, found := sch.goNames[oldGoName]; found {
+			i := 0
+			for i = 1; found; i++ {
+				st.goNameSuffix = fmt.Sprintf("%d", i)
+				_, found = sch.goNames[st.GoName()]
+			}
+		}
+		sch.goNames[st.GoName()] = oldGoName
+
+		enums := st.Enums()
+		for _, en := range enums {
+			oldGoConstName := st.GoName() + en.GoName()
+			if _, found := sch.goNames[oldGoConstName]; found {
+				i := 0
+				for i = 1; found; i++ {
+					en.goNameSuffix = fmt.Sprintf("%d", i)
+					_, found = sch.goNames[st.GoName()+en.GoName()]
+				}
+			}
+			sch.goNames[st.GoName()+en.GoName()] = oldGoConstName
+		}
+	}
+
+	for idx := range sch.ComplexTypes {
+		ct := &sch.ComplexTypes[idx]
+		oldGoName := ct.GoName()
+		if _, found := sch.goNames[oldGoName]; found {
+			i := 0
+			for i = 1; found; i++ {
+				_, found = sch.goNames[ct.GoName()]
+			}
+			ct.goNameSuffix = fmt.Sprintf("%d", i)
+		}
+		sch.goNames[ct.GoName()] = oldGoName
+	}
+}
+
 func (sch *Schema) compile() {
+	sch.avoidDuplicateGoNames()
+
 	for idx, _ := range sch.Elements {
 		el := &sch.Elements[idx]
 		el.compile(sch, nil)
