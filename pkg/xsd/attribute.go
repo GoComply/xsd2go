@@ -22,14 +22,14 @@ type Attribute struct {
 
 // Public Go Name of this struct item
 func (a *Attribute) GoName() string {
-	name := a.Name + "Attr"
+	name := a.Name
 	if a.Name == "" {
-		name = a.Ref.GoName() + "Attr"
+		name = a.Ref.GoName()
 	}
 	if a.DuplicateCount >= 2 {
 		name = fmt.Sprintf("%s%d", name, a.DuplicateCount)
 	}
-	return strcase.ToCamel(name)
+	return strcase.ToCamel(name + "Attr")
 }
 
 func (a *Attribute) GoType() string {

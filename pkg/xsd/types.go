@@ -82,7 +82,7 @@ func (ct *ComplexType) Elements() []Element {
 }
 
 func (ct *ComplexType) GoName() string {
-	return strcase.ToCamel(ct.Name)
+	return strcase.ToCamel(ct.Name + "Type")
 }
 
 func (ct *ComplexType) GoTypeName() string {
@@ -156,7 +156,7 @@ type SimpleType struct {
 }
 
 func (st *SimpleType) GoName() string {
-	return strcase.ToCamel(st.Name)
+	return strcase.ToCamel(st.Name + "Type")
 }
 
 func (st *SimpleType) GoTypeName() string {

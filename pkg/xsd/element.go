@@ -48,7 +48,7 @@ func (e *Element) GoFieldName() string {
 	if e.FieldOverride {
 		name += "Elm"
 	}
-	return strcase.ToCamel(name)
+	return strcase.ToCamel(name + "Elem")
 }
 
 func (e *Element) GoName() string {
