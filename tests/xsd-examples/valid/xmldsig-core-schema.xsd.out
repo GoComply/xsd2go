@@ -8,7 +8,7 @@ import (
 
 // Element
 type Signature struct {
-	XMLName xml.Name `xml:Signature`
+	XMLName xml.Name `xml:"Signature"`
 
 	Id string `xml:"Id,attr,omitempty"`
 
@@ -23,7 +23,7 @@ type Signature struct {
 
 // Element
 type SignatureValue struct {
-	XMLName xml.Name `xml:SignatureValue`
+	XMLName xml.Name `xml:"SignatureValue"`
 
 	Id string `xml:"Id,attr,omitempty"`
 
@@ -32,7 +32,7 @@ type SignatureValue struct {
 
 // Element
 type SignedInfo struct {
-	XMLName xml.Name `xml:SignedInfo`
+	XMLName xml.Name `xml:"SignedInfo"`
 
 	Id string `xml:"Id,attr,omitempty"`
 
@@ -45,14 +45,14 @@ type SignedInfo struct {
 
 // Element
 type CanonicalizationMethod struct {
-	XMLName xml.Name `xml:CanonicalizationMethod`
+	XMLName xml.Name `xml:"CanonicalizationMethod"`
 
 	Algorithm string `xml:"Algorithm,attr"`
 }
 
 // Element
 type SignatureMethod struct {
-	XMLName xml.Name `xml:SignatureMethod`
+	XMLName xml.Name `xml:"SignatureMethod"`
 
 	Algorithm string `xml:"Algorithm,attr"`
 
@@ -61,7 +61,7 @@ type SignatureMethod struct {
 
 // Element
 type Reference struct {
-	XMLName xml.Name `xml:Reference`
+	XMLName xml.Name `xml:"Reference"`
 
 	Id string `xml:"Id,attr,omitempty"`
 
@@ -78,14 +78,14 @@ type Reference struct {
 
 // Element
 type Transforms struct {
-	XMLName xml.Name `xml:Transforms`
+	XMLName xml.Name `xml:"Transforms"`
 
 	Transform []TransformType `xml:",any"`
 }
 
 // Element
 type Transform struct {
-	XMLName xml.Name `xml:Transform`
+	XMLName xml.Name `xml:"Transform"`
 
 	Algorithm string `xml:"Algorithm,attr"`
 
@@ -94,21 +94,21 @@ type Transform struct {
 
 // Element
 type DigestMethod struct {
-	XMLName xml.Name `xml:DigestMethod`
+	XMLName xml.Name `xml:"DigestMethod"`
 
 	Algorithm string `xml:"Algorithm,attr"`
 }
 
 // Element
 type DigestValue struct {
-	XMLName xml.Name `xml:DigestValue`
+	XMLName xml.Name `xml:"DigestValue"`
 
 	Text string `xml:",chardata"`
 }
 
 // Element
 type KeyInfo struct {
-	XMLName xml.Name `xml:KeyInfo`
+	XMLName xml.Name `xml:"KeyInfo"`
 
 	Id string `xml:"Id,attr,omitempty"`
 
@@ -129,21 +129,21 @@ type KeyInfo struct {
 
 // Element
 type KeyName struct {
-	XMLName xml.Name `xml:KeyName`
+	XMLName xml.Name `xml:"KeyName"`
 
 	Text string `xml:",chardata"`
 }
 
 // Element
 type MgmtData struct {
-	XMLName xml.Name `xml:MgmtData`
+	XMLName xml.Name `xml:"MgmtData"`
 
 	Text string `xml:",chardata"`
 }
 
 // Element
 type KeyValue struct {
-	XMLName xml.Name `xml:KeyValue`
+	XMLName xml.Name `xml:"KeyValue"`
 
 	DSAKeyValue *DSAKeyValueType `xml:"DSAKeyValue"`
 
@@ -152,7 +152,7 @@ type KeyValue struct {
 
 // Element
 type RetrievalMethod struct {
-	XMLName xml.Name `xml:RetrievalMethod`
+	XMLName xml.Name `xml:"RetrievalMethod"`
 
 	URI string `xml:"URI,attr"`
 
@@ -163,7 +163,7 @@ type RetrievalMethod struct {
 
 // Element
 type X509Data struct {
-	XMLName xml.Name `xml:X509Data`
+	XMLName xml.Name `xml:"X509Data"`
 
 	X509IssuerSerial *X509IssuerSerialType `xml:"X509IssuerSerial"`
 
@@ -178,7 +178,7 @@ type X509Data struct {
 
 // Element
 type PGPData struct {
-	XMLName xml.Name `xml:PGPData`
+	XMLName xml.Name `xml:"PGPData"`
 
 	PGPKeyID string `xml:"PGPKeyID"`
 
@@ -187,14 +187,14 @@ type PGPData struct {
 
 // Element
 type SPKIData struct {
-	XMLName xml.Name `xml:SPKIData`
+	XMLName xml.Name `xml:"SPKIData"`
 
 	SPKISexp string `xml:",any"`
 }
 
 // Element
 type Object struct {
-	XMLName xml.Name `xml:Object`
+	XMLName xml.Name `xml:"Object"`
 
 	Id string `xml:"Id,attr,omitempty"`
 
@@ -205,7 +205,7 @@ type Object struct {
 
 // Element
 type Manifest struct {
-	XMLName xml.Name `xml:Manifest`
+	XMLName xml.Name `xml:"Manifest"`
 
 	Id string `xml:"Id,attr,omitempty"`
 
@@ -214,7 +214,7 @@ type Manifest struct {
 
 // Element
 type SignatureProperties struct {
-	XMLName xml.Name `xml:SignatureProperties`
+	XMLName xml.Name `xml:"SignatureProperties"`
 
 	Id string `xml:"Id,attr,omitempty"`
 
@@ -223,7 +223,7 @@ type SignatureProperties struct {
 
 // Element
 type SignatureProperty struct {
-	XMLName xml.Name `xml:SignatureProperty`
+	XMLName xml.Name `xml:"SignatureProperty"`
 
 	Target string `xml:"Target,attr"`
 
@@ -232,7 +232,7 @@ type SignatureProperty struct {
 
 // Element
 type DSAKeyValue struct {
-	XMLName xml.Name `xml:DSAKeyValue`
+	XMLName xml.Name `xml:"DSAKeyValue"`
 
 	G string `xml:"G"`
 
@@ -243,7 +243,7 @@ type DSAKeyValue struct {
 
 // Element
 type RSAKeyValue struct {
-	XMLName xml.Name `xml:RSAKeyValue`
+	XMLName xml.Name `xml:"RSAKeyValue"`
 
 	Modulus string `xml:"Modulus"`
 
