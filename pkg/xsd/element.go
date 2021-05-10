@@ -91,7 +91,8 @@ func (e *Element) GoForeignModule() string {
 		foreignSchema = e.typ.Schema()
 	}
 
-	if foreignSchema != nil && foreignSchema != e.schema {
+	if foreignSchema != nil && foreignSchema != e.schema &&
+		foreignSchema.TargetNamespace != e.schema.TargetNamespace {
 		return foreignSchema.GoPackageName() + "."
 	}
 	return ""
