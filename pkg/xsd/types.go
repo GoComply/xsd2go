@@ -2,7 +2,6 @@ package xsd
 
 import (
 	"encoding/xml"
-
 	"github.com/iancoleman/strcase"
 )
 
@@ -52,6 +51,7 @@ type ComplexType struct {
 	ComplexContent   *ComplexContent `xml:"complexContent"`
 	Choice           *Choice         `xml:"choice"`
 	content          GenericContent  `xml:"-"`
+	Annotation       *Annotation     `xml:"annotation"`
 }
 
 func (ct *ComplexType) Attributes() []Attribute {
@@ -81,8 +81,17 @@ func (ct *ComplexType) Elements() []Element {
 	return []Element{}
 }
 
+func (ct *ComplexType) GoComments() []string {
+	return ct.Annotation.GoComments()
+}
+
 func (ct *ComplexType) GoName() string {
-	return strcase.ToCamel(ct.Name)
+	name := ct.Annotation.GetName()
+	if name != "" {
+		return name
+	} else {
+		return strcase.ToCamel(ct.Name)
+	}
 }
 
 func (ct *ComplexType) GoTypeName() string {
@@ -152,11 +161,21 @@ type SimpleType struct {
 	XMLName     xml.Name     `xml:"http://www.w3.org/2001/XMLSchema simpleType"`
 	Name        string       `xml:"name,attr"`
 	Restriction *Restriction `xml:"restriction"`
+	Annotation  *Annotation  `xml:"annotation"`
 	schema      *Schema      `xml:"-"`
 }
 
+func (st *SimpleType) GoComments() []string {
+	return st.Annotation.GoComments()
+}
+
 func (st *SimpleType) GoName() string {
-	return strcase.ToCamel(st.Name)
+	name := st.Annotation.GetName()
+	if name != "" {
+		return name
+	} else {
+		return strcase.ToCamel(st.Name)
+	}
 }
 
 func (st *SimpleType) GoTypeName() string {

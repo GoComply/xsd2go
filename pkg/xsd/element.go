@@ -3,9 +3,8 @@ package xsd
 import (
 	"encoding/xml"
 	"fmt"
-	"strconv"
-
 	"github.com/iancoleman/strcase"
+	"strconv"
 )
 
 // Element defines single XML element
@@ -22,6 +21,7 @@ type Element struct {
 	refElm          *Element     `xml:"-"`
 	ComplexType     *ComplexType `xml:"complexType"`
 	SimpleType      *SimpleType  `xml:"simpleType"`
+	Annotation      *Annotation  `xml:"annotation"`
 	schema          *Schema      `xml:"-"`
 	typ             Type         `xml:"-"`
 }
@@ -40,8 +40,16 @@ func (e *Element) Elements() []Element {
 	return []Element{}
 }
 
+func (e *Element) GoComments() []string {
+	return e.Annotation.GoComments()
+}
+
 func (e *Element) GoFieldName() string {
-	name := e.Name
+	name := e.Annotation.GetName()
+	if name != "" {
+		return name
+	}
+	name = e.Name
 	if name == "" {
 		return e.refElm.GoName()
 	}

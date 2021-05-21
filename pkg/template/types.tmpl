@@ -31,32 +31,45 @@ import (
 
 // XSD ComplexType declarations
 {{range .ExportableComplexTypes }}
+  {{ range .GoComments }}
+  // {{ . -}}
+  {{end}}
   type {{ .GoName }} struct {
   {{- if not .HasXmlNameAttribute }}
-    XMLName xml.Name
+    XMLName xml.Name `json:"-"`
   {{- end}}
   {{ range .Attributes }}
       {{ .GoName }} {{.GoForeignModule}}{{.GoType}} `xml:"{{.XmlName}},{{.Modifiers}}"`
   {{end }}
 
   {{ range .Elements }}
+    {{ range .GoComments }}
+    // {{ . -}}
+    {{end}}
     {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}"`
   {{end}}
 
   {{- if .ContainsText }}
     Text string `xml:",chardata"`
   {{- end}}
-  InnerXml string `xml:",innerxml"`
+
+  InnerXml string `xml:",innerxml" json:"-"`
   }
 {{end}}
 
 // XSD SimpleType declarations
 {{range .ExportableSimpleTypes }}
+  {{ range .GoComments }}
+  // {{ . -}}
+  {{end}}
   type {{ .GoName }} string
 
   {{ $simpleType := . }}
   {{ range .Enums }}
-  const {{ $simpleType.GoName -}} {{- .GoName }} {{ $simpleType.GoName }} = "{{ .XmlName }}"
+  {{ range .GoComments }}
+  // {{ . -}}
+  {{end}}
+  const {{ $simpleType.GoName -}}_{{- .GoName }} {{ $simpleType.GoName }} = "{{ .XmlName }}"
   {{end }}
 
 {{end}}

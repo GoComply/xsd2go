@@ -9,13 +9,23 @@ import (
 
 // Attribute defines single XML attribute
 type Enumeration struct {
-	XMLName xml.Name `xml:"http://www.w3.org/2001/XMLSchema enumeration"`
-	Value   string   `xml:"value,attr"`
+	XMLName    xml.Name    `xml:"http://www.w3.org/2001/XMLSchema enumeration"`
+	Value      string      `xml:"value,attr"`
+	Annotation *Annotation `xml:"annotation"`
+}
+
+func (e *Enumeration) GoComments() []string {
+	return e.Annotation.GoComments()
 }
 
 // Public Go Name of this struct item
 func (e *Enumeration) GoName() string {
-	return strcase.ToCamel(strings.ToLower(e.Value))
+	name := e.Annotation.GetName()
+	if name != "" {
+		return name
+	} else {
+		return strcase.ToCamel(strings.ToLower(e.Value))
+	}
 }
 
 func (e *Enumeration) Modifiers() string {
