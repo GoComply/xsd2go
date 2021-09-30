@@ -237,9 +237,11 @@ var staticTypes = map[string]staticType{
 	"anyType":            "string",
 	"int":                "int",
 	"integer":            "int64",
+	"long":               "int64",
 	"nonNegativeInteger": "int",
 	"anyURI":             "string",
-	"decimal":            "float64",
+	"double":             "float64",
+	"decimal":            "float64", // no: http://books.xmlschemata.org/relaxng/ch19-77057.html
 	"boolean":            "bool",
 	"ID":                 "string",
 }
