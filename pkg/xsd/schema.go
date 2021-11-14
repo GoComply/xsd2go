@@ -230,7 +230,7 @@ func (sch *Schema) GetType(name string) Type {
 		}
 	}
 	if IsStaticType(name) {
-		return StaticType("string")
+		return StaticType(name)
 	}
 	return nil
 }
