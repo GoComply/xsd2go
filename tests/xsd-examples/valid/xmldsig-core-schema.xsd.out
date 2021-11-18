@@ -418,7 +418,7 @@ type X509IssuerSerialType struct {
 
 	X509IssuerName string `xml:"X509IssuerName"`
 
-	X509SerialNumber string `xml:"X509SerialNumber"`
+	X509SerialNumber int64 `xml:"X509SerialNumber"`
 
 	InnerXml string `xml:",innerxml"`
 }
