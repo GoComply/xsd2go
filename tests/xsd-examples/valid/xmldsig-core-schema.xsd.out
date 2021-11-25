@@ -511,4 +511,4 @@ type CryptoBinary string
 
 type DigestValueType string
 
-type HMACOutputLengthType string
+type HMACOutputLengthType int64
