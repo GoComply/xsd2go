@@ -56,7 +56,7 @@ type SignatureMethod struct {
 
 	Algorithm string `xml:"Algorithm,attr"`
 
-	HMACOutputLength string `xml:",any"`
+	HMACOutputLength *HMACOutputLengthType `xml:",any"`
 }
 
 // Element
@@ -73,7 +73,7 @@ type Reference struct {
 
 	DigestMethod DigestMethodType `xml:"DigestMethod"`
 
-	DigestValue string `xml:"DigestValue"`
+	DigestValue DigestValueType `xml:"DigestValue"`
 }
 
 // Element
@@ -234,20 +234,20 @@ type SignatureProperty struct {
 type DSAKeyValue struct {
 	XMLName xml.Name `xml:"DSAKeyValue"`
 
-	G string `xml:"G"`
+	G *CryptoBinary `xml:"G"`
 
-	Y string `xml:"Y"`
+	Y CryptoBinary `xml:"Y"`
 
-	J string `xml:"J"`
+	J *CryptoBinary `xml:"J"`
 }
 
 // Element
 type RSAKeyValue struct {
 	XMLName xml.Name `xml:"RSAKeyValue"`
 
-	Modulus string `xml:"Modulus"`
+	Modulus CryptoBinary `xml:"Modulus"`
 
-	Exponent string `xml:"Exponent"`
+	Exponent CryptoBinary `xml:"Exponent"`
 }
 
 // XSD ComplexType declarations
@@ -304,7 +304,7 @@ type SignatureMethodType struct {
 
 	Algorithm string `xml:"Algorithm,attr"`
 
-	HMACOutputLength string `xml:",any"`
+	HMACOutputLength *HMACOutputLengthType `xml:",any"`
 
 	InnerXml string `xml:",innerxml"`
 }
@@ -322,7 +322,7 @@ type ReferenceType struct {
 
 	DigestMethod DigestMethodType `xml:"DigestMethod"`
 
-	DigestValue string `xml:"DigestValue"`
+	DigestValue DigestValueType `xml:"DigestValue"`
 
 	InnerXml string `xml:",innerxml"`
 }
@@ -486,11 +486,11 @@ type SignaturePropertyType struct {
 type DSAKeyValueType struct {
 	XMLName xml.Name
 
-	G string `xml:"G"`
+	G *CryptoBinary `xml:"G"`
 
-	Y string `xml:"Y"`
+	Y CryptoBinary `xml:"Y"`
 
-	J string `xml:"J"`
+	J *CryptoBinary `xml:"J"`
 
 	InnerXml string `xml:",innerxml"`
 }
@@ -498,9 +498,9 @@ type DSAKeyValueType struct {
 type RSAKeyValueType struct {
 	XMLName xml.Name
 
-	Modulus string `xml:"Modulus"`
+	Modulus CryptoBinary `xml:"Modulus"`
 
-	Exponent string `xml:"Exponent"`
+	Exponent CryptoBinary `xml:"Exponent"`
 
 	InnerXml string `xml:",innerxml"`
 }
@@ -511,4 +511,4 @@ type CryptoBinary string
 
 type DigestValueType string
 
-type HMACOutputLengthType string
+type HMACOutputLengthType int64

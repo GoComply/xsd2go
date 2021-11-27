@@ -52,7 +52,7 @@ import (
 
 // XSD SimpleType declarations
 {{range .ExportableSimpleTypes }}
-  type {{ .GoName }} string
+  type {{ .GoName }} {{ .GoTypeName }}
 
   {{ $simpleType := . }}
   {{ range .Enums }}

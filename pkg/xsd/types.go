@@ -174,6 +174,10 @@ func (st *SimpleType) compile(sch *Schema, parentElement *Element) {
 	if st.schema == nil {
 		st.schema = sch
 	}
+
+	if st.Restriction != nil {
+		st.Restriction.compile(sch, parentElement)
+	}
 }
 
 func (st *SimpleType) Attributes() []Attribute {

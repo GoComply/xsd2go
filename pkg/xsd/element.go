@@ -70,7 +70,7 @@ func (e *Element) GoMemLayout() string {
 
 func (e *Element) GoTypeName() string {
 	if e.Type != "" {
-		return e.typ.GoTypeName()
+		return e.typ.GoName()
 	} else if e.Ref != "" {
 		return e.refElm.GoTypeName()
 	} else if e.isPlainString() {
