@@ -33,7 +33,7 @@ func setXmlNameAnyForSingleElements(elements []Element) []Element {
 		result[0] = element
 		return result
 	} else {
-		for idx, _ := range elements {
+		for idx := range elements {
 			element := &elements[idx]
 			element.XmlNameOverride = ""
 		}
@@ -106,7 +106,7 @@ func (ct *ComplexType) compile(sch *Schema, parentElement *Element) {
 	// Handle improbable name clash. Consider XSD defining two attributes on the element:
 	// "id" and "Id", this would create name clash given the camelization we do.
 	goNames := map[string]uint{}
-	for idx, _ := range ct.Attributes() {
+	for idx := range ct.Attributes() {
 		attribute := &ct.Attributes()[idx]
 		attribute.compile(sch)
 
@@ -256,7 +256,6 @@ func StaticType(name string) staticType {
 		return typ
 	}
 	panic("Type xsd:" + name + " not implemented")
-	return staticType(name)
 }
 
 func IsStaticType(name string) bool {

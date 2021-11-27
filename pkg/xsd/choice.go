@@ -16,7 +16,7 @@ type Choice struct {
 
 func (c *Choice) compile(sch *Schema, parentElement *Element) {
 	c.schema = sch
-	for idx, _ := range c.ElementList {
+	for idx := range c.ElementList {
 		el := &c.ElementList[idx]
 
 		el.compile(sch, parentElement)
@@ -31,7 +31,7 @@ func (c *Choice) compile(sch *Schema, parentElement *Element) {
 
 	c.allElements = c.ElementList
 	inheritedElements := []Element{}
-	for idx, _ := range c.Sequences {
+	for idx := range c.Sequences {
 		el := &c.Sequences[idx]
 		el.compile(sch, parentElement)
 		for _, el2 := range el.Elements() {

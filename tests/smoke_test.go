@@ -41,6 +41,7 @@ func assertConvertsFine(t *testing.T, xsdPath string) []byte {
 	require.NoError(t, err)
 
 	generatedFilePath, err := locateGeneratedFile(outputDir)
+	require.NoError(t, err)
 	result, err := ioutil.ReadFile(generatedFilePath)
 	require.NoError(t, err)
 

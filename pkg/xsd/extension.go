@@ -19,7 +19,7 @@ func (ext *Extension) Attributes() []Attribute {
 		attrs = append(attrs, ext.typ.Attributes()...)
 		attrs = deduplicateAttributes(attrs)
 	}
-	for idx, _ := range ext.AttributeGroups {
+	for idx := range ext.AttributeGroups {
 		attrGroup := ext.AttributeGroups[idx]
 		attrs = append(attrs, attrGroup.Attributes()...)
 		attrs = deduplicateAttributes(attrs)
@@ -100,7 +100,7 @@ func (ext *Extension) compile(sch *Schema, parentElement *Element) {
 	}
 	ext.typ.compile(sch, parentElement)
 
-	for idx, _ := range ext.AttributeGroups {
+	for idx := range ext.AttributeGroups {
 		attrGroup := &ext.AttributeGroups[idx]
 		attrGroup.compile(sch, parentElement)
 
@@ -109,7 +109,7 @@ func (ext *Extension) compile(sch *Schema, parentElement *Element) {
 	// Handle improbable name clash. Consider XSD defining two attributes on the element:
 	// "id" and "Id", this would create name clash given the camelization we do.
 	goNames := map[string]uint{}
-	for idx, _ := range ext.Attributes() {
+	for idx := range ext.Attributes() {
 		attribute := &ext.Attributes()[idx]
 		attribute.compile(sch)
 
