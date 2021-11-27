@@ -1,4 +1,9 @@
-# XSD2Go - Automatically generate golang xml parser based on XSD ![Build CI](https://github.com/GoComply/xsd2go/workflows/Build%20CI/badge.svg) [![Lint CI](https://github.com/GoComply/xsd2go/actions/workflows/lint.yaml/badge.svg)](https://github.com/GoComply/xsd2go/actions/workflows/lint.yaml) [![Gitter](https://badges.gitter.im/GoComply/community.svg)](https://gitter.im/GoComply/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![PkgGoDev](https://pkg.go.dev/badge/github.com/gocomply/xsd2go)](https://pkg.go.dev/github.com/gocomply/xsd2go)
+# XSD2Go - Automatically generate golang xml parser based on XSD
+![Build CI](https://github.com/GoComply/xsd2go/workflows/Build%20CI/badge.svg)
+[![Lint CI](https://github.com/GoComply/xsd2go/actions/workflows/lint.yaml/badge.svg)](https://github.com/GoComply/xsd2go/actions/workflows/lint.yaml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/gocomply/xsd2go)](https://goreportcard.com/report/github.com/gocomply/xsd2go)
+[![Gitter](https://badges.gitter.im/GoComply/community.svg)](https://gitter.im/GoComply/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/gocomply/xsd2go)](https://pkg.go.dev/github.com/gocomply/xsd2go)
 
 :warning: **You should run xsd2go, before ever importing `encoding/xml` to your project.** :warning:
 
