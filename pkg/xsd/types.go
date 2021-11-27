@@ -256,7 +256,6 @@ func StaticType(name string) staticType {
 		return typ
 	}
 	panic("Type xsd:" + name + " not implemented")
-	return staticType(name)
 }
 
 func IsStaticType(name string) bool {

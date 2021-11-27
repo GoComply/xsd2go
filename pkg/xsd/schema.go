@@ -130,7 +130,6 @@ func (sch *Schema) xmlnsByPrefixInternal(xmlnsPrefix string) string {
 		}
 		return uri
 	}
-	return ""
 }
 
 func (sch *Schema) findReferencedSchemaByXmlns(xmlns string) *Schema {
