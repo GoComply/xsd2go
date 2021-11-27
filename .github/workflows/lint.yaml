@@ -48,3 +48,10 @@ jobs:
           git diff
           exit 1
         fi
+
+    - name: Run golangci-lint
+      uses: golangci/golangci-lint-action@v2
+      with:
+        skip-go-installation: true
+        skip-pkg-cache: true
+        skip-build-cache: true
