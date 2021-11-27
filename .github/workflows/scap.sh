@@ -22,6 +22,7 @@ pushd $workdir
 
     # Generage go code based on XSDs
     $xsd2go convert .scap_schemas/schemas/cpe/2.3/cpe-dictionary_2.3.xsd github.com/gocomply/scap pkg/scap/models
+    $xsd2go convert .scap_schemas/schemas/xccdf/1.2/xccdf_1.2.xsd github.com/gocomply/scap pkg/scap/models
 
     # Ensure the code can be compiled
     go vet ./...
