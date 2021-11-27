@@ -40,7 +40,7 @@ func GenerateTypes(schema *xsd.Schema, outputDir string) error {
 
 	p, err := format.Source(buf.Bytes())
 	if err != nil {
-		return errors.New(err.Error() + " in following file:\n" + string(buf.Bytes()))
+		return errors.New(err.Error() + " in following file:\n" + buf.String())
 	}
 
 	_, err = f.Write(p)
