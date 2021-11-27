@@ -48,7 +48,7 @@ func (ws *Workspace) loadXsd(xsdPath string, cache bool) (*Schema, error) {
 
 	dir := filepath.Dir(xsdPath)
 
-	for idx, _ := range schema.Includes {
+	for idx := range schema.Includes {
 		si := schema.Includes[idx]
 		if err := si.load(ws, dir); err != nil {
 			return nil, err
@@ -67,7 +67,7 @@ func (ws *Workspace) loadXsd(xsdPath string, cache bool) (*Schema, error) {
 		}
 	}
 
-	for idx, _ := range schema.Imports {
+	for idx := range schema.Imports {
 		if err := schema.Imports[idx].load(ws, dir); err != nil {
 			return nil, err
 		}

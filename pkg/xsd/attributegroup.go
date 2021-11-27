@@ -36,7 +36,7 @@ func (att *AttributeGroup) compile(sch *Schema, parentElement *Element) {
 	// Handle improbable name clash. Consider XSD defining two attributes on the element:
 	// "id" and "Id", this would create name clash given the camelization we do.
 	goNames := map[string]uint{}
-	for idx, _ := range att.Attributes() {
+	for idx := range att.Attributes() {
 		attribute := &att.Attributes()[idx]
 		attribute.compile(sch)
 

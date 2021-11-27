@@ -47,19 +47,19 @@ func (sch *Schema) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 }
 
 func (sch *Schema) compile() {
-	for idx, _ := range sch.Elements {
+	for idx := range sch.Elements {
 		el := &sch.Elements[idx]
 		el.compile(sch, nil)
 	}
-	for idx, _ := range sch.AttributeGroups {
+	for idx := range sch.AttributeGroups {
 		att := &sch.AttributeGroups[idx]
 		att.compile(sch, nil)
 	}
-	for idx, _ := range sch.ComplexTypes {
+	for idx := range sch.ComplexTypes {
 		ct := &sch.ComplexTypes[idx]
 		ct.compile(sch, nil)
 	}
-	for idx, _ := range sch.SimpleTypes {
+	for idx := range sch.SimpleTypes {
 		st := &sch.SimpleTypes[idx]
 		st.compile(sch, nil)
 	}
@@ -261,7 +261,7 @@ func (sch *Schema) registerImportedModule(module *Schema) {
 // Some elements are not defined at the top-level, rather these are inlined in the complexType definitions
 func (sch *Schema) registerInlinedElement(el *Element, parentElement *Element) {
 	found := false
-	for idx, _ := range sch.Elements {
+	for idx := range sch.Elements {
 		e := &sch.Elements[idx]
 		if e == el {
 			found = true

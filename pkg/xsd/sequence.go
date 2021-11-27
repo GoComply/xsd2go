@@ -16,13 +16,13 @@ func (s *Sequence) Elements() []Element {
 }
 
 func (s *Sequence) compile(sch *Schema, parentElement *Element) {
-	for idx, _ := range s.ElementList {
+	for idx := range s.ElementList {
 		el := &s.ElementList[idx]
 		el.compile(sch, parentElement)
 	}
 	s.allElements = s.ElementList
 
-	for idx, _ := range s.Choices {
+	for idx := range s.Choices {
 		c := &s.Choices[idx]
 		c.compile(sch, parentElement)
 

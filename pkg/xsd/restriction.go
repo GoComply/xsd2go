@@ -16,7 +16,7 @@ type Restriction struct {
 
 func (r *Restriction) compile(sch *Schema, parentElement *Element) {
 	r.schema = sch
-	for idx, _ := range r.AttributesDirect {
+	for idx := range r.AttributesDirect {
 		attribute := &r.AttributesDirect[idx]
 		attribute.compile(sch)
 	}
