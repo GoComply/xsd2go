@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://csrc.nist.gov/ns/swid/2015-extensions/1.0"
+    targetNamespace="http://csrc.nist.gov/ns/swid/2015-extensions/1.0"
+    elementFormDefault="qualified" attributeFormDefault="unqualified"
+    version="1.0">
+    <xs:annotation>
+        <xs:documentation>This schema represents extensions to ISO/IEC 19770-2:2015 as defined by the NISTIR 8060.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="pathSeparator" type="xs:string">
+        <xs:annotation>
+            <xs:documentation>Used to specify the path separator character used in containing &lt;File&gt; and &lt;Directory&gt; elements.</xs:documentation>
+            <xs:documentation>See guideline GEN-22.</xs:documentation>
+        </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="envVarPrefix" type="xs:string">
+        <xs:annotation>
+            <xs:documentation>Used to specify the character(s) used to prefix environment variables used in containing &lt;File&gt; and &lt;Directory&gt; elements.</xs:documentation>
+            <xs:documentation>See guideline GEN-23.</xs:documentation>
+        </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="envVarSuffix" type="xs:string">
+        <xs:annotation>
+            <xs:documentation>Used to specify the character(s) used to suffix environment variables used in containing &lt;File&gt; and &lt;Directory&gt; elements.</xs:documentation>
+            <xs:documentation>See guideline GEN-24.</xs:documentation>
+        </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="mutable" type="xs:boolean" default="false">
+        <xs:annotation>
+            <xs:documentation>Used to specify that the file referenced by the containing &lt;File&gt; element is likely to change. Such a change would then modify the file's size and hash value, causing these values to differ from those defined in the SWID tag.</xs:documentation>
+            <xs:documentation>See guideline PRI-11 and PRI-12.</xs:documentation>
+        </xs:annotation>
+    </xs:attribute>
+
+    <xs:simpleType name="PatchEventType">
+        <xs:annotation>
+            <xs:documentation>This type defines the types of file actions that can be peformed when applying a patch.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="update">
+                <xs:annotation>
+                    <xs:documentation>Indicates that the patch updates a pre-existing installed file by either modifying the file or replacing it with a modified new version of the file.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="remove">
+                <xs:annotation>
+                    <xs:documentation>Indicates that the patch removes the pre-existing installed file.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="add">
+                <xs:annotation>
+                    <xs:documentation>Indicates that the patch installs a new file that did not previously exist.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:attribute name="patchEvent" type="PatchEventType">
+        <xs:annotation>
+            <xs:documentation>Used to identify what operation the patch performs on the file referenced by the containing &lt;File&gt; element.</xs:documentation>
+            <xs:documentation>See guideline PAT-2 and PAT-3.</xs:documentation>
+        </xs:annotation>
+    </xs:attribute>
+</xs:schema>
