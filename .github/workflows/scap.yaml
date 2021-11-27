@@ -1,0 +1,36 @@
+name: SCAP Integration
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  scap-integration:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        go-version: [1.17.x]
+
+    runs-on: ${{ matrix.os }}
+    steps:
+
+    - name: Set up Go ${{ matrix.go-version }}
+      uses: actions/setup-go@v1
+      with:
+        go-version: ${{ matrix.go-version }}
+      id: go
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+
+    - name: Get Go dependencies
+      run: go get -v -t -d ./...
+
+    - name: Build gocomply_xsd2go
+      run: go build -v ./cli/gocomply_xsd2go
+
+    - name: Integrate
+      run: |
+        ./.github/workflows/scap.sh
