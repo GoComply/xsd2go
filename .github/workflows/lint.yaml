@@ -26,3 +26,25 @@ jobs:
       uses: actions/checkout@v2
 
     - run: go vet ./...
+
+    - name: Ensure clean git
+      run: |
+        if [ "$(gofmt -s -l ./cli ./pkg ./tests | wc -l)" -gt 0 ]; then
+            gofmt -s -l -d ./cli ./pkg ./tests
+            echo "Please run: go fmt ./..."
+            exit 1
+        fi
+
+        if [ "$(go mod tidy -v | wc -l)" -gt 0 ]; then
+            go mod tidy -v
+            echo "Please run: go mod tidy"
+            exit 1
+        fi
+
+        if [[ -n $(git status -s) ]] ; then
+          echo "Running 'go fmt' or 'go mod tidy' left git repo in a modified state."
+          echo "Please ensure to include those changes in your PR"
+          git status -s
+          git diff
+          exit 1
+        fi
