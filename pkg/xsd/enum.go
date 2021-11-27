@@ -25,6 +25,3 @@ func (e *Enumeration) Modifiers() string {
 func (e *Enumeration) XmlName() string {
 	return e.Value
 }
-
-func (e *Enumeration) compile(s *Schema) {
-}
