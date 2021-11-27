@@ -248,6 +248,7 @@ var staticTypes = map[string]staticType{
 	"decimal":            "float64", // no: http://books.xmlschemata.org/relaxng/ch19-77057.html
 	"boolean":            "bool",
 	"ID":                 "string",
+	"unsignedInt":        "uint64",
 }
 
 func StaticType(name string) staticType {
