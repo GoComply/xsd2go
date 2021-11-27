@@ -21,6 +21,7 @@ endif
 
 ci-update-bundled-deps: pkger
 	$(GOBIN)/pkger -o pkg/template
+	go fmt ./pkg/template
 
 vendor:
 	$(GO) mod tidy
