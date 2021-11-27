@@ -239,7 +239,7 @@ func (sch *Schema) GoPackageName() string {
 	if xmlnsPrefix == "" {
 		xmlnsPrefix = strings.TrimSuffix(filepath.Base(sch.filePath), ".xsd")
 	}
-	return strings.ReplaceAll(xmlnsPrefix, "-", "_")
+	return strings.ReplaceAll(strings.ReplaceAll(xmlnsPrefix, "-", "_"), ".", "_")
 }
 
 func (sch *Schema) GoImportsNeeded() []string {

@@ -2,7 +2,6 @@ package template
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
 	"go/format"
 	"io/ioutil"
@@ -30,17 +29,17 @@ func GenerateTypes(schema *xsd.Schema, outputDir string) error {
 	fmt.Printf("\tGenerating '%s'\n", goFile)
 	f, err := os.Create(goFile)
 	if err != nil {
-		return err
+		return fmt.Errorf("Could not create '%s': %v", goFile, err)
 	}
 
 	var buf bytes.Buffer
 	if err := t.Execute(&buf, schema); err != nil {
-		return err
+		return fmt.Errorf("Could not execute template: %v", err)
 	}
 
 	p, err := format.Source(buf.Bytes())
 	if err != nil {
-		return errors.New(err.Error() + " in following file:\n" + buf.String())
+		return fmt.Errorf("Could not gofmt output file\nError was: '%v'\nFile was:\n%s\n", err, buf.String())
 	}
 
 	_, err = f.Write(p)
