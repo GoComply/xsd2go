@@ -18,7 +18,10 @@ func NewWorkspace(goModulesPath, xsdPath string) (*Workspace, error) {
 	}
 	var err error
 	_, err = ws.loadXsd(xsdPath, true)
-	return &ws, err
+	if err != nil {
+		return nil, err
+	}
+	return &ws, ws.compile()
 }
 
 func (ws *Workspace) loadXsd(xsdPath string, cache bool) (*Schema, error) {
@@ -74,4 +77,19 @@ func (ws *Workspace) loadXsd(xsdPath string, cache bool) (*Schema, error) {
 	}
 	schema.compile()
 	return schema, nil
+}
+
+func (ws *Workspace) compile() error {
+	uniqPkgNames := map[string]string{}
+
+	for _, schema := range ws.Cache {
+		goPackageName := schema.GoPackageName()
+		prevXmlns, ok := uniqPkgNames[goPackageName]
+		if ok {
+			return fmt.Errorf("Malformed workspace. Multiple XSD files refer to itself with xmlns shorthand: '%s':\n - %s\n - %s\nWhile this is valid in XSD it is impractical for golang code generation", goPackageName, prevXmlns, schema.TargetNamespace)
+		}
+		uniqPkgNames[goPackageName] = schema.TargetNamespace
+	}
+
+	return nil
 }
