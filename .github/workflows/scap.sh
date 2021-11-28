@@ -26,6 +26,9 @@ pushd $workdir
             --xmlns-override=http://cpe.mitre.org/language/2.0=cpe_language \
             .scap_schemas/schemas/xccdf/1.2/xccdf_1.2.xsd github.com/gocomply/scap pkg/scap/models
 	  $xsd2go convert .scap_schemas/schemas/oval/5.11.3/oval-results-schema.xsd github.com/gocomply/scap pkg/scap/models
+	  $xsd2go convert \
+            --xmlns-override=http://cpe.mitre.org/language/2.0=cpe_language \
+            .scap_schemas/schemas/sds/1.3/scap-source-data-stream_1.3.xsd github.com/gocomply/scap pkg/scap/models
 
     # Ensure the code can be compiled
     go vet ./...
