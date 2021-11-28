@@ -80,7 +80,7 @@ func (e *Element) GoTypeName() string {
 }
 
 func (e *Element) GoForeignModule() string {
-	if e.isPlainString() {
+	if e.isPlainString() && e.refElm == nil && e.typ == nil {
 		return ""
 	}
 
