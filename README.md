@@ -26,7 +26,10 @@ are up to here.
 # Acquire latest some XSD file you want to convert - for instance XCCDF 1.2
 git clone --depth 1 https://github.com/openscap/openscap
 # Parse XSD schema and generate golang structs
-./gocomply_xsd2go convert openscap/schemas/xccdf/1.2/xccdf_1.2.xsd github.com/complianceascode/librescap pkg/scap/models/xccdf/1.2
+./gocomply_xsd2go convert \
+    --xmlns-override=http://cpe.mitre.org/language/2.0=cpe_language \
+    .scap_schemas/schemas/xccdf/1.2/xccdf_1.2.xsd \
+    github.com/gocomply/scap pkg/scap/models
 ```
 
 ## Installation
