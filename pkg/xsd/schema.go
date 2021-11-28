@@ -11,20 +11,21 @@ import (
 
 // Schema is the root XSD element
 type Schema struct {
-	XMLName         xml.Name           `xml:"http://www.w3.org/2001/XMLSchema schema"`
-	Xmlns           Xmlns              `xml:"-"`
-	TargetNamespace string             `xml:"targetNamespace,attr"`
-	Includes        []Include          `xml:"include"`
-	Imports         []Import           `xml:"import"`
-	Elements        []Element          `xml:"element"`
-	Attributes      []Attribute        `xml:"attribute"`
-	AttributeGroups []AttributeGroup   `xml:"attributeGroup"`
-	ComplexTypes    []ComplexType      `xml:"complexType"`
-	SimpleTypes     []SimpleType       `xml:"simpleType"`
-	importedModules map[string]*Schema `xml:"-"`
-	ModulesPath     string             `xml:"-"`
-	filePath        string             `xml:"-"`
-	inlinedElements []Element          `xml:"-"`
+	XMLName               xml.Name           `xml:"http://www.w3.org/2001/XMLSchema schema"`
+	Xmlns                 Xmlns              `xml:"-"`
+	TargetNamespace       string             `xml:"targetNamespace,attr"`
+	Includes              []Include          `xml:"include"`
+	Imports               []Import           `xml:"import"`
+	Elements              []Element          `xml:"element"`
+	Attributes            []Attribute        `xml:"attribute"`
+	AttributeGroups       []AttributeGroup   `xml:"attributeGroup"`
+	ComplexTypes          []ComplexType      `xml:"complexType"`
+	SimpleTypes           []SimpleType       `xml:"simpleType"`
+	importedModules       map[string]*Schema `xml:"-"`
+	ModulesPath           string             `xml:"-"`
+	filePath              string             `xml:"-"`
+	inlinedElements       []Element          `xml:"-"`
+	goPackageNameOverride string             `xml:"-"`
 }
 
 func parseSchema(f io.Reader) (*Schema, error) {
@@ -235,6 +236,9 @@ func (sch *Schema) GetType(name string) Type {
 }
 
 func (sch *Schema) GoPackageName() string {
+	if sch.goPackageNameOverride != "" {
+		return sch.goPackageNameOverride
+	}
 	xmlnsPrefix := sch.Xmlns.PrefixByUri(sch.TargetNamespace)
 	if xmlnsPrefix == "" {
 		xmlnsPrefix = strings.TrimSuffix(filepath.Base(sch.filePath), ".xsd")

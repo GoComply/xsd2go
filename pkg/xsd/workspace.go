@@ -7,18 +7,28 @@ import (
 )
 
 type Workspace struct {
-	Cache         map[string]*Schema
-	GoModulesPath string
+	Cache          map[string]*Schema
+	GoModulesPath  string
+	xmlnsOverrides xmlnsOverrides
 }
 
-func NewWorkspace(goModulesPath, xsdPath string) (*Workspace, error) {
+func NewWorkspace(goModulesPath, xsdPath string, xmlnsOverrides []string) (*Workspace, error) {
+
 	ws := Workspace{
 		Cache:         map[string]*Schema{},
 		GoModulesPath: goModulesPath,
 	}
 	var err error
+	ws.xmlnsOverrides, err = ParseXmlnsOverrides(xmlnsOverrides)
+	if err != nil {
+		return nil, err
+	}
+
 	_, err = ws.loadXsd(xsdPath, true)
-	return &ws, err
+	if err != nil {
+		return nil, err
+	}
+	return &ws, ws.compile()
 }
 
 func (ws *Workspace) loadXsd(xsdPath string, cache bool) (*Schema, error) {
@@ -40,6 +50,7 @@ func (ws *Workspace) loadXsd(xsdPath string, cache bool) (*Schema, error) {
 	}
 	schema.ModulesPath = ws.GoModulesPath
 	schema.filePath = xsdPath
+	schema.goPackageNameOverride = ws.xmlnsOverrides.override(schema.TargetNamespace)
 	// Won't cache included schemas - we need to append contents to the current
 	// schema.
 	if cache {
@@ -74,4 +85,19 @@ func (ws *Workspace) loadXsd(xsdPath string, cache bool) (*Schema, error) {
 	}
 	schema.compile()
 	return schema, nil
+}
+
+func (ws *Workspace) compile() error {
+	uniqPkgNames := map[string]string{}
+
+	for _, schema := range ws.Cache {
+		goPackageName := schema.GoPackageName()
+		prevXmlns, ok := uniqPkgNames[goPackageName]
+		if ok {
+			return fmt.Errorf("Malformed workspace. Multiple XSD files refer to itself with xmlns shorthand: '%s':\n - %s\n - %s\nWhile this is valid in XSD it is impractical for golang code generation.\nConsider providing --xmlns-override=%s=mygopackage", goPackageName, prevXmlns, schema.TargetNamespace, schema.TargetNamespace)
+		}
+		uniqPkgNames[goPackageName] = schema.TargetNamespace
+	}
+
+	return nil
 }
