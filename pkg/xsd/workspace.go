@@ -38,16 +38,25 @@ func (ws *Workspace) loadXsd(xsdPath string, cache bool) (*Schema, error) {
 	}
 	fmt.Println("\tParsing:", xsdPath)
 
-	f, err := os.Open(xsdPath)
+	xsdPathClean := filepath.Clean(xsdPath)
+	f, err := os.Open(xsdPathClean)
 	if err != nil {
 		return nil, err
 	}
-	defer f.Close()
 
 	schema, err := parseSchema(f)
 	if err != nil {
+		err2 := f.Close()
+		if err2 != nil {
+			fmt.Fprintf(os.Stderr, "Error while closing file %s, %v", xsdPathClean, err2)
+		}
 		return nil, err
 	}
+	err = f.Close()
+	if err != nil {
+		return nil, err
+	}
+
 	schema.ModulesPath = ws.GoModulesPath
 	schema.filePath = xsdPath
 	schema.goPackageNameOverride = ws.xmlnsOverrides.override(schema.TargetNamespace)
