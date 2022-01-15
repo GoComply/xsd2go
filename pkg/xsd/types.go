@@ -47,6 +47,7 @@ type ComplexType struct {
 	Mixed            bool            `xml:"mixed,attr"`
 	AttributesDirect []Attribute     `xml:"attribute"`
 	Sequence         *Sequence       `xml:"sequence"`
+	SequenceAll      *SequenceAll    `xml:"all"`
 	schema           *Schema         `xml:"-"`
 	SimpleContent    *SimpleContent  `xml:"simpleContent"`
 	ComplexContent   *ComplexContent `xml:"complexContent"`
@@ -73,6 +74,8 @@ func (ct *ComplexType) HasXmlNameAttribute() bool {
 func (ct *ComplexType) Elements() []Element {
 	if ct.Sequence != nil {
 		return setXmlNameAnyForSingleElements(ct.Sequence.Elements())
+	} else if ct.SequenceAll != nil {
+		return setXmlNameAnyForSingleElements(ct.SequenceAll.Elements())
 	} else if ct.content != nil {
 		return setXmlNameAnyForSingleElements(ct.content.Elements())
 	} else if ct.Choice != nil {
@@ -101,6 +104,12 @@ func (ct *ComplexType) compile(sch *Schema, parentElement *Element) {
 	ct.schema = sch
 	if ct.Sequence != nil {
 		ct.Sequence.compile(sch, parentElement)
+	}
+	if ct.SequenceAll != nil {
+		if ct.Sequence != nil {
+			panic("Not implemented: xsd:complexType " + ct.Name + " defines xsd:sequence and xsd:all")
+		}
+		ct.SequenceAll.compile(sch, parentElement)
 	}
 
 	// Handle improbable name clash. Consider XSD defining two attributes on the element:
@@ -134,6 +143,9 @@ func (ct *ComplexType) compile(sch *Schema, parentElement *Element) {
 		if ct.Sequence != nil {
 			panic("Not implemented: xsd:complexType " + ct.Name + " defines xsd:sequence and xsd:content")
 		}
+		if ct.SequenceAll != nil {
+			panic("Not implemented: xsd:complexType " + ct.Name + " defines xsd:all and xsd:content")
+		}
 		ct.content.compile(sch, parentElement)
 	}
 
@@ -143,6 +155,9 @@ func (ct *ComplexType) compile(sch *Schema, parentElement *Element) {
 		}
 		if ct.Sequence != nil {
 			panic("Not implemented: xsd:complexType " + ct.Name + " defines xsd:choice and xsd:sequence")
+		}
+		if ct.SequenceAll != nil {
+			panic("Not implemented: xsd:complexType " + ct.Name + " defines xsd:all and xsd:sequence")
 		}
 		ct.Choice.compile(sch, parentElement)
 	}
