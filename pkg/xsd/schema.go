@@ -264,6 +264,16 @@ func (sch *Schema) registerImportedModule(module *Schema) {
 
 // Some elements are not defined at the top-level, rather these are inlined in the complexType definitions
 func (sch *Schema) registerInlinedElement(el *Element, parentElement *Element) {
+	if sch.isElementInlined(el) {
+		if el.Name == "" {
+			panic("Not implemented: found inlined xsd:element without @name attribute")
+		}
+		el.prefixNameWithParent(parentElement)
+		sch.inlinedElements = append(sch.inlinedElements, *el)
+	}
+}
+
+func (sch *Schema) isElementInlined(el *Element) bool {
 	found := false
 	for idx := range sch.Elements {
 		e := &sch.Elements[idx]
@@ -272,13 +282,7 @@ func (sch *Schema) registerInlinedElement(el *Element, parentElement *Element) {
 			break
 		}
 	}
-	if !found {
-		if el.Name == "" {
-			panic("Not implemented: found inlined xsd:element without @name attribute")
-		}
-		el.prefixNameWithParent(parentElement)
-		sch.inlinedElements = append(sch.inlinedElements, *el)
-	}
+	return !found
 }
 
 type Import struct {
