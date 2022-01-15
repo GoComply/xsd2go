@@ -129,17 +129,17 @@ func (ct *ComplexType) compile(sch *Schema, parentElement *Element) {
 
 	if ct.content != nil {
 		if len(ct.AttributesDirect) > 1 {
-			panic("Not implemented: xsd:complexType " + ct.Name + " defines direct attribute and xsd:*Content")
+			panic("Not implemented: xsd:complexType " + ct.Name + " defines direct attribute and xsd:Content")
 		}
 		if ct.Sequence != nil {
-			panic("Not implemented: xsd:complexType " + ct.Name + " defines xsd:sequence and xsd:*Content")
+			panic("Not implemented: xsd:complexType " + ct.Name + " defines xsd:sequence and xsd:Content")
 		}
 		ct.content.compile(sch, parentElement)
 	}
 
 	if ct.Choice != nil {
 		if ct.content != nil {
-			panic("Not implemented: xsd:complexType " + ct.Name + " defines xsd:choice and xsd:*content")
+			panic("Not implemented: xsd:complexType " + ct.Name + " defines xsd:choice and xsd:content")
 		}
 		if ct.Sequence != nil {
 			panic("Not implemented: xsd:complexType " + ct.Name + " defines xsd:choice and xsd:sequence")
