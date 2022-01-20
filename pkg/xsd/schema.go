@@ -82,13 +82,16 @@ func (sch *Schema) resolveNameCollisions() {
 	for _, l := range elementsByName {
 		if len(l) > 1 {
 			// Found elements that have duplicate name
-			fmt.Printf("\n - resolving name collision: %s", l[0].GoName())
+			// TODO: resolve the name collisions more intelligently here.
+			// TODO: Needs to compare parent name for all the collisions and potentially use grand parent
+			fmt.Printf("\n - TODO: resolving name collision: %s", l[0].GoName())
 			for idx := range l {
 				el := l[idx]
 				el.prefixNameWithParent(el.Parent)
 			}
 		}
 	}
+	// TODO call resolveNameCollisions again on resolved schema, to avoid new collisions created by resolver
 }
 
 func (sch *Schema) elementsByGoName() map[string][]*Element {
