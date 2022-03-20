@@ -25,7 +25,7 @@ func GenerateTypes(schema *xsd.Schema, outputDir string) error {
 	if err != nil {
 		return err
 	}
-	goFile := fmt.Sprintf("%s/models.go", dir)
+	goFile := filepath.Clean(filepath.Join(dir, "models.go"))
 	fmt.Printf("\tGenerating '%s'\n", goFile)
 	f, err := os.Create(goFile)
 	if err != nil {
