@@ -22,12 +22,12 @@ github.com/pmezard/go-difflib/difflib
 github.com/russross/blackfriday/v2
 # github.com/shurcooL/sanitized_anchor_name v1.0.0
 github.com/shurcooL/sanitized_anchor_name
-# github.com/stretchr/testify v1.7.1
+# github.com/stretchr/testify v1.7.2
 ## explicit
 github.com/stretchr/testify/assert
 github.com/stretchr/testify/require
 # github.com/urfave/cli v1.22.8
 ## explicit
 github.com/urfave/cli
-# gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c
+# gopkg.in/yaml.v3 v3.0.1
 gopkg.in/yaml.v3
