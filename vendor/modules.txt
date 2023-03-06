@@ -27,5 +27,7 @@ github.com/stretchr/testify/require
 # github.com/urfave/cli v1.22.12
 ## explicit
 github.com/urfave/cli
+# golang.org/x/net v0.8.0
+## explicit
 # gopkg.in/yaml.v3 v3.0.1
 gopkg.in/yaml.v3
