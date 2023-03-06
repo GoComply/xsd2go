@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+
+	"golang.org/x/net/html/charset"
 )
 
 // Schema is the root XSD element
@@ -31,6 +33,7 @@ type Schema struct {
 func parseSchema(f io.Reader) (*Schema, error) {
 	schema := Schema{importedModules: map[string]*Schema{}}
 	d := xml.NewDecoder(f)
+	d.CharsetReader = charset.NewReaderLabel
 
 	if err := d.Decode(&schema); err != nil {
 		return nil, fmt.Errorf("Error decoding XSD: %s", err)
