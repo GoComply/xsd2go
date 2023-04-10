@@ -257,7 +257,8 @@ var staticTypes = map[string]staticType{
 	"int":                "int",
 	"integer":            "int64",
 	"long":               "int64",
-	"nonNegativeInteger": "int",
+	"negativeInteger":    "int64",
+	"nonNegativeInteger": "uint64",
 	"anyURI":             "string",
 	"double":             "float64",
 	"decimal":            "float64", // no: http://books.xmlschemata.org/relaxng/ch19-77057.html
