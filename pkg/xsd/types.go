@@ -267,6 +267,12 @@ var staticTypes = map[string]staticType{
 	"ID":                 "string",
 	"positiveInteger":    "uint64",
 	"unsignedInt":        "uint64",
+	"gYear":              "string",
+	"gYearMonth":         "string",
+	"gMonthDay":          "string",
+	"gDay":               "string",
+	"gMonth":             "string",
+	"time":               "string",
 }
 
 func StaticType(name string) staticType {
