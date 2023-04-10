@@ -245,6 +245,7 @@ func (st staticType) compile(*Schema, *Element) {
 
 var staticTypes = map[string]staticType{
 	"string":             "string",
+	"language":           "string",
 	"dateTime":           "string",
 	"date":               "string",
 	"base64Binary":       "string",
