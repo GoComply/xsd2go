@@ -245,6 +245,7 @@ func (st staticType) compile(*Schema, *Element) {
 
 var staticTypes = map[string]staticType{
 	"string":             "string",
+	"language":           "string",
 	"dateTime":           "string",
 	"date":               "string",
 	"base64Binary":       "string",
@@ -265,6 +266,7 @@ var staticTypes = map[string]staticType{
 	"float":              "float64",
 	"boolean":            "bool",
 	"ID":                 "string",
+	"IDREF":              "string",
 	"positiveInteger":    "uint64",
 	"unsignedInt":        "uint64",
 	"gYear":              "string",
