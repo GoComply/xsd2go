@@ -265,6 +265,7 @@ var staticTypes = map[string]staticType{
 	"float":              "float64",
 	"boolean":            "bool",
 	"ID":                 "string",
+	"IDREF":              "string",
 	"positiveInteger":    "uint64",
 	"unsignedInt":        "uint64",
 }
