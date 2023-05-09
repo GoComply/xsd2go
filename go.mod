@@ -7,7 +7,7 @@ require (
 	github.com/markbates/pkger v0.17.1
 	github.com/stretchr/testify v1.8.2
 	github.com/urfave/cli v1.22.13
-	golang.org/x/net v0.9.0
+	golang.org/x/net v0.10.0
 )
 
 require (
