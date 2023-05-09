@@ -1,6 +1,6 @@
 module github.com/gocomply/xsd2go
 
-go 1.17
+go 1.18
 
 require (
 	github.com/iancoleman/strcase v0.2.0
