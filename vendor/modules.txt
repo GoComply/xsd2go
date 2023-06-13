@@ -29,7 +29,7 @@ github.com/russross/blackfriday/v2
 ## explicit; go 1.20
 github.com/stretchr/testify/assert
 github.com/stretchr/testify/require
-# github.com/urfave/cli v1.22.13
+# github.com/urfave/cli v1.22.14
 ## explicit; go 1.11
 github.com/urfave/cli
 # golang.org/x/net v0.10.0

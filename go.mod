@@ -6,7 +6,7 @@ require (
 	github.com/iancoleman/strcase v0.2.0
 	github.com/markbates/pkger v0.17.1
 	github.com/stretchr/testify v1.8.4
-	github.com/urfave/cli v1.22.13
+	github.com/urfave/cli v1.22.14
 	golang.org/x/net v0.10.0
 )
 
