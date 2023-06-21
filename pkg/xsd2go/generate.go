@@ -3,13 +3,18 @@ package xsd2go
 import (
 	"fmt"
 
-	"github.com/gocomply/xsd2go/pkg/template"
-	"github.com/gocomply/xsd2go/pkg/xsd"
+	"github.com/moov-io/xsd2go/pkg/xsd"
 )
 
-func Convert(xsdPath, goModule, outputDir string, xmlnsOverrides []string) error {
-	fmt.Printf("Processing '%s'\n", xsdPath)
-	ws, err := xsd.NewWorkspace(fmt.Sprintf("%s/%s", goModule, outputDir), xsdPath, xmlnsOverrides)
+func Convert(xsdFile, outputDir, outputFile, goPackage, nsPrefix string, tmplDir string) error {
+	fmt.Printf("Processing '%s'\n", xsdFile)
+
+	templates, err := GetAllTemplates(tmplDir)
+	if err != nil {
+		return err
+	}
+
+	ws, err := xsd.NewWorkspace(fmt.Sprintf("%s/%s", goPackage, outputDir), xsdFile, templates)
 	if err != nil {
 		return err
 	}
@@ -18,7 +23,10 @@ func Convert(xsdPath, goModule, outputDir string, xmlnsOverrides []string) error
 		if sch.Empty() {
 			continue
 		}
-		if err := template.GenerateTypes(sch, outputDir); err != nil {
+
+		sch.NsPrefix = nsPrefix
+
+		if err := GenerateTypes("element.tmpl", sch, outputDir, outputFile, tmplDir); err != nil {
 			return err
 		}
 	}

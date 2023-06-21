@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:simple-schema="https://simple.example.com/" targetNamespace="https://simple.example.com/" elementFormDefault="qualified">
+    <xsd:element name="myelement" type="simple-schema:MyElementType" />
+    <xsd:complexType name="MyElementType">
+        <xsd:sequence>
+            <xsd:element name="id" type="ISODateTime" />
+            <xsd:element name="amtccy" type="ActiveOrHistoricCurrencyAndAmount" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:simpleType name="ISODateTime">
+        <xsd:restriction base="xsd:dateTime"/>
+    </xsd:simpleType>
+    <xsd:complexType name="ActiveOrHistoricCurrencyAndAmount">
+        <xsd:simpleContent>
+            <xsd:extension base="ActiveOrHistoricCurrencyAndAmount_SimpleType">
+                <xsd:attribute name="Ccy" type="ActiveOrHistoricCurrencyCode" use="required"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:simpleType name="ActiveOrHistoricCurrencyAndAmount_SimpleType">
+        <xsd:restriction base="xsd:decimal">
+            <xsd:fractionDigits value="5"/>
+            <xsd:totalDigits value="18"/>
+            <xsd:minInclusive value="0"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="ActiveOrHistoricCurrencyCode">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[A-Z]{3,3}"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+</xsd:schema>

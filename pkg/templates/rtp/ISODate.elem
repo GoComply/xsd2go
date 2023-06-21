@@ -1,0 +1,1 @@
+{{ .GoFieldName }} {{ if .Array }}[]{{ end }}{{ if eq .MinOccurs "0" }}*{{ end }}rtp.{{ .GoTypeName }} `xml:"{{ .Schema.TargetNamespace }} {{ .XmlName }}{{ if eq .MinOccurs "0" }},omitempty{{ end }}"`

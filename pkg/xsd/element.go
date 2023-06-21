@@ -22,13 +22,13 @@ type Element struct {
 	refElm          *Element     `xml:"-"`
 	ComplexType     *ComplexType `xml:"complexType"`
 	SimpleType      *SimpleType  `xml:"simpleType"`
-	schema          *Schema      `xml:"-"`
+	Schema          *Schema      `xml:"-"`
 	typ             Type         `xml:"-"`
 }
 
 func (e *Element) Attributes() []Attribute {
 	if e.typ != nil {
-		return injectSchemaIntoAttributes(e.schema, e.typ.Attributes())
+		return injectSchemaIntoAttributes(e.Schema, e.typ.Attributes())
 	}
 	return []Attribute{}
 }
@@ -56,6 +56,10 @@ func (e *Element) GoName() string {
 		return strcase.ToCamel(e.nameOverride)
 	}
 	return e.GoFieldName()
+}
+
+func (e *Element) Array() bool {
+	return e.isArray()
 }
 
 func (e *Element) GoMemLayout() string {
@@ -86,13 +90,13 @@ func (e *Element) GoForeignModule() string {
 
 	foreignSchema := (*Schema)(nil)
 	if e.refElm != nil {
-		foreignSchema = e.refElm.schema
+		foreignSchema = e.refElm.Schema
 	} else if e.typ != nil {
 		foreignSchema = e.typ.Schema()
 	}
 
-	if foreignSchema != nil && foreignSchema != e.schema &&
-		foreignSchema.TargetNamespace != e.schema.TargetNamespace {
+	if foreignSchema != nil && foreignSchema != e.Schema &&
+		foreignSchema.TargetNamespace != e.Schema.TargetNamespace {
 		return foreignSchema.GoPackageName() + "."
 	}
 	return ""
@@ -126,7 +130,7 @@ func (e *Element) isArray() bool {
 }
 
 func (e *Element) compile(s *Schema, parentElement *Element) {
-	e.schema = s
+	e.Schema = s
 	if e.ComplexType != nil {
 		e.typ = e.ComplexType
 		if e.SimpleType != nil {
@@ -142,19 +146,19 @@ func (e *Element) compile(s *Schema, parentElement *Element) {
 		}
 		e.typ.compile(s, e)
 	} else if e.Type != "" {
-		e.typ = e.schema.findReferencedType(e.Type)
+		e.typ = e.Schema.findReferencedType(e.Type)
 		if e.typ == nil {
 			panic("Cannot resolve type reference: " + string(e.Type))
 		}
 	} else if e.Ref != "" {
-		e.refElm = e.schema.findReferencedElement(e.Ref)
+		e.refElm = e.Schema.findReferencedElement(e.Ref)
 		if e.refElm == nil {
 			panic("Cannot resolve element reference: " + e.Ref)
 		}
 	}
 
 	if e.Ref == "" && e.Type == "" && !e.isPlainString() {
-		e.schema.registerInlinedElement(e, parentElement)
+		e.Schema.registerInlinedElement(e, parentElement)
 	}
 }
 
@@ -164,4 +168,18 @@ func (e *Element) prefixNameWithParent(parentElement *Element) {
 	if parentElement != nil {
 		e.nameOverride = fmt.Sprintf("%s-%s", parentElement.GoName(), e.GoName())
 	}
+}
+
+func (e *Element) IncludeElementTemplate() bool {
+	if e.typ != nil {
+		return e.typ.IncludeElementTemplate()
+	}
+	return false
+}
+
+func (e *Element) IncludeTemplateName() string {
+	if e.typ != nil {
+		return e.typ.IncludeTemplateName()
+	}
+	return ""
 }

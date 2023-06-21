@@ -13,21 +13,30 @@ import (
 
 // Schema is the root XSD element
 type Schema struct {
-	XMLName               xml.Name           `xml:"http://www.w3.org/2001/XMLSchema schema"`
-	Xmlns                 Xmlns              `xml:"-"`
-	TargetNamespace       string             `xml:"targetNamespace,attr"`
-	Includes              []Include          `xml:"include"`
-	Imports               []Import           `xml:"import"`
-	Elements              []Element          `xml:"element"`
-	Attributes            []Attribute        `xml:"attribute"`
-	AttributeGroups       []AttributeGroup   `xml:"attributeGroup"`
-	ComplexTypes          []ComplexType      `xml:"complexType"`
-	SimpleTypes           []SimpleType       `xml:"simpleType"`
-	importedModules       map[string]*Schema `xml:"-"`
-	ModulesPath           string             `xml:"-"`
-	filePath              string             `xml:"-"`
-	inlinedElements       []Element          `xml:"-"`
-	goPackageNameOverride string             `xml:"-"`
+	XMLName           xml.Name            `xml:"http://www.w3.org/2001/XMLSchema schema"`
+	Xmlns             Xmlns               `xml:"-"`
+	TargetNamespace   string              `xml:"targetNamespace,attr"`
+	Includes          []Include           `xml:"include"`
+	Imports           []Import            `xml:"import"`
+	Elements          []Element           `xml:"element"`
+	Attributes        []Attribute         `xml:"attribute"`
+	AttributeGroups   []AttributeGroup    `xml:"attributeGroup"`
+	ComplexTypes      []ComplexType       `xml:"complexType"`
+	SimpleTypes       []SimpleType        `xml:"simpleType"`
+	importedModules   map[string]*Schema  `xml:"-"`
+	ModulesPath       string              `xml:"-"`
+	filePath          string              `xml:"-"`
+	inlinedElements   []Element           `xml:"-"`
+	NsPrefix          string              `xml:"-"`
+	TemplateOverrides map[string]Override `xml:"-"`
+}
+type Override struct {
+	TemplateName string
+	TemplateUsed bool
+	IsIncl       bool
+	IsElem       bool
+	IsCompTyp    bool
+	TemplateType string
 }
 
 func parseSchema(f io.Reader) (*Schema, error) {
@@ -239,13 +248,7 @@ func (sch *Schema) GetType(name string) Type {
 }
 
 func (sch *Schema) GoPackageName() string {
-	if sch.goPackageNameOverride != "" {
-		return sch.goPackageNameOverride
-	}
-	xmlnsPrefix := sch.Xmlns.PrefixByUri(sch.TargetNamespace)
-	if xmlnsPrefix == "" {
-		xmlnsPrefix = strings.TrimSuffix(filepath.Base(sch.filePath), ".xsd")
-	}
+	xmlnsPrefix := strings.TrimSuffix(filepath.Base(sch.filePath), ".xsd")
 	return strings.ReplaceAll(strings.ReplaceAll(xmlnsPrefix, "-", "_"), ".", "_")
 }
 
@@ -295,10 +298,10 @@ type Import struct {
 	ImportedSchema *Schema  `xml:"-"`
 }
 
-func (i *Import) load(ws *Workspace, baseDir string) (err error) {
+func (i *Import) load(ws *Workspace, templateOverrides map[string]Override, baseDir string) (err error) {
 	if i.SchemaLocation != "" {
 		i.ImportedSchema, err =
-			ws.loadXsd(filepath.Join(baseDir, i.SchemaLocation), true)
+			ws.loadXsd(filepath.Join(baseDir, i.SchemaLocation), templateOverrides, true)
 	}
 	return
 }
@@ -310,10 +313,10 @@ type Include struct {
 	IncludedSchema *Schema  `xml:"-"`
 }
 
-func (i *Include) load(ws *Workspace, baseDir string) (err error) {
+func (i *Include) load(ws *Workspace, templateOverrides map[string]Override, baseDir string) (err error) {
 	if i.SchemaLocation != "" {
 		i.IncludedSchema, err =
-			ws.loadXsd(filepath.Join(baseDir, i.SchemaLocation), false)
+			ws.loadXsd(filepath.Join(baseDir, i.SchemaLocation), templateOverrides, false)
 	}
 	return
 }

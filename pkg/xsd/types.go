@@ -2,7 +2,6 @@ package xsd
 
 import (
 	"encoding/xml"
-
 	"github.com/iancoleman/strcase"
 )
 
@@ -13,6 +12,10 @@ type Type interface {
 	Attributes() []Attribute
 	Elements() []Element
 	ContainsText() bool
+	IncludeTypeTemplate() bool
+	IncludeElementTemplate() bool
+	IncludeComplexTypeTemplate() bool
+	IncludeTemplateName() string
 	compile(*Schema, *Element)
 }
 
@@ -23,22 +26,6 @@ func injectSchemaIntoAttributes(schema *Schema, intermAttributes []Attribute) []
 		attributesWithProperScema[idx] = attribute
 	}
 	return attributesWithProperScema
-}
-
-func setXmlNameAnyForSingleElements(elements []Element) []Element {
-	if len(elements) == 1 {
-		result := make([]Element, 1)
-		element := elements[0]
-		element.XmlNameOverride = ",any"
-		result[0] = element
-		return result
-	} else {
-		for idx := range elements {
-			element := &elements[idx]
-			element.XmlNameOverride = ""
-		}
-	}
-	return elements
 }
 
 type ComplexType struct {
@@ -53,6 +40,7 @@ type ComplexType struct {
 	ComplexContent   *ComplexContent `xml:"complexContent"`
 	Choice           *Choice         `xml:"choice"`
 	content          GenericContent  `xml:"-"`
+	override         Override        `xml:"-"`
 }
 
 func (ct *ComplexType) Attributes() []Attribute {
@@ -62,22 +50,13 @@ func (ct *ComplexType) Attributes() []Attribute {
 	return ct.AttributesDirect
 }
 
-func (ct *ComplexType) HasXmlNameAttribute() bool {
-	for _, attribute := range ct.Attributes() {
-		if attribute.GoName() == "XMLName" {
-			return true
-		}
-	}
-	return false
-}
-
 func (ct *ComplexType) Elements() []Element {
 	if ct.Sequence != nil {
-		return setXmlNameAnyForSingleElements(ct.Sequence.Elements())
+		return ct.Sequence.Elements()
 	} else if ct.SequenceAll != nil {
-		return setXmlNameAnyForSingleElements(ct.SequenceAll.Elements())
+		return ct.SequenceAll.Elements()
 	} else if ct.content != nil {
-		return setXmlNameAnyForSingleElements(ct.content.Elements())
+		return ct.content.Elements()
 	} else if ct.Choice != nil {
 		return ct.Choice.Elements()
 	}
@@ -89,6 +68,9 @@ func (ct *ComplexType) GoName() string {
 }
 
 func (ct *ComplexType) GoTypeName() string {
+	if ct.SimpleContent != nil && ct.SimpleContent.Extension != nil && ct.SimpleContent.Extension.ContainsText() {
+		return ct.SimpleContent.Extension.typ.GoName()
+	}
 	return ct.GoName()
 }
 
@@ -98,6 +80,22 @@ func (ct *ComplexType) ContainsText() bool {
 
 func (ct *ComplexType) Schema() *Schema {
 	return ct.schema
+}
+
+func (ct *ComplexType) IncludeTypeTemplate() bool {
+	return ct.override.TemplateUsed && ct.override.IsIncl
+}
+
+func (ct *ComplexType) IncludeElementTemplate() bool {
+	return ct.override.TemplateUsed && ct.override.IsElem
+}
+
+func (ct *ComplexType) IncludeComplexTypeTemplate() bool {
+	return ct.override.TemplateUsed && ct.override.IsCompTyp
+}
+
+func (ct *ComplexType) IncludeTemplateName() string {
+	return ct.override.TemplateName
 }
 
 func (ct *ComplexType) compile(sch *Schema, parentElement *Element) {
@@ -161,6 +159,12 @@ func (ct *ComplexType) compile(sch *Schema, parentElement *Element) {
 		}
 		ct.Choice.compile(sch, parentElement)
 	}
+
+	if tmpl, found := sch.TemplateOverrides[ct.GoName()]; found {
+		tmpl.TemplateUsed = true
+		ct.override = tmpl
+		sch.TemplateOverrides[ct.GoName()] = tmpl
+	}
 }
 
 type SimpleType struct {
@@ -168,6 +172,7 @@ type SimpleType struct {
 	Name        string       `xml:"name,attr"`
 	Restriction *Restriction `xml:"restriction"`
 	schema      *Schema      `xml:"-"`
+	override    Override     `xml:"-"`
 }
 
 func (st *SimpleType) GoName() string {
@@ -185,6 +190,22 @@ func (st *SimpleType) Schema() *Schema {
 	return st.schema
 }
 
+func (st *SimpleType) IncludeTypeTemplate() bool {
+	return st.override.TemplateUsed && st.override.IsIncl
+}
+
+func (st *SimpleType) IncludeElementTemplate() bool {
+	return st.override.TemplateUsed && st.override.IsElem
+}
+
+func (st *SimpleType) IncludeComplexTypeTemplate() bool {
+	return false
+}
+
+func (st *SimpleType) IncludeTemplateName() string {
+	return st.override.TemplateName
+}
+
 func (st *SimpleType) compile(sch *Schema, parentElement *Element) {
 	if st.schema == nil {
 		st.schema = sch
@@ -192,6 +213,12 @@ func (st *SimpleType) compile(sch *Schema, parentElement *Element) {
 
 	if st.Restriction != nil {
 		st.Restriction.compile(sch, parentElement)
+	}
+
+	if tmpl, found := sch.TemplateOverrides[st.GoName()]; found {
+		tmpl.TemplateUsed = true
+		st.override = tmpl
+		sch.TemplateOverrides[st.GoName()] = tmpl
 	}
 }
 
@@ -240,14 +267,30 @@ func (staticType) ContainsText() bool {
 	return true
 }
 
+func (st staticType) IncludeTypeTemplate() bool {
+	return false
+}
+
+func (st staticType) IncludeElementTemplate() bool {
+	return false
+}
+
+func (st staticType) IncludeComplexTypeTemplate() bool {
+	return false
+}
+
+func (st staticType) IncludeTemplateName() string {
+	return ""
+}
+
 func (st staticType) compile(*Schema, *Element) {
 }
 
 var staticTypes = map[string]staticType{
 	"string":             "string",
 	"language":           "string",
-	"dateTime":           "string",
-	"date":               "string",
+	"dateTime":           "time.Time",
+	"date":               "time.Time",
 	"base64Binary":       "string",
 	"normalizedString":   "string",
 	"token":              "string",
@@ -274,7 +317,7 @@ var staticTypes = map[string]staticType{
 	"gMonthDay":          "string",
 	"gDay":               "string",
 	"gMonth":             "string",
-	"time":               "string",
+	"time":               "time.Time",
 }
 
 func StaticType(name string) staticType {

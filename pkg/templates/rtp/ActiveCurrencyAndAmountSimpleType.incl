@@ -1,0 +1,6 @@
+
+type ActiveCurrencyAndAmountSimpleType rtp.Amount
+
+func (a ActiveCurrencyAndAmountSimpleType) MarshalText() ([]byte, error) {
+	return rtp.Amount(a).MarshalText()
+}

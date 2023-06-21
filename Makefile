@@ -8,20 +8,10 @@ else
 GOBIN=$(shell go env GOBIN)
 endif
 
-all: build
+all: vendor build
 
 build:
-	$(GOBUILD) ./cli/gocomply_xsd2go
-
-.PHONY: pkger vendor
-pkger:
-ifeq ("$(wildcard $(GOBIN)/pkger)","")
-	go get -u -v github.com/markbates/pkger/cmd/pkger
-endif
-
-ci-update-bundled-deps: pkger
-	$(GOBIN)/pkger -o pkg/template
-	go fmt ./pkg/template
+	$(GOBUILD) ./cli/moov-io_xsd2go
 
 vendor:
 	$(GO) mod tidy

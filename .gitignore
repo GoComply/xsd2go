@@ -1,1 +1,3 @@
-/gocomply_xsd2go
+/vendor/*
+/.idea/*
+/moov-io_xsd2go
