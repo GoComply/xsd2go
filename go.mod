@@ -3,7 +3,7 @@ module github.com/gocomply/xsd2go
 go 1.18
 
 require (
-	github.com/iancoleman/strcase v0.2.0
+	github.com/iancoleman/strcase v0.3.0
 	github.com/markbates/pkger v0.17.1
 	github.com/stretchr/testify v1.8.4
 	github.com/urfave/cli v1.22.14
