@@ -20,9 +20,9 @@ type Myelement struct {
 type StateRefType struct {
 	XMLName xml.Name
 
-	StateRef StateIDPattern `xml:"state_ref,attr"`
+	StateRef StateIdpattern `xml:"state_ref,attr"`
 
-	InnerXml string `xml:",innerxml"`
+	innerXml string `xml:",innerxml"`
 }
 
 type MySimpleBaseType struct {
@@ -33,7 +33,7 @@ type MySimpleBaseType struct {
 	Operation OperationEnumeration `xml:"operation,attr,omitempty"`
 
 	Text     string `xml:",chardata"`
-	InnerXml string `xml:",innerxml"`
+	innerXml string `xml:",innerxml"`
 }
 
 type MyElementType struct {
@@ -43,12 +43,12 @@ type MyElementType struct {
 
 	Operation OperationEnumeration `xml:"operation,attr,omitempty"`
 
-	InnerXml string `xml:",innerxml"`
+	innerXml string `xml:",innerxml"`
 }
 
 // XSD SimpleType declarations
 
-type StateIDPattern string
+type StateIdpattern string
 
 type SimpleDatatypeEnumeration string
 
