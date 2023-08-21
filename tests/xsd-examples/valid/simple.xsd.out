@@ -20,7 +20,7 @@ type MyElementType struct {
 
 	Id int64 `xml:",any"`
 
-	InnerXml string `xml:",innerxml"`
+	innerXml string `xml:",innerxml"`
 }
 
 // XSD SimpleType declarations

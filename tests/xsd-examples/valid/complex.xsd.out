@@ -36,7 +36,7 @@ type MyElementType struct {
 
 	Id22 *int `xml:"id_22"`
 
-	InnerXml string `xml:",innerxml"`
+	innerXml string `xml:",innerxml"`
 }
 
 // XSD SimpleType declarations

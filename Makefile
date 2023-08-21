@@ -16,7 +16,7 @@ build:
 .PHONY: pkger vendor
 pkger:
 ifeq ("$(wildcard $(GOBIN)/pkger)","")
-	go get -u -v github.com/markbates/pkger/cmd/pkger
+	go install github.com/markbates/pkger/cmd/pkger@latest
 endif
 
 ci-update-bundled-deps: pkger
