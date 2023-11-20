@@ -2,7 +2,6 @@ package tests
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -21,14 +20,14 @@ func TestSanity(t *testing.T) {
 	for _, xsdPath := range xsdFiles {
 		actual := assertConvertsFine(t, xsdPath)
 
-		expected, err := ioutil.ReadFile(xsdPath + ".out")
+		expected, err := os.ReadFile(xsdPath + ".out")
 		require.NoError(t, err)
 		assert.Equal(t, string(expected), string(actual))
 	}
 }
 
 func assertConvertsFine(t *testing.T, xsdPath string) []byte {
-	dname, err := ioutil.TempDir("", "xsd2go_tests_")
+	dname, err := os.MkdirTemp("", "xsd2go_tests_")
 	assert.Nil(t, err)
 	defer os.RemoveAll(dname)
 
@@ -41,7 +40,7 @@ func assertConvertsFine(t *testing.T, xsdPath string) []byte {
 
 	generatedFilePath, err := locateGeneratedFile(outputDir)
 	require.NoError(t, err)
-	result, err := ioutil.ReadFile(generatedFilePath)
+	result, err := os.ReadFile(generatedFilePath)
 	require.NoError(t, err)
 
 	out, err := exec.Command("go", "build", generatedFilePath).Output()
