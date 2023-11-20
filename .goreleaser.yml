@@ -24,13 +24,6 @@ builds:
     - arm64
 
 archives:
-- replacements:
-    darwin: macOS
-    linux: Linux
-    windows: Windows
-    386: i386
-    amd64: x86_64
-
   format_overrides:
     - goos: windows
       format: zip
@@ -51,11 +44,6 @@ nfpms:
   - id: gocomply_xsd2go
 
     file_name_template: "{{ .ProjectName }}-{{ .Version }}-{{ .Release }}.{{ .Arch }}"
-    replacements:
-      386: i686
-      amd64: x86_64
-      arm: aarch32
-      arm64: aarch64
 
     formats:
       - deb
