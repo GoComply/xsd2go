@@ -9,7 +9,7 @@ workdir=./scap/
 mkdir -p $workdir
 cat <<__END__ > $workdir/go.mod
 module github.com/gocomply/scap
-go 1.17
+go 1.20
 __END__
 
 pushd $workdir
