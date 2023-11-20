@@ -55,4 +55,4 @@ jobs:
         skip-go-installation: true
         skip-pkg-cache: true
         skip-build-cache: true
-        args: "--out-${NO_FUTURE}format colored-line-number"
+        args: "--out-${NO_FUTURE}format colored-line-number --config=./.github/workflows/lint-golangci-lint.yaml"
