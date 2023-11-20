@@ -3,7 +3,6 @@ package tests
 import (
 	"fmt"
 	"os"
-	"io/ioutil"
 	"os/exec"
 	"path/filepath"
 	"testing"
@@ -28,7 +27,7 @@ func TestSanity(t *testing.T) {
 }
 
 func assertConvertsFine(t *testing.T, xsdPath string) []byte {
-	dname, err := ioutil.TempDir("", "xsd2go_tests_")
+	dname, err := os.MkdirTemp("", "xsd2go_tests_")
 	assert.Nil(t, err)
 	defer os.RemoveAll(dname)
 
