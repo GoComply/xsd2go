@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/gocomply/xsd2go/pkg/xsd2go"
@@ -22,7 +23,7 @@ func TestSanity(t *testing.T) {
 
 		expected, err := os.ReadFile(xsdPath + ".out")
 		require.NoError(t, err)
-		assert.Equal(t, string(expected), string(actual))
+		assert.Equal(t, strings.ReplaceAll(string(expected), "\r\n", "\n"), string(actual))
 	}
 }
 
