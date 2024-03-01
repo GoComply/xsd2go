@@ -50,7 +50,7 @@ jobs:
         fi
 
     - name: Run golangci-lint
-      uses: golangci/golangci-lint-action@v3
+      uses: golangci/golangci-lint-action@v4
       with:
         skip-go-installation: true
         skip-pkg-cache: true
