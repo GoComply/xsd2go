@@ -82,7 +82,7 @@ func (a *Attribute) XmlName() string {
 }
 
 func (a *Attribute) optional() bool {
-	return a.Use == "optional"
+	return a.Use == "" || a.Use == "optional"
 }
 
 func (a *Attribute) compile(s *Schema) {

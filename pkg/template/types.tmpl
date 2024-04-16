@@ -11,13 +11,13 @@ import (
 {{range .ExportableElements }}
   // Element
   type {{ .GoName }} struct {
-    XMLName xml.Name `xml:"{{.Name}}"`
+    XMLName xml.Name `xml:"{{.Name}}{{.Modifiers}}"`
     {{ range .Attributes }}
         {{ .GoName }} {{.GoForeignModule}}{{.GoType}} `xml:"{{.XmlName}},{{.Modifiers}}"`
     {{end }}
 
     {{ range .Elements }}
-      {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}"`
+      {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}{{.Modifiers}}"`
     {{ end }}
 
     {{- if .ContainsText }}
@@ -39,7 +39,7 @@ import (
   {{end }}
 
   {{ range .Elements }}
-    {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}"`
+    {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}{{.Modifiers}}"`
   {{end}}
 
   {{- if .ContainsText }}

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:simple-schema="https://simple.example.com/" targetNamespace="https://simple.example.com/" elementFormDefault="qualified">
+    xmlns:restriction="https://simple.example.com/" targetNamespace="https://simple.example.com/" elementFormDefault="qualified">
     <xsd:complexType name="StateRefType">
-        <xsd:attribute name="state_ref" type="StateIDPattern" use="required"/>
+        <xsd:attribute name="state_ref" type="restriction:StateIDPattern" use="required"/>
     </xsd:complexType>
     <xsd:simpleType name="StateIDPattern">
         <xsd:restriction base="xsd:string">
@@ -105,26 +105,26 @@
         </xsd:restriction>
     </xsd:simpleType>
     <xsd:attributeGroup name="EntityAttributeGroup">
-        <xsd:attribute name="datatype" type="DatatypeEnumeration" use="optional" default="string">
+        <xsd:attribute name="datatype" type="restriction:DatatypeEnumeration" use="optional" default="string">
         </xsd:attribute>
-        <xsd:attribute name="operation" type="OperationEnumeration" use="optional" default="equals">
+        <xsd:attribute name="operation" type="restriction:OperationEnumeration" use="optional" default="equals">
         </xsd:attribute>
     </xsd:attributeGroup>
     <xsd:complexType name="MySimpleBaseType" abstract="true">
         <xsd:simpleContent>
             <xsd:extension base="xsd:anySimpleType">
-                <xsd:attributeGroup ref="simple-schema:EntityAttributeGroup"/>
+                <xsd:attributeGroup ref="restriction:EntityAttributeGroup"/>
             </xsd:extension>
         </xsd:simpleContent>
     </xsd:complexType>
-    <xsd:element name="myelement" type="simple-schema:MyElementType" />
+    <xsd:element name="myelement" type="restriction:MyElementType" />
     <xsd:complexType name="MyElementType">
         <xsd:simpleContent>
-            <xsd:restriction base="simple-schema:MySimpleBaseType">
+            <xsd:restriction base="restriction:MySimpleBaseType">
                 <xsd:simpleType>
                     <xsd:restriction base="xsd:string"/>
                 </xsd:simpleType>
-                <xsd:attribute name="datatype" type="SimpleDatatypeEnumeration" use="optional" fixed="string"/>
+                <xsd:attribute name="datatype" type="restriction:SimpleDatatypeEnumeration" use="optional" fixed="string"/>
             </xsd:restriction>
         </xsd:simpleContent>
     </xsd:complexType>

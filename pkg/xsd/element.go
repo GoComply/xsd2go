@@ -98,6 +98,18 @@ func (e *Element) GoForeignModule() string {
 	return ""
 }
 
+func (e *Element) Modifiers() string {
+	res := ""
+	if e.optional() {
+		res += ",omitempty"
+	}
+	return res
+}
+
+func (e *Element) optional() bool {
+	return e.MinOccurs == "0"
+}
+
 func (e *Element) XmlName() string {
 	if e.XmlNameOverride != "" {
 		return e.XmlNameOverride
