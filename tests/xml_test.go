@@ -1,3 +1,5 @@
+//go:build xml_test
+
 package tests
 
 import (
@@ -10,7 +12,7 @@ import (
 	"github.com/gocomply/xsd2go/tests/test-schemas/complex"
 )
 
-func TestComplex(t *testing.T) {
+func TestMarshalComplex(t *testing.T) {
 	var v complex.Myelement
 	assertMarshal(&v, "xml-examples/complex.xsd.1.xml", t)
 	var z complex.Myelement

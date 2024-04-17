@@ -19,7 +19,7 @@ build: ci-update-bundled-deps
 
 clean:
 	rm -f ./gocomply_xsd2go
-	rm -f $(TEST_MODELS_DIR)
+	rm -rf $(TEST_MODELS_DIR)
 
 pkger:
 ifeq ("$(wildcard $(GOBIN)/pkger)","")
@@ -36,7 +36,7 @@ generate-test-schemas: build $(XSD_TEST_DIR)/*.xsd
 	done
 
 check: generate-test-schemas
-	$(GO) test ./tests
+	$(GO) test -v -cover -coverpkg=./... -tags=xml_test ./tests
 
 vendor:
 	$(GO) mod tidy
