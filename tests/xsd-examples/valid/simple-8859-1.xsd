@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <xsd:schema	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-		xmlns:simple-schema="https://simple.example.com/"
+		xmlns:simple-8859-1="https://simple.example.com/"
 		targetNamespace="https://simple.example.com/"
 		elementFormDefault="qualified">
-	<xsd:element name="myelement" type="simple-schema:MyElementType" />
+	<xsd:element name="myelement" type="simple-8859-1:MyElementType" />
 	<xsd:complexType name="MyElementType">
 		<xsd:sequence>
 			<xsd:element name="id" type="xsd:integer" />
 		</xsd:sequence>
-		<xs:annotation>
-			<xs:documentation>Documentation with a character from ISO-8859-1 encoding: ñ</xs:documentation>
-		</xs:annotation>
 	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:documentation>Documentation with a character from ISO-8859-1 encoding: ñ</xsd:documentation>
+	</xsd:annotation>
+
 </xsd:schema>
