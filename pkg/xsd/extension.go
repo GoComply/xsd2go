@@ -5,9 +5,9 @@ import (
 )
 
 type Extension struct {
-	XMLName          xml.Name         `xml:"http://www.w3.org/2001/XMLSchema extension"`
-	Base             reference        `xml:"base,attr"`
-	AttributesDirect []Attribute      `xml:"attribute"`
+	XMLName          xml.Name    `xml:"http://www.w3.org/2001/XMLSchema extension"`
+	Base             Reference   `xml:"base,attr"`
+	AttributesDirect []Attribute `xml:"attribute"`
 	AttributeGroups  []AttributeGroup `xml:"attributeGroup"`
 	Sequence         *Sequence        `xml:"sequence"`
 	typ              Type

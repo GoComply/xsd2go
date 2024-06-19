@@ -9,7 +9,7 @@ import (
 type AttributeGroup struct {
 	XMLName          xml.Name    `xml:"http://www.w3.org/2001/XMLSchema attributeGroup"`
 	Name             string      `xml:"name,attr"`
-	Ref              reference   `xml:"ref,attr"`
+	Ref              Reference   `xml:"ref,attr"`
 	AttributesDirect []Attribute `xml:"attribute"`
 	typ              Type        `xml:"-"`
 	schema           *Schema     `xml:"-"`

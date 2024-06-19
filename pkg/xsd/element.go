@@ -14,10 +14,10 @@ type Element struct {
 	Name            string       `xml:"name,attr"`
 	nameOverride    string       `xml:"-"`
 	XmlNameOverride string       `xml:"-"`
-	FieldOverride   bool         `xml:"-"`
-	Type            reference    `xml:"type,attr"`
-	Ref             reference    `xml:"ref,attr"`
-	MinOccurs       string       `xml:"minOccurs,attr"`
+	FieldOverride bool      `xml:"-"`
+	Type          Reference `xml:"type,attr"`
+	Ref           Reference `xml:"ref,attr"`
+	MinOccurs     string    `xml:"minOccurs,attr"`
 	MaxOccurs       string       `xml:"maxOccurs,attr"`
 	refElm          *Element     `xml:"-"`
 	ComplexType     *ComplexType `xml:"complexType"`

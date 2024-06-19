@@ -69,7 +69,7 @@ func (sch *Schema) compile() {
 	}
 }
 
-func (sch *Schema) findReferencedAttribute(ref reference) *Attribute {
+func (sch *Schema) findReferencedAttribute(ref Reference) *Attribute {
 	innerSchema := sch.findReferencedSchemaByPrefix(ref.NsPrefix())
 	if innerSchema == nil {
 		panic("Internal error: referenced attribute '" + ref + "' cannot be found.")
@@ -77,7 +77,7 @@ func (sch *Schema) findReferencedAttribute(ref reference) *Attribute {
 	return innerSchema.GetAttribute(ref.Name())
 }
 
-func (sch *Schema) findReferencedElement(ref reference) *Element {
+func (sch *Schema) findReferencedElement(ref Reference) *Element {
 	innerSchema := sch.findReferencedSchemaByPrefix(ref.NsPrefix())
 	if innerSchema == nil {
 		panic("Internal error: referenced element '" + string(ref) + "' cannot be found.")
@@ -89,7 +89,7 @@ func (sch *Schema) findReferencedElement(ref reference) *Element {
 	return innerSchema.GetElement(ref.Name())
 }
 
-func (sch *Schema) findReferencedType(ref reference) Type {
+func (sch *Schema) findReferencedType(ref Reference) Type {
 	innerSchema := sch.findReferencedSchemaByPrefix(ref.NsPrefix())
 	if innerSchema == nil {
 		xmlnsUri := sch.Xmlns.UriByPrefix(ref.NsPrefix())

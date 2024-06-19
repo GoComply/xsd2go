@@ -5,9 +5,9 @@ import (
 )
 
 type Restriction struct {
-	XMLName          xml.Name       `xml:"http://www.w3.org/2001/XMLSchema restriction"`
-	Base             reference      `xml:"base,attr"`
-	AttributesDirect []Attribute    `xml:"attribute"`
+	XMLName          xml.Name    `xml:"http://www.w3.org/2001/XMLSchema restriction"`
+	Base             Reference   `xml:"base,attr"`
+	AttributesDirect []Attribute `xml:"attribute"`
 	EnumsDirect      []Enumeration  `xml:"enumeration"`
 	SimpleContent    *SimpleContent `xml:"simpleContent"`
 	schema           *Schema        `xml:"-"`
