@@ -5,6 +5,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/gocomply/xsd2go/pkg/xsd"
 	"github.com/gocomply/xsd2go/pkg/xsd2go"
 	"github.com/urfave/cli"
 )
@@ -37,10 +38,28 @@ var convert = cli.Command{
 					1)
 			}
 		}
+
+		for _, override := range c.StringSlice("type-override") {
+			if !strings.Contains(override, "=") {
+				return cli.NewExitError(
+					fmt.Sprintf(
+						"Invalid type-override: '%s', expecting form of TYPE=GOTYPE or TYPE=GOTYPE:GOIMPORT",
+						override,
+					),
+					1,
+				)
+			}
+		}
+
 		return nil
 	},
 	Action: func(c *cli.Context) error {
 		xsdFile, goModule, outputDir := c.Args()[0], c.Args()[1], c.Args()[2]
+
+		for _, typeOverride := range c.StringSlice("type-override") {
+			xsd.AddStaticTypeOverride(typeOverride)
+		}
+
 		err := xsd2go.Convert(xsdFile, goModule, outputDir, c.StringSlice("xmlns-override"))
 		if err != nil {
 			return cli.NewExitError(err, 1)
@@ -51,6 +70,10 @@ var convert = cli.Command{
 		cli.StringSliceFlag{
 			Name:  "xmlns-override",
 			Usage: "Allows to explicitly set gopackage name for given XMLNS. Example: --xmlns-override='http://www.w3.org/2000/09/xmldsig#=xml_signatures'",
+		},
+		cli.StringSliceFlag{
+			Name:  "type-override",
+			Usage: "Allows to explicitly override a static simple type mapping. Example: --type-override='decimal=string' or --type-override='decimal=decimal:github.com/ericlagergren/decimal",
 		},
 	},
 }

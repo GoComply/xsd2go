@@ -2,6 +2,8 @@ package xsd
 
 import (
 	"encoding/xml"
+	"sort"
+	"strings"
 
 	"github.com/iancoleman/strcase"
 )
@@ -285,9 +287,43 @@ var staticTypes = map[string]staticType{
 	"byte":               "int8",
 }
 
+var (
+	staticTypeImports = map[string]string{}
+	staticTypeUsed    = map[string]struct{}{}
+)
+
+func AddStaticTypeOverride(override string) {
+	parts := strings.SplitN(override, "=", 2)
+	typeParts := strings.SplitN(parts[1], ":", 2)
+
+	typeName := parts[0]
+
+	staticTypes[typeName] = staticType(typeParts[0])
+
+	if len(typeParts) == 2 {
+		staticTypeImports[typeName] = typeParts[1]
+	}
+}
+
+func GetStaticTypeImports() []string {
+	imports := []string{}
+
+	for name, mod := range staticTypeImports {
+		if _, found := staticTypeUsed[name]; found {
+			imports = append(imports, mod)
+		}
+	}
+
+	sort.Strings(imports)
+
+	return imports
+}
+
 func StaticType(name string) staticType {
 	typ, found := staticTypes[name]
 	if found {
+		staticTypeUsed[name] = struct{}{}
+
 		return typ
 	}
 	panic("Type xsd:" + name + " not implemented")
