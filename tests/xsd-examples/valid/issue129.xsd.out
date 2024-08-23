@@ -14,7 +14,7 @@ type List struct {
 }
 
 // Element
-type List struct {
+type List1 struct {
 	XMLName xml.Name `xml:"List"`
 
 	Ddd []int `xml:",any"`
