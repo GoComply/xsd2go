@@ -83,10 +83,7 @@ func (ct *ComplexType) Documentation() string {
 	if len(ct.Annotation.Documentations) == 0 {
 		return ""
 	}
-	if len(ct.Annotation.Documentations[0].Content) == 0 {
-		return ""
-	}
-	return string(ct.Annotation.Documentations[0].Content)
+	return ct.Annotation.Documentations[0].GetContent()
 }
 
 func (ct *ComplexType) Elements() []Element {
@@ -233,10 +230,7 @@ func (st *SimpleType) Documentation() string {
 	if len(st.Annotation.Documentations) == 0 {
 		return ""
 	}
-	if len(st.Annotation.Documentations[0].Content) == 0 {
-		return ""
-	}
-	return string(st.Annotation.Documentations[0].Content)
+	return st.Annotation.Documentations[0].GetContent()
 }
 
 func (st *SimpleType) Elements() []Element {

@@ -250,10 +250,7 @@ func (sch *Schema) Documentation() string {
 	if len(sch.Annotation.Documentations) == 0 {
 		return ""
 	}
-	if len(sch.Annotation.Documentations[0].Content) == 0 {
-		return ""
-	}
-	return string(sch.Annotation.Documentations[0].Content)
+	return sch.Annotation.Documentations[0].GetContent()
 }
 
 func (sch *Schema) GoPackageName() string {
