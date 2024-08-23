@@ -5,11 +5,11 @@
 		elementFormDefault="qualified">
 	<xsd:element name="myelement" type="simple-schema:MyElementType" />
 	<xsd:complexType name="MyElementType">
+        <xsd:annotation>
+            <xsd:documentation>Documentation with a character from ISO-8859-1 encoding: ñ</xsd:documentation>
+        </xsd:annotation>
 		<xsd:sequence>
 			<xsd:element name="id" type="xsd:integer" />
 		</xsd:sequence>
-		<xs:annotation>
-			<xs:documentation>Documentation with a character from ISO-8859-1 encoding: Ã±</xs:documentation>
-		</xs:annotation>
 	</xsd:complexType>
 </xsd:schema>
