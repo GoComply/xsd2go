@@ -19,6 +19,7 @@ type Element struct {
 	Ref             reference    `xml:"ref,attr"`
 	MinOccurs       string       `xml:"minOccurs,attr"`
 	MaxOccurs       string       `xml:"maxOccurs,attr"`
+	Annotation      *Annotation  `xml:"annotation"`
 	refElm          *Element     `xml:"-"`
 	ComplexType     *ComplexType `xml:"complexType"`
 	SimpleType      *SimpleType  `xml:"simpleType"`
@@ -31,6 +32,20 @@ func (e *Element) Attributes() []Attribute {
 		return injectSchemaIntoAttributes(e.schema, e.typ.Attributes())
 	}
 	return []Attribute{}
+}
+
+func (e *Element) ContainsDocumentation() bool {
+	return e.Documentation() != ""
+}
+
+func (e *Element) Documentation() string {
+	if e.Annotation == nil {
+		return ""
+	}
+	if len(e.Annotation.Documentations) == 0 {
+		return ""
+	}
+	return e.Annotation.Documentations[0].GetContent()
 }
 
 func (e *Element) Elements() []Element {

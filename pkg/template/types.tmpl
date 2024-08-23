@@ -43,10 +43,16 @@ import (
     XMLName xml.Name
   {{- end}}
   {{ range .Attributes }}
+      {{- if .ContainsDocumentation }}
+      // {{ .GoName }}: {{ .Documentation }}
+      {{- end}}
       {{ .GoName }} {{.GoForeignModule}}{{.GoType}} `xml:"{{.XmlName}},{{.Modifiers}}"`
   {{end }}
 
   {{ range .Elements }}
+      {{- if .ContainsDocumentation }}
+      // {{ .GoName }}: {{ .Documentation }}
+      {{- end}}
     {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}"`
   {{end}}
 
