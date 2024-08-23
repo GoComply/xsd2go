@@ -2,16 +2,19 @@ package template
 
 import (
 	"bytes"
+	_ "embed"
 	"fmt"
 	"go/format"
-	"io/ioutil"
+	"io"
 	"os"
 	"path/filepath"
 	"text/template"
 
 	"github.com/gocomply/xsd2go/pkg/xsd"
-	"github.com/markbates/pkger"
 )
+
+//go:embed types.tmpl
+var templateData []byte
 
 func GenerateTypes(schema *xsd.Schema, outputDir string) error {
 	t, err := newTemplate(outputDir)
@@ -51,13 +54,7 @@ func GenerateTypes(schema *xsd.Schema, outputDir string) error {
 }
 
 func newTemplate(outputDir string) (*template.Template, error) {
-	in, err := pkger.Open("/pkg/template/types.tmpl")
-	if err != nil {
-		return nil, err
-	}
-	defer in.Close()
-
-	tempText, err := ioutil.ReadAll(in)
+	tempText, err := io.ReadAll(bytes.NewReader(templateData))
 	if err != nil {
 		return nil, err
 	}
