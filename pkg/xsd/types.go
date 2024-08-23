@@ -46,6 +46,7 @@ type ComplexType struct {
 	Name             string          `xml:"name,attr"`
 	Mixed            bool            `xml:"mixed,attr"`
 	AttributesDirect []Attribute     `xml:"attribute"`
+	Annotation       *Annotation     `xml:"annotation"`
 	Sequence         *Sequence       `xml:"sequence"`
 	SequenceAll      *SequenceAll    `xml:"all"`
 	schema           *Schema         `xml:"-"`
@@ -170,6 +171,7 @@ func (ct *ComplexType) compile(sch *Schema, parentElement *Element) {
 type SimpleType struct {
 	XMLName     xml.Name     `xml:"http://www.w3.org/2001/XMLSchema simpleType"`
 	Name        string       `xml:"name,attr"`
+	Annotation  *Annotation  `xml:"annotation"`
 	Restriction *Restriction `xml:"restriction"`
 	schema      *Schema      `xml:"-"`
 }

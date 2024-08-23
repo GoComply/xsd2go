@@ -16,6 +16,7 @@ type Schema struct {
 	XMLName               xml.Name           `xml:"http://www.w3.org/2001/XMLSchema schema"`
 	Xmlns                 Xmlns              `xml:"-"`
 	TargetNamespace       string             `xml:"targetNamespace,attr"`
+	Annotation            *Annotation        `xml:"annotation"`
 	Includes              []Include          `xml:"include"`
 	Imports               []Import           `xml:"import"`
 	Elements              []Element          `xml:"element"`
