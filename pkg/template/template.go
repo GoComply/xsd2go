@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"go/format"
-	"io/ioutil"
+	"io"
 	"os"
 	"path/filepath"
 	"text/template"
@@ -57,7 +57,7 @@ func newTemplate(outputDir string) (*template.Template, error) {
 	}
 	defer in.Close()
 
-	tempText, err := ioutil.ReadAll(in)
+	tempText, err := io.ReadAll(in)
 	if err != nil {
 		return nil, err
 	}
