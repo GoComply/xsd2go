@@ -4,10 +4,13 @@ package swid_2015_extensions_1_0
 
 import ()
 
+// This schema represents extensions to ISO/IEC 19770-2:2015 as defined by the NISTIR 8060.
+
 // XSD ComplexType declarations
 
 // XSD SimpleType declarations
 
+// PatchEventType: This type defines the types of file actions that can be peformed when applying a patch.
 type PatchEventType string
 
 const PatchEventTypeUpdate PatchEventType = "update"
