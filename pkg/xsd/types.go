@@ -72,6 +72,19 @@ func (ct *ComplexType) HasXmlNameAttribute() bool {
 	return false
 }
 
+func (ct *ComplexType) ContainsDocs() bool {
+	if ct.Annotation == nil {
+		return false
+	}
+	if len(ct.Annotation.Documentations) == 0 {
+		return false
+	}
+	if len(ct.Annotation.Documentations[0].Content) == 0 {
+		return false
+	}
+	return true
+}
+
 func (ct *ComplexType) Elements() []Element {
 	if ct.Sequence != nil {
 		return setXmlNameAnyForSingleElements(ct.Sequence.Elements())
@@ -203,6 +216,19 @@ func (st *SimpleType) compile(sch *Schema, parentElement *Element) {
 
 func (st *SimpleType) Attributes() []Attribute {
 	return []Attribute{}
+}
+
+func (st *SimpleType) ContainsDocs() bool {
+	if st.Annotation == nil {
+		return false
+	}
+	if len(st.Annotation.Documentations) == 0 {
+		return false
+	}
+	if len(st.Annotation.Documentations[0].Content) == 0 {
+		return false
+	}
+	return true
 }
 
 func (st *SimpleType) Elements() []Element {

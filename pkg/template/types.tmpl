@@ -8,6 +8,10 @@ import (
     {{- end }}
 )
 
+{{- if .ContainsDocs }}
+// {{ .ct.Annotation.Documentations[0].Content }}
+{{- end}}
+
 {{range .ExportableElements }}
   // Element
   type {{ .GoName }} struct {
