@@ -13,14 +13,24 @@ import (
 {{- end}}
 
 {{range .ExportableElements }}
+  {{- if .ContainsDocumentation }}
+  // {{ .GoName }}: {{ .Documentation }}
+  {{- else}}
   // Element
+  {{- end}}
   type {{ .GoName }} struct {
     XMLName xml.Name `xml:"{{.Name}}"`
     {{ range .Attributes }}
+        {{- if .ContainsDocumentation }}
+        // {{ .GoName }}: {{ .Documentation }}
+        {{- end}}
         {{ .GoName }} {{.GoForeignModule}}{{.GoType}} `xml:"{{.XmlName}},{{.Modifiers}}"`
     {{end }}
 
     {{ range .Elements }}
+      {{- if .ContainsDocumentation }}
+      // {{ .GoName }}: {{ .Documentation }}
+      {{- end}}
       {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}"`
     {{ end }}
 
