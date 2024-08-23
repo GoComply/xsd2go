@@ -239,6 +239,23 @@ func (sch *Schema) GetType(name string) Type {
 	return nil
 }
 
+func (sch *Schema) ContainsDocumentation() bool {
+	return sch.Documentation() != ""
+}
+
+func (sch *Schema) Documentation() string {
+	if sch.Annotation == nil {
+		return ""
+	}
+	if len(sch.Annotation.Documentations) == 0 {
+		return ""
+	}
+	if len(sch.Annotation.Documentations[0].Content) == 0 {
+		return ""
+	}
+	return string(sch.Annotation.Documentations[0].Content)
+}
+
 func (sch *Schema) GoPackageName() string {
 	if sch.goPackageNameOverride != "" {
 		return sch.goPackageNameOverride

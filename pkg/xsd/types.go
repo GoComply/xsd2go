@@ -72,17 +72,21 @@ func (ct *ComplexType) HasXmlNameAttribute() bool {
 	return false
 }
 
-func (ct *ComplexType) ContainsDocs() bool {
+func (ct *ComplexType) ContainsDocumentation() bool {
+	return ct.Documentation() != ""
+}
+
+func (ct *ComplexType) Documentation() string {
 	if ct.Annotation == nil {
-		return false
+		return ""
 	}
 	if len(ct.Annotation.Documentations) == 0 {
-		return false
+		return ""
 	}
 	if len(ct.Annotation.Documentations[0].Content) == 0 {
-		return false
+		return ""
 	}
-	return true
+	return string(ct.Annotation.Documentations[0].Content)
 }
 
 func (ct *ComplexType) Elements() []Element {
@@ -218,17 +222,21 @@ func (st *SimpleType) Attributes() []Attribute {
 	return []Attribute{}
 }
 
-func (st *SimpleType) ContainsDocs() bool {
+func (st *SimpleType) ContainsDocumentation() bool {
+	return st.Documentation() != ""
+}
+
+func (st *SimpleType) Documentation() string {
 	if st.Annotation == nil {
-		return false
+		return ""
 	}
 	if len(st.Annotation.Documentations) == 0 {
-		return false
+		return ""
 	}
 	if len(st.Annotation.Documentations[0].Content) == 0 {
-		return false
+		return ""
 	}
-	return true
+	return string(st.Annotation.Documentations[0].Content)
 }
 
 func (st *SimpleType) Elements() []Element {
