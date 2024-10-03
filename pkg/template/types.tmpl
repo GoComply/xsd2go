@@ -8,15 +8,29 @@ import (
     {{- end }}
 )
 
+{{- if .ContainsDocumentation }}
+// {{ .Documentation }}
+{{- end}}
+
 {{range .ExportableElements }}
+  {{- if .ContainsDocumentation }}
+  // {{ .GoName }}: {{ .Documentation }}
+  {{- else}}
   // Element
+  {{- end}}
   type {{ .GoName }} struct {
     XMLName xml.Name `xml:"{{.Name}}"`
     {{ range .Attributes }}
+        {{- if .ContainsDocumentation }}
+        // {{ .GoName }}: {{ .Documentation }}
+        {{- end}}
         {{ .GoName }} {{.GoForeignModule}}{{.GoType}} `xml:"{{.XmlName}},{{.Modifiers}}"`
     {{end }}
 
     {{ range .Elements }}
+      {{- if .ContainsDocumentation }}
+      // {{ .GoName }}: {{ .Documentation }}
+      {{- end}}
       {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}"`
     {{ end }}
 
@@ -30,15 +44,25 @@ import (
 
 // XSD ComplexType declarations
 {{range .ExportableComplexTypes }}
+
+  {{- if .ContainsDocumentation }}
+  // {{ .GoName }}: {{ .Documentation }}
+  {{- end}}
   type {{ .GoName }} struct {
   {{- if not .HasXmlNameAttribute }}
     XMLName xml.Name
   {{- end}}
   {{ range .Attributes }}
+      {{- if .ContainsDocumentation }}
+      // {{ .GoName }}: {{ .Documentation }}
+      {{- end}}
       {{ .GoName }} {{.GoForeignModule}}{{.GoType}} `xml:"{{.XmlName}},{{.Modifiers}}"`
   {{end }}
 
   {{ range .Elements }}
+      {{- if .ContainsDocumentation }}
+      // {{ .GoName }}: {{ .Documentation }}
+      {{- end}}
     {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}"`
   {{end}}
 
@@ -53,6 +77,9 @@ import (
 
 // XSD SimpleType declarations
 {{range .ExportableSimpleTypes }}
+  {{- if .ContainsDocumentation }}
+  // {{ .GoName }}: {{ .Documentation }}
+  {{- end}}
   type {{ .GoName }} {{ .GoTypeName }}
 
   {{ $simpleType := . }}

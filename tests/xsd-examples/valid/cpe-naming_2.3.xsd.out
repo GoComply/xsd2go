@@ -8,6 +8,8 @@ import ()
 
 // XSD SimpleType declarations
 
+// Cpe22Type: Define the format for acceptable CPE Names. A URN format is used with the id starting with the word cpe followed by :/ and then some number of individual components separated by colons.
 type Cpe22Type string
 
+// Cpe23Type: Define the format for acceptable CPE Names. A string format is used with the id starting with the word cpe:2.3 followed by : and then some number of individual components separated by colons.
 type Cpe23Type string
