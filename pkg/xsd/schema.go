@@ -162,8 +162,22 @@ func (sch *Schema) encodingXmlImportNeeded() bool {
 	return len(sch.Elements) != 0 || len(sch.ComplexTypes) != 0
 }
 
+func deduplicateElementsLossfree(elements []Element) []Element {
+	seen := make(map[string]int, len(elements))
+	for j, element := range elements {
+		dupeCount, dupe := seen[element.GoName()]
+		if !dupe {
+			seen[element.GoName()] = 1
+			continue
+		}
+		elements[j].nameOverride = fmt.Sprintf("%s-%d", element.GoName(), dupeCount)
+		seen[element.GoName()]++
+	}
+	return elements
+}
+
 func (sch *Schema) ExportableElements() []Element {
-	return append(sch.Elements, sch.inlinedElements...)
+	return deduplicateElementsLossfree(append(sch.Elements, sch.inlinedElements...))
 }
 
 func (sch *Schema) ExportableComplexTypes() []ComplexType {
