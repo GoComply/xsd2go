@@ -13,15 +13,7 @@ all: build
 build:
 	$(GOBUILD) ./cli/gocomply_xsd2go
 
-.PHONY: pkger vendor
-pkger:
-ifeq ("$(wildcard $(GOBIN)/pkger)","")
-	go install github.com/markbates/pkger/cmd/pkger@latest
-endif
-
-ci-update-bundled-deps: pkger
-	$(GOBIN)/pkger -o pkg/template
-	go fmt ./pkg/template
+.PHONY: vendor
 
 vendor:
 	$(GO) mod tidy
