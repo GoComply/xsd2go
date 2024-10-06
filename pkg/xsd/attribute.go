@@ -11,10 +11,10 @@ import (
 type Attribute struct {
 	XMLName        xml.Name   `xml:"http://www.w3.org/2001/XMLSchema attribute"`
 	Name           string     `xml:"name,attr"`
-	Type           reference  `xml:"type,attr"`
+	Type           Reference  `xml:"type,attr"`
 	Use            string     `xml:"use,attr"`
 	DuplicateCount uint       `xml:"-"`
-	Ref            reference  `xml:"ref,attr"`
+	Ref            Reference  `xml:"ref,attr"`
 	refAttr        *Attribute `xml:"-"`
 	typ            Type       `xml:"-"`
 	schema         *Schema    `xml:"-"`
