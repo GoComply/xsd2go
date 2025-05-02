@@ -286,6 +286,7 @@ var staticTypes = map[string]staticType{
 	"short":              "int16",
 	"byte":               "int8",
 	"hexBinary":          "string",
+    "QName":              "string",
 }
 
 func StaticType(name string) staticType {
