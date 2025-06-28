@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/iancoleman/strcase v0.3.0
 	github.com/markbates/pkger v0.17.1
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.10.0
 	github.com/urfave/cli v1.22.16
 	golang.org/x/net v0.29.0
 )
