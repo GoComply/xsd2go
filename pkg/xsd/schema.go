@@ -37,7 +37,7 @@ func parseSchema(f io.Reader) (*Schema, error) {
 	d.CharsetReader = charset.NewReaderLabel
 
 	if err := d.Decode(&schema); err != nil {
-		return nil, fmt.Errorf("Error decoding XSD: %s", err)
+		return nil, fmt.Errorf("Error decoding XSD: %w", err)
 	}
 
 	return &schema, nil
