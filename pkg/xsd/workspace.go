@@ -50,7 +50,7 @@ func (ws *Workspace) loadXsd(xsdPath string, cache bool) (*Schema, error) {
 		if err2 != nil {
 			fmt.Fprintf(os.Stderr, "Error while closing file %s, %v", xsdPathClean, err2)
 		}
-		return nil, err
+		return nil, fmt.Errorf("%w; while processing %s", err, xsdPath)
 	}
 	err = f.Close()
 	if err != nil {
