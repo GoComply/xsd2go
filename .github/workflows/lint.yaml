@@ -50,9 +50,5 @@ jobs:
         fi
 
     - name: Run golangci-lint
-      uses: golangci/golangci-lint-action@v6
-      with:
-        skip-go-installation: true
-        skip-pkg-cache: true
-        skip-build-cache: true
-        args: "--out-${NO_FUTURE}format colored-line-number --config=./.github/workflows/lint-golangci-lint.yaml"
+      uses: golangci/golangci-lint-action@v8
+      args: "--config=./.github/workflows/lint-golangci-lint.yaml"
