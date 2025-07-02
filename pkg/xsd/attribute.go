@@ -9,15 +9,30 @@ import (
 
 // Attribute defines single XML attribute
 type Attribute struct {
-	XMLName        xml.Name   `xml:"http://www.w3.org/2001/XMLSchema attribute"`
-	Name           string     `xml:"name,attr"`
-	Type           reference  `xml:"type,attr"`
-	Use            string     `xml:"use,attr"`
-	DuplicateCount uint       `xml:"-"`
-	Ref            reference  `xml:"ref,attr"`
-	refAttr        *Attribute `xml:"-"`
-	typ            Type       `xml:"-"`
-	schema         *Schema    `xml:"-"`
+	XMLName        xml.Name    `xml:"http://www.w3.org/2001/XMLSchema attribute"`
+	Name           string      `xml:"name,attr"`
+	Type           reference   `xml:"type,attr"`
+	Use            string      `xml:"use,attr"`
+	Annotation     *Annotation `xml:"annotation"`
+	DuplicateCount uint        `xml:"-"`
+	Ref            reference   `xml:"ref,attr"`
+	refAttr        *Attribute  `xml:"-"`
+	typ            Type        `xml:"-"`
+	schema         *Schema     `xml:"-"`
+}
+
+func (a *Attribute) ContainsDocumentation() bool {
+	return a.Documentation() != ""
+}
+
+func (a *Attribute) Documentation() string {
+	if a.Annotation == nil {
+		return ""
+	}
+	if len(a.Annotation.Documentations) == 0 {
+		return ""
+	}
+	return a.Annotation.Documentations[0].GetContent()
 }
 
 // Public Go Name of this struct item

@@ -46,6 +46,7 @@ type ComplexType struct {
 	Name             string          `xml:"name,attr"`
 	Mixed            bool            `xml:"mixed,attr"`
 	AttributesDirect []Attribute     `xml:"attribute"`
+	Annotation       *Annotation     `xml:"annotation"`
 	Sequence         *Sequence       `xml:"sequence"`
 	SequenceAll      *SequenceAll    `xml:"all"`
 	schema           *Schema         `xml:"-"`
@@ -69,6 +70,20 @@ func (ct *ComplexType) HasXmlNameAttribute() bool {
 		}
 	}
 	return false
+}
+
+func (ct *ComplexType) ContainsDocumentation() bool {
+	return ct.Documentation() != ""
+}
+
+func (ct *ComplexType) Documentation() string {
+	if ct.Annotation == nil {
+		return ""
+	}
+	if len(ct.Annotation.Documentations) == 0 {
+		return ""
+	}
+	return ct.Annotation.Documentations[0].GetContent()
 }
 
 func (ct *ComplexType) Elements() []Element {
@@ -170,6 +185,7 @@ func (ct *ComplexType) compile(sch *Schema, parentElement *Element) {
 type SimpleType struct {
 	XMLName     xml.Name     `xml:"http://www.w3.org/2001/XMLSchema simpleType"`
 	Name        string       `xml:"name,attr"`
+	Annotation  *Annotation  `xml:"annotation"`
 	Restriction *Restriction `xml:"restriction"`
 	schema      *Schema      `xml:"-"`
 }
@@ -201,6 +217,20 @@ func (st *SimpleType) compile(sch *Schema, parentElement *Element) {
 
 func (st *SimpleType) Attributes() []Attribute {
 	return []Attribute{}
+}
+
+func (st *SimpleType) ContainsDocumentation() bool {
+	return st.Documentation() != ""
+}
+
+func (st *SimpleType) Documentation() string {
+	if st.Annotation == nil {
+		return ""
+	}
+	if len(st.Annotation.Documentations) == 0 {
+		return ""
+	}
+	return st.Annotation.Documentations[0].GetContent()
 }
 
 func (st *SimpleType) Elements() []Element {

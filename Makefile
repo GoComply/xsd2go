@@ -27,3 +27,6 @@ vendor:
 	$(GO) mod tidy
 	$(GO) mod vendor
 	$(GO) mod verify
+
+install:
+	$(GO) install ./cli/gocomply_xsd2go

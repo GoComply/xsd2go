@@ -16,6 +16,7 @@ type Schema struct {
 	XMLName               xml.Name           `xml:"http://www.w3.org/2001/XMLSchema schema"`
 	Xmlns                 Xmlns              `xml:"-"`
 	TargetNamespace       string             `xml:"targetNamespace,attr"`
+	Annotation            *Annotation        `xml:"annotation"`
 	Includes              []Include          `xml:"include"`
 	Imports               []Import           `xml:"import"`
 	Elements              []Element          `xml:"element"`
@@ -250,6 +251,20 @@ func (sch *Schema) GetType(name string) Type {
 		return StaticType(name)
 	}
 	return nil
+}
+
+func (sch *Schema) ContainsDocumentation() bool {
+	return sch.Documentation() != ""
+}
+
+func (sch *Schema) Documentation() string {
+	if sch.Annotation == nil {
+		return ""
+	}
+	if len(sch.Annotation.Documentations) == 0 {
+		return ""
+	}
+	return sch.Annotation.Documentations[0].GetContent()
 }
 
 func (sch *Schema) GoPackageName() string {
