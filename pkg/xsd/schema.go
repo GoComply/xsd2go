@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"io"
+	"os"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -52,6 +53,11 @@ func (sch *Schema) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 }
 
 func (sch *Schema) compile() {
+	if sch.TargetNamespace == "" {
+		fmt.Fprintf(os.Stderr, "Warning: missing explicit /xsd:chema/@targetNamespace; using '%s' instead\n", sch.GoPackageName())
+		sch.TargetNamespace = sch.GoPackageName()
+	}
+
 	for idx := range sch.Elements {
 		el := &sch.Elements[idx]
 		el.compile(sch, nil)

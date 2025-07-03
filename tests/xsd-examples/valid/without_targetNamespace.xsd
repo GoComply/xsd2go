@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <!-- definition of simple elements -->
+    <xs:element name="name" type="xs:string"/>
+    <!-- definition of complex elements -->
+    <xs:element name="referencingthename">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="name"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
