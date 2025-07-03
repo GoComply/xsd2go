@@ -103,7 +103,7 @@ func (ws *Workspace) compile() error {
 		goPackageName := schema.GoPackageName()
 		prevXmlns, ok := uniqPkgNames[goPackageName]
 		if ok {
-			return fmt.Errorf("Malformed workspace. Multiple XSD files refer to itself with xmlns shorthand: '%s':\n - %s\n - %s\nWhile this is valid in XSD it is impractical for golang code generation.\nConsider providing --xmlns-override=%s=mygopackage", goPackageName, prevXmlns, schema.TargetNamespace, schema.TargetNamespace)
+			return fmt.Errorf("malformed workspace; multiple XSD files refer to itself with xmlns shorthand: '%s':\n - %s\n - %s\nWhile this is valid in XSD it is impractical for golang code generation.\nConsider providing --xmlns-override=%s=mygopackage", goPackageName, prevXmlns, schema.TargetNamespace, schema.TargetNamespace)
 		}
 		uniqPkgNames[goPackageName] = schema.TargetNamespace
 	}

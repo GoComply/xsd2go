@@ -14,7 +14,7 @@ func ParseXmlnsOverrides(overrides []string) (xmlnsOverrides, error) {
 			return r == '='
 		})
 		if len(fields) != 2 {
-			return nil, fmt.Errorf("Invalid xmlns override: '%s' expecting exactly one '=' in the string", override)
+			return nil, fmt.Errorf("invalid xmlns override: '%s' expecting exactly one '=' in the string", override)
 		}
 		ret[fields[0]] = fields[1]
 	}
