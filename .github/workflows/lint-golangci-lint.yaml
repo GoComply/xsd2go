@@ -30,6 +30,7 @@ linters:
     - gochecksumtype
     - gocognit
     - gocyclo
+    - gocritic
     - godox
     - goheader
     - gomoddirectives
@@ -51,7 +52,6 @@ linters:
     - funlen
     - gochecknoglobals
     - goconst
-    - gocritic
     - godot
     - iface
     - importas
@@ -117,6 +117,10 @@ linters:
         - all
         - -SA5008
         - -ST1003
+    gocritic:
+      disabled-checks:
+        - appendAssign
+        - ifElseChain
   exclusions:
     generated: lax
     presets:
