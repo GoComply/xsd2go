@@ -13,10 +13,7 @@ linters:
       - common-false-positives
       - legacy
       - std-error-handling
-    paths:
-      - third_party$
-      - builtin$
-      - examples$
+    warn-unused: true # Log a warning when exclusion rule is unused
 formatters:
   exclusions:
     generated: lax
