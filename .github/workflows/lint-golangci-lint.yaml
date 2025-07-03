@@ -67,6 +67,7 @@ linters:
     - reassign
     - recvcheck
     - rowserrcheck
+    - revive
 
     - staticcheck
 
@@ -89,7 +90,6 @@ linters:
     - noinlineerr
     - nonamedreturns
     - paralleltest
-    - revive
 
     - sloglint
     - spancheck
@@ -123,6 +123,30 @@ linters:
       disabled-checks:
         - appendAssign
         - ifElseChain
+    revive:
+      enable-all-rules: true
+      rules:
+        - name: var-naming
+          disabled: true
+        - name: add-constant
+          disabled: true
+        - name: line-length-limit
+          disabled: true
+        - name: bare-return
+          disabled: true
+        - name: cyclomatic
+          disabled: true
+        - name: cognitive-complexity
+          disabled: true
+        - name: flag-parameter
+          disabled: true
+        - name: increment-decrement
+          disabled: true
+        - name: unhandled-error
+          disabled: true
+        - name: unexported-return
+          disabled: true
+
   exclusions:
     generated: lax
     presets:

@@ -13,7 +13,6 @@ type Workspace struct {
 }
 
 func NewWorkspace(goModulesPath, xsdPath string, xmlnsOverrides []string) (*Workspace, error) {
-
 	ws := Workspace{
 		Cache:         map[string]*Schema{},
 		GoModulesPath: goModulesPath,
