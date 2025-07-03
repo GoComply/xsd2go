@@ -32,11 +32,10 @@ func setXmlNameAnyForSingleElements(elements []Element) []Element {
 		element.XmlNameOverride = ",any"
 		result[0] = element
 		return result
-	} else {
-		for idx := range elements {
-			element := &elements[idx]
-			element.XmlNameOverride = ""
-		}
+	}
+	for idx := range elements {
+		element := &elements[idx]
+		element.XmlNameOverride = ""
 	}
 	return elements
 }
