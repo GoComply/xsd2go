@@ -42,18 +42,18 @@ func setXmlNameAnyForSingleElements(elements []Element) []Element {
 }
 
 type ComplexType struct {
-	XMLName          xml.Name        `xml:"http://www.w3.org/2001/XMLSchema complexType"`
-	Name             string          `xml:"name,attr"`
-	Mixed            bool            `xml:"mixed,attr"`
-	AttributesDirect []Attribute     `xml:"attribute"`
-	Annotation       *Annotation     `xml:"annotation"`
-	Sequence         *Sequence       `xml:"sequence"`
-	SequenceAll      *SequenceAll    `xml:"all"`
-	schema           *Schema         `xml:"-"`
+	XMLName          xml.Name     `xml:"http://www.w3.org/2001/XMLSchema complexType"`
+	Name             string       `xml:"name,attr"`
+	Mixed            bool         `xml:"mixed,attr"`
+	AttributesDirect []Attribute  `xml:"attribute"`
+	Annotation       *Annotation  `xml:"annotation"`
+	Sequence         *Sequence    `xml:"sequence"`
+	SequenceAll      *SequenceAll `xml:"all"`
+	schema           *Schema
 	SimpleContent    *SimpleContent  `xml:"simpleContent"`
 	ComplexContent   *ComplexContent `xml:"complexContent"`
 	Choice           *Choice         `xml:"choice"`
-	content          GenericContent  `xml:"-"`
+	content          GenericContent
 }
 
 func (ct *ComplexType) Attributes() []Attribute {
@@ -187,7 +187,7 @@ type SimpleType struct {
 	Name        string       `xml:"name,attr"`
 	Annotation  *Annotation  `xml:"annotation"`
 	Restriction *Restriction `xml:"restriction"`
-	schema      *Schema      `xml:"-"`
+	schema      *Schema
 }
 
 func (st *SimpleType) GoName() string {

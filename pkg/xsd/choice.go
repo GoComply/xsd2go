@@ -10,8 +10,8 @@ type Choice struct {
 	MaxOccurs   string     `xml:"maxOccurs,attr"`
 	ElementList []Element  `xml:"element"`
 	Sequences   []Sequence `xml:"sequence"`
-	schema      *Schema    `xml:"-"`
-	allElements []Element  `xml:"-"`
+	schema      *Schema
+	allElements []Element
 }
 
 func (c *Choice) compile(sch *Schema, parentElement *Element) {

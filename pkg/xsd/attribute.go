@@ -16,9 +16,9 @@ type Attribute struct {
 	Annotation     *Annotation `xml:"annotation"`
 	DuplicateCount uint        `xml:"-"`
 	Ref            reference   `xml:"ref,attr"`
-	refAttr        *Attribute  `xml:"-"`
-	typ            Type        `xml:"-"`
-	schema         *Schema     `xml:"-"`
+	refAttr        *Attribute
+	typ            Type
+	schema         *Schema
 }
 
 func (a *Attribute) ContainsDocumentation() bool {

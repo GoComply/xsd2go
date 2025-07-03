@@ -10,21 +10,21 @@ import (
 
 // Element defines single XML element.
 type Element struct {
-	XMLName         xml.Name     `xml:"http://www.w3.org/2001/XMLSchema element"`
-	Name            string       `xml:"name,attr"`
-	nameOverride    string       `xml:"-"`
-	XmlNameOverride string       `xml:"-"`
-	FieldOverride   bool         `xml:"-"`
-	Type            reference    `xml:"type,attr"`
-	Ref             reference    `xml:"ref,attr"`
-	MinOccurs       string       `xml:"minOccurs,attr"`
-	MaxOccurs       string       `xml:"maxOccurs,attr"`
-	Annotation      *Annotation  `xml:"annotation"`
-	refElm          *Element     `xml:"-"`
+	XMLName         xml.Name `xml:"http://www.w3.org/2001/XMLSchema element"`
+	Name            string   `xml:"name,attr"`
+	nameOverride    string
+	XmlNameOverride string      `xml:"-"`
+	FieldOverride   bool        `xml:"-"`
+	Type            reference   `xml:"type,attr"`
+	Ref             reference   `xml:"ref,attr"`
+	MinOccurs       string      `xml:"minOccurs,attr"`
+	MaxOccurs       string      `xml:"maxOccurs,attr"`
+	Annotation      *Annotation `xml:"annotation"`
+	refElm          *Element
 	ComplexType     *ComplexType `xml:"complexType"`
 	SimpleType      *SimpleType  `xml:"simpleType"`
-	schema          *Schema      `xml:"-"`
-	typ             Type         `xml:"-"`
+	schema          *Schema
+	typ             Type
 }
 
 func (e *Element) Attributes() []Attribute {

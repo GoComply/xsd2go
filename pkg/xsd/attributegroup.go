@@ -11,8 +11,8 @@ type AttributeGroup struct {
 	Name             string      `xml:"name,attr"`
 	Ref              reference   `xml:"ref,attr"`
 	AttributesDirect []Attribute `xml:"attribute"`
-	typ              Type        `xml:"-"`
-	schema           *Schema     `xml:"-"`
+	typ              Type
+	schema           *Schema
 }
 
 func (att *AttributeGroup) Attributes() []Attribute {
