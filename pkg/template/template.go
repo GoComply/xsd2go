@@ -14,7 +14,7 @@ import (
 )
 
 func GenerateTypes(schema *xsd.Schema, outputDir string) error {
-	t, err := newTemplate(outputDir)
+	t, err := newTemplate()
 	if err != nil {
 		return err
 	}
@@ -50,7 +50,7 @@ func GenerateTypes(schema *xsd.Schema, outputDir string) error {
 	return nil
 }
 
-func newTemplate(outputDir string) (*template.Template, error) {
+func newTemplate() (*template.Template, error) {
 	in, err := pkger.Open("/pkg/template/types.tmpl")
 	if err != nil {
 		return nil, err
