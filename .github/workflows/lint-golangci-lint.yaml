@@ -79,6 +79,11 @@ linters:
     - testpackage
     - thelper
     - tparallel
+    - unconvert
+    - unparam
+    - unused
+    - usestdlibvars
+    - usetesting
 
   disable:
     - cyclop
@@ -100,11 +105,6 @@ linters:
     - nonamedreturns
     - paralleltest
 
-    - unconvert
-    - unparam
-    - unused
-    - usestdlibvars
-    - usetesting
     - varnamelen
     - wastedassign
     - whitespace

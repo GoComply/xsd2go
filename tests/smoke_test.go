@@ -30,15 +30,10 @@ func TestSanity(t *testing.T) {
 func assertConvertsFine(t *testing.T, xsdPath string) []byte {
 	t.Helper()
 
-	dname, err := os.MkdirTemp("", "xsd2go_tests_")
-	require.NoError(t, err)
-	defer os.RemoveAll(dname)
-
-	outputDir := dname
-
+	outputDir := t.TempDir()
 	goModule := "user.com/private"
 
-	err = xsd2go.Convert(xsdPath, goModule, outputDir, nil)
+	err := xsd2go.Convert(xsdPath, goModule, outputDir, nil)
 	require.NoError(t, err)
 
 	generatedFilePath, err := locateGeneratedFile(outputDir)
