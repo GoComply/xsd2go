@@ -284,6 +284,7 @@ var staticTypes = map[string]staticType{
 	"base64Binary":       "string",
 	"normalizedString":   "string",
 	"token":              "string",
+	"Name":               "string",
 	"NCName":             "string",
 	"NMTOKENS":           "string",
 	"anySimpleType":      "string",
