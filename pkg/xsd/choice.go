@@ -46,7 +46,6 @@ func (c *Choice) compile(sch *Schema, parentElement *Element) {
 	}
 	// deduplicate elements that represent duplicate within xsd:choice/xsd:sequence structure
 	c.allElements = append(c.ElementList, deduplicateElements(inheritedElements)...)
-
 }
 
 func (c *Choice) Elements() []Element {

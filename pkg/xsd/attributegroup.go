@@ -47,17 +47,14 @@ func (att *AttributeGroup) compile(sch *Schema, parentElement *Element) {
 		// Second GoName may be different depending on the DuplicateCount
 		goNames[attribute.GoName()] = count
 	}
-
 }
 
 func (att *AttributeGroup) GoName() string {
 	return strcase.ToCamel(att.Name)
-
 }
 
 func (att *AttributeGroup) GoTypeName() string {
 	return att.GoName()
-
 }
 
 func (att *AttributeGroup) Schema() *Schema {

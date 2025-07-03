@@ -113,6 +113,5 @@ func (a *Attribute) compile(s *Schema) {
 		if a.typ == nil {
 			panic("Cannot resolve attribute type: " + a.Type)
 		}
-
 	}
 }

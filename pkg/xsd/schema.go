@@ -85,7 +85,6 @@ func (sch *Schema) findReferencedElement(ref reference) *Element {
 	}
 	if innerSchema != sch {
 		sch.registerImportedModule(innerSchema)
-
 	}
 	return innerSchema.GetElement(ref.Name())
 }
