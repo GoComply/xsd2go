@@ -11,8 +11,8 @@ type AttributeGroup struct {
 	Name             string      `xml:"name,attr"`
 	Ref              reference   `xml:"ref,attr"`
 	AttributesDirect []Attribute `xml:"attribute"`
-	typ              Type        `xml:"-"`
-	schema           *Schema     `xml:"-"`
+	typ              Type
+	schema           *Schema
 }
 
 func (att *AttributeGroup) Attributes() []Attribute {
@@ -47,27 +47,24 @@ func (att *AttributeGroup) compile(sch *Schema, parentElement *Element) {
 		// Second GoName may be different depending on the DuplicateCount
 		goNames[attribute.GoName()] = count
 	}
-
 }
 
 func (att *AttributeGroup) GoName() string {
 	return strcase.ToCamel(att.Name)
-
 }
 
 func (att *AttributeGroup) GoTypeName() string {
 	return att.GoName()
-
 }
 
 func (att *AttributeGroup) Schema() *Schema {
 	return att.schema
 }
 
-func (att *AttributeGroup) Elements() []Element {
+func (*AttributeGroup) Elements() []Element {
 	return []Element{}
 }
 
-func (att *AttributeGroup) ContainsText() bool {
+func (*AttributeGroup) ContainsText() bool {
 	return true
 }

@@ -7,7 +7,7 @@ import (
 	"github.com/iancoleman/strcase"
 )
 
-// Attribute defines single XML attribute
+// Attribute defines single XML attribute.
 type Attribute struct {
 	XMLName        xml.Name    `xml:"http://www.w3.org/2001/XMLSchema attribute"`
 	Name           string      `xml:"name,attr"`
@@ -16,9 +16,9 @@ type Attribute struct {
 	Annotation     *Annotation `xml:"annotation"`
 	DuplicateCount uint        `xml:"-"`
 	Ref            reference   `xml:"ref,attr"`
-	refAttr        *Attribute  `xml:"-"`
-	typ            Type        `xml:"-"`
-	schema         *Schema     `xml:"-"`
+	refAttr        *Attribute
+	typ            Type
+	schema         *Schema
 }
 
 func (a *Attribute) ContainsDocumentation() bool {
@@ -35,7 +35,7 @@ func (a *Attribute) Documentation() string {
 	return a.Annotation.Documentations[0].GetContent()
 }
 
-// Public Go Name of this struct item
+// Public Go Name of this struct item.
 func (a *Attribute) GoName() string {
 	name := a.Name
 	if a.Name == "" {
@@ -113,6 +113,5 @@ func (a *Attribute) compile(s *Schema) {
 		if a.typ == nil {
 			panic("Cannot resolve attribute type: " + a.Type)
 		}
-
 	}
 }

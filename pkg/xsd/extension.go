@@ -103,7 +103,6 @@ func (ext *Extension) compile(sch *Schema, parentElement *Element) {
 	for idx := range ext.AttributeGroups {
 		attrGroup := &ext.AttributeGroups[idx]
 		attrGroup.compile(sch, parentElement)
-
 	}
 
 	// Handle improbable name clash. Consider XSD defining two attributes on the element:

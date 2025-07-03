@@ -14,7 +14,7 @@ type SimpleContent struct {
 	XMLName     xml.Name     `xml:"http://www.w3.org/2001/XMLSchema simpleContent"`
 	Extension   *Extension   `xml:"extension"`
 	Restriction *Restriction `xml:"restriction"`
-	schema      *Schema      `xml:"-"`
+	schema      *Schema
 }
 
 func (sc *SimpleContent) Attributes() []Attribute {
@@ -51,7 +51,7 @@ type ComplexContent struct {
 	XMLName     xml.Name     `xml:"http://www.w3.org/2001/XMLSchema complexContent"`
 	Extension   *Extension   `xml:"extension"`
 	Restriction *Restriction `xml:"restriction"`
-	schema      *Schema      `xml:"-"`
+	schema      *Schema
 }
 
 func (cc *ComplexContent) Attributes() []Attribute {

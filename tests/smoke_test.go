@@ -1,4 +1,4 @@
-package tests
+package tests_test
 
 import (
 	"fmt"
@@ -15,7 +15,7 @@ import (
 
 func TestSanity(t *testing.T) {
 	xsdFiles, err := filepath.Glob("xsd-examples/valid/*.xsd")
-	assert.Nil(t, err)
+	require.NoError(t, err)
 	assert.NotEmpty(t, xsdFiles)
 
 	for _, xsdPath := range xsdFiles {
@@ -28,15 +28,12 @@ func TestSanity(t *testing.T) {
 }
 
 func assertConvertsFine(t *testing.T, xsdPath string) []byte {
-	dname, err := os.MkdirTemp("", "xsd2go_tests_")
-	assert.Nil(t, err)
-	defer os.RemoveAll(dname)
+	t.Helper()
 
-	outputDir := dname
-
+	outputDir := t.TempDir()
 	goModule := "user.com/private"
 
-	err = xsd2go.Convert(xsdPath, goModule, outputDir, nil)
+	err := xsd2go.Convert(xsdPath, goModule, outputDir, nil)
 	require.NoError(t, err)
 
 	generatedFilePath, err := locateGeneratedFile(outputDir)
@@ -45,7 +42,7 @@ func assertConvertsFine(t *testing.T, xsdPath string) []byte {
 	require.NoError(t, err)
 
 	out, err := exec.Command("go", "build", generatedFilePath).CombinedOutput()
-	assert.Equal(t, string(out), "")
+	assert.Empty(t, string(out))
 	require.NoError(t, err)
 
 	return result

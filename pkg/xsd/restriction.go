@@ -10,7 +10,7 @@ type Restriction struct {
 	AttributesDirect []Attribute    `xml:"attribute"`
 	EnumsDirect      []Enumeration  `xml:"enumeration"`
 	SimpleContent    *SimpleContent `xml:"simpleContent"`
-	schema           *Schema        `xml:"-"`
+	schema           *Schema
 	typ              Type
 }
 

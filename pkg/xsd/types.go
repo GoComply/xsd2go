@@ -32,28 +32,27 @@ func setXmlNameAnyForSingleElements(elements []Element) []Element {
 		element.XmlNameOverride = ",any"
 		result[0] = element
 		return result
-	} else {
-		for idx := range elements {
-			element := &elements[idx]
-			element.XmlNameOverride = ""
-		}
+	}
+	for idx := range elements {
+		element := &elements[idx]
+		element.XmlNameOverride = ""
 	}
 	return elements
 }
 
 type ComplexType struct {
-	XMLName          xml.Name        `xml:"http://www.w3.org/2001/XMLSchema complexType"`
-	Name             string          `xml:"name,attr"`
-	Mixed            bool            `xml:"mixed,attr"`
-	AttributesDirect []Attribute     `xml:"attribute"`
-	Annotation       *Annotation     `xml:"annotation"`
-	Sequence         *Sequence       `xml:"sequence"`
-	SequenceAll      *SequenceAll    `xml:"all"`
-	schema           *Schema         `xml:"-"`
+	XMLName          xml.Name     `xml:"http://www.w3.org/2001/XMLSchema complexType"`
+	Name             string       `xml:"name,attr"`
+	Mixed            bool         `xml:"mixed,attr"`
+	AttributesDirect []Attribute  `xml:"attribute"`
+	Annotation       *Annotation  `xml:"annotation"`
+	Sequence         *Sequence    `xml:"sequence"`
+	SequenceAll      *SequenceAll `xml:"all"`
+	schema           *Schema
 	SimpleContent    *SimpleContent  `xml:"simpleContent"`
 	ComplexContent   *ComplexContent `xml:"complexContent"`
 	Choice           *Choice         `xml:"choice"`
-	content          GenericContent  `xml:"-"`
+	content          GenericContent
 }
 
 func (ct *ComplexType) Attributes() []Attribute {
@@ -187,7 +186,7 @@ type SimpleType struct {
 	Name        string       `xml:"name,attr"`
 	Annotation  *Annotation  `xml:"annotation"`
 	Restriction *Restriction `xml:"restriction"`
-	schema      *Schema      `xml:"-"`
+	schema      *Schema
 }
 
 func (st *SimpleType) GoName() string {
@@ -215,7 +214,7 @@ func (st *SimpleType) compile(sch *Schema, parentElement *Element) {
 	}
 }
 
-func (st *SimpleType) Attributes() []Attribute {
+func (*SimpleType) Attributes() []Attribute {
 	return []Attribute{}
 }
 
@@ -233,7 +232,7 @@ func (st *SimpleType) Documentation() string {
 	return st.Annotation.Documentations[0].GetContent()
 }
 
-func (st *SimpleType) Elements() []Element {
+func (*SimpleType) Elements() []Element {
 	return []Element{}
 }
 
@@ -244,7 +243,7 @@ func (st *SimpleType) Enums() []Enumeration {
 	return []Enumeration{}
 }
 
-func (st *SimpleType) ContainsText() bool {
+func (*SimpleType) ContainsText() bool {
 	return true
 }
 
@@ -258,15 +257,15 @@ func (st staticType) GoTypeName() string {
 	return st.GoName()
 }
 
-func (st staticType) Attributes() []Attribute {
+func (staticType) Attributes() []Attribute {
 	return []Attribute{}
 }
 
-func (st staticType) Elements() []Element {
+func (staticType) Elements() []Element {
 	return []Element{}
 }
 
-func (st staticType) Schema() *Schema {
+func (staticType) Schema() *Schema {
 	return nil
 }
 
@@ -274,7 +273,7 @@ func (staticType) ContainsText() bool {
 	return true
 }
 
-func (st staticType) compile(*Schema, *Element) {
+func (staticType) compile(*Schema, *Element) {
 }
 
 var staticTypes = map[string]staticType{

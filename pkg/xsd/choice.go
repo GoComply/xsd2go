@@ -10,8 +10,8 @@ type Choice struct {
 	MaxOccurs   string     `xml:"maxOccurs,attr"`
 	ElementList []Element  `xml:"element"`
 	Sequences   []Sequence `xml:"sequence"`
-	schema      *Schema    `xml:"-"`
-	allElements []Element  `xml:"-"`
+	schema      *Schema
+	allElements []Element
 }
 
 func (c *Choice) compile(sch *Schema, parentElement *Element) {
@@ -46,7 +46,6 @@ func (c *Choice) compile(sch *Schema, parentElement *Element) {
 	}
 	// deduplicate elements that represent duplicate within xsd:choice/xsd:sequence structure
 	c.allElements = append(c.ElementList, deduplicateElements(inheritedElements)...)
-
 }
 
 func (c *Choice) Elements() []Element {

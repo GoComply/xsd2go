@@ -6,7 +6,7 @@ import (
 	"github.com/iancoleman/strcase"
 )
 
-// Internal XSD reference. Examples: "xml:lang", "cpe2:platform-specification"
+// Internal XSD reference. Examples: "xml:lang", "cpe2:platform-specification".
 type reference string
 
 func (ref reference) NsPrefix() string {

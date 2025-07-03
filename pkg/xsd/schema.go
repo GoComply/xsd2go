@@ -11,24 +11,24 @@ import (
 	"golang.org/x/net/html/charset"
 )
 
-// Schema is the root XSD element
+// Schema is the root XSD element.
 type Schema struct {
-	XMLName               xml.Name           `xml:"http://www.w3.org/2001/XMLSchema schema"`
-	Xmlns                 Xmlns              `xml:"-"`
-	TargetNamespace       string             `xml:"targetNamespace,attr"`
-	Annotation            *Annotation        `xml:"annotation"`
-	Includes              []Include          `xml:"include"`
-	Imports               []Import           `xml:"import"`
-	Elements              []Element          `xml:"element"`
-	Attributes            []Attribute        `xml:"attribute"`
-	AttributeGroups       []AttributeGroup   `xml:"attributeGroup"`
-	ComplexTypes          []ComplexType      `xml:"complexType"`
-	SimpleTypes           []SimpleType       `xml:"simpleType"`
-	importedModules       map[string]*Schema `xml:"-"`
-	ModulesPath           string             `xml:"-"`
-	filePath              string             `xml:"-"`
-	inlinedElements       []Element          `xml:"-"`
-	goPackageNameOverride string             `xml:"-"`
+	XMLName               xml.Name         `xml:"http://www.w3.org/2001/XMLSchema schema"`
+	Xmlns                 Xmlns            `xml:"-"`
+	TargetNamespace       string           `xml:"targetNamespace,attr"`
+	Annotation            *Annotation      `xml:"annotation"`
+	Includes              []Include        `xml:"include"`
+	Imports               []Import         `xml:"import"`
+	Elements              []Element        `xml:"element"`
+	Attributes            []Attribute      `xml:"attribute"`
+	AttributeGroups       []AttributeGroup `xml:"attributeGroup"`
+	ComplexTypes          []ComplexType    `xml:"complexType"`
+	SimpleTypes           []SimpleType     `xml:"simpleType"`
+	importedModules       map[string]*Schema
+	ModulesPath           string `xml:"-"`
+	filePath              string
+	inlinedElements       []Element
+	goPackageNameOverride string
 }
 
 func parseSchema(f io.Reader) (*Schema, error) {
@@ -85,7 +85,6 @@ func (sch *Schema) findReferencedElement(ref reference) *Element {
 	}
 	if innerSchema != sch {
 		sch.registerImportedModule(innerSchema)
-
 	}
 	return innerSchema.GetElement(ref.Name())
 }
@@ -294,7 +293,7 @@ func (sch *Schema) registerImportedModule(module *Schema) {
 	sch.importedModules[module.GoPackageName()] = module
 }
 
-// Some elements are not defined at the top-level, rather these are inlined in the complexType definitions
+// Some elements are not defined at the top-level, rather these are inlined in the complexType definitions.
 func (sch *Schema) registerInlinedElement(el *Element, parentElement *Element) {
 	if sch.isElementInlined(el) {
 		if el.Name == "" {
