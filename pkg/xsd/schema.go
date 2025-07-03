@@ -11,7 +11,7 @@ import (
 	"golang.org/x/net/html/charset"
 )
 
-// Schema is the root XSD element
+// Schema is the root XSD element.
 type Schema struct {
 	XMLName               xml.Name           `xml:"http://www.w3.org/2001/XMLSchema schema"`
 	Xmlns                 Xmlns              `xml:"-"`
@@ -294,7 +294,7 @@ func (sch *Schema) registerImportedModule(module *Schema) {
 	sch.importedModules[module.GoPackageName()] = module
 }
 
-// Some elements are not defined at the top-level, rather these are inlined in the complexType definitions
+// Some elements are not defined at the top-level, rather these are inlined in the complexType definitions.
 func (sch *Schema) registerInlinedElement(el *Element, parentElement *Element) {
 	if sch.isElementInlined(el) {
 		if el.Name == "" {

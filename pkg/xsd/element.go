@@ -8,7 +8,7 @@ import (
 	"github.com/iancoleman/strcase"
 )
 
-// Element defines single XML element
+// Element defines single XML element.
 type Element struct {
 	XMLName         xml.Name     `xml:"http://www.w3.org/2001/XMLSchema element"`
 	Name            string       `xml:"name,attr"`

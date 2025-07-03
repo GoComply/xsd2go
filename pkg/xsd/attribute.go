@@ -7,7 +7,7 @@ import (
 	"github.com/iancoleman/strcase"
 )
 
-// Attribute defines single XML attribute
+// Attribute defines single XML attribute.
 type Attribute struct {
 	XMLName        xml.Name    `xml:"http://www.w3.org/2001/XMLSchema attribute"`
 	Name           string      `xml:"name,attr"`
@@ -35,7 +35,7 @@ func (a *Attribute) Documentation() string {
 	return a.Annotation.Documentations[0].GetContent()
 }
 
-// Public Go Name of this struct item
+// Public Go Name of this struct item.
 func (a *Attribute) GoName() string {
 	name := a.Name
 	if a.Name == "" {

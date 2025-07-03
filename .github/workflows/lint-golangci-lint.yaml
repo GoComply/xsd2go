@@ -31,6 +31,7 @@ linters:
     - gocognit
     - gocyclo
     - gocritic
+    - godot
     - godox
     - goheader
     - gomoddirectives
@@ -40,6 +41,33 @@ linters:
     - gosmopolitan
     - govet
     - grouper
+    - iface
+    - importas
+    - ineffassign
+    - interfacebloat
+    - intrange
+    - loggercheck
+    - maintidx
+    - makezero
+    - mirror
+    - misspell
+    - musttag
+    - nakedret
+    - nilerr
+    - nilnesserr
+    - nilnil
+    - noctx
+    - nolintlint
+    - nosprintfhostport
+    - perfsprint
+    - prealloc
+    - predeclared
+    - promlinter
+    - protogetter
+    - reassign
+    - recvcheck
+    - rowserrcheck
+
     - staticcheck
 
   disable:
@@ -52,43 +80,17 @@ linters:
     - funlen
     - gochecknoglobals
     - goconst
-    - godot
-    - iface
-    - importas
     - inamedparam
-    - ineffassign
-    - interfacebloat
-    - intrange
     - ireturn
     - lll
-    - loggercheck
-    - maintidx
-    - makezero
-    - mirror
-    - misspell
     - mnd
-    - musttag
-    - nakedret
     - nestif
-    - nilerr
-    - nilnesserr
-    - nilnil
     - nlreturn
-    - noctx
     - noinlineerr
-    - nolintlint
     - nonamedreturns
-    - nosprintfhostport
     - paralleltest
-    - perfsprint
-    - prealloc
-    - predeclared
-    - promlinter
-    - protogetter
-    - reassign
-    - recvcheck
     - revive
-    - rowserrcheck
+
     - sloglint
     - spancheck
     - sqlclosecheck
