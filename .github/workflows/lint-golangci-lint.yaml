@@ -68,8 +68,17 @@ linters:
     - recvcheck
     - rowserrcheck
     - revive
-
+    - sloglint
+    - spancheck
+    - sqlclosecheck
     - staticcheck
+    - tagalign
+    - tagliatelle
+    - testableexamples
+    - testifylint
+    - testpackage
+    - thelper
+    - tparallel
 
   disable:
     - cyclop
@@ -91,16 +100,6 @@ linters:
     - nonamedreturns
     - paralleltest
 
-    - sloglint
-    - spancheck
-    - sqlclosecheck
-    - tagalign
-    - tagliatelle
-    - testableexamples
-    - testifylint
-    - testpackage
-    - thelper
-    - tparallel
     - unconvert
     - unparam
     - unused
