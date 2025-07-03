@@ -18,7 +18,7 @@ func (e *Enumeration) GoName() string {
 	return strcase.ToCamel(strings.ToLower(e.Value))
 }
 
-func (e *Enumeration) Modifiers() string {
+func (*Enumeration) Modifiers() string {
 	return "-"
 }
 

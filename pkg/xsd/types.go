@@ -215,7 +215,7 @@ func (st *SimpleType) compile(sch *Schema, parentElement *Element) {
 	}
 }
 
-func (st *SimpleType) Attributes() []Attribute {
+func (*SimpleType) Attributes() []Attribute {
 	return []Attribute{}
 }
 
@@ -233,7 +233,7 @@ func (st *SimpleType) Documentation() string {
 	return st.Annotation.Documentations[0].GetContent()
 }
 
-func (st *SimpleType) Elements() []Element {
+func (*SimpleType) Elements() []Element {
 	return []Element{}
 }
 
@@ -244,7 +244,7 @@ func (st *SimpleType) Enums() []Enumeration {
 	return []Enumeration{}
 }
 
-func (st *SimpleType) ContainsText() bool {
+func (*SimpleType) ContainsText() bool {
 	return true
 }
 
@@ -258,15 +258,15 @@ func (st staticType) GoTypeName() string {
 	return st.GoName()
 }
 
-func (st staticType) Attributes() []Attribute {
+func (staticType) Attributes() []Attribute {
 	return []Attribute{}
 }
 
-func (st staticType) Elements() []Element {
+func (staticType) Elements() []Element {
 	return []Element{}
 }
 
-func (st staticType) Schema() *Schema {
+func (staticType) Schema() *Schema {
 	return nil
 }
 
@@ -274,7 +274,7 @@ func (staticType) ContainsText() bool {
 	return true
 }
 
-func (st staticType) compile(*Schema, *Element) {
+func (staticType) compile(*Schema, *Element) {
 }
 
 var staticTypes = map[string]staticType{

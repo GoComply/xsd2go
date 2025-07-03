@@ -64,10 +64,10 @@ func (att *AttributeGroup) Schema() *Schema {
 	return att.schema
 }
 
-func (att *AttributeGroup) Elements() []Element {
+func (*AttributeGroup) Elements() []Element {
 	return []Element{}
 }
 
-func (att *AttributeGroup) ContainsText() bool {
+func (*AttributeGroup) ContainsText() bool {
 	return true
 }
