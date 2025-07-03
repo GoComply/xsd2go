@@ -39,7 +39,7 @@ func GenerateTypes(schema *xsd.Schema, outputDir string) error {
 
 	p, err := format.Source(buf.Bytes())
 	if err != nil {
-		return fmt.Errorf("Could not gofmt output file\nError was: '%w'\nFile was:\n%s\n", err, buf.String())
+		return fmt.Errorf("Unable to gofmt output file %s, error: %w", buf.String(), err)
 	}
 
 	_, err = f.Write(p)
