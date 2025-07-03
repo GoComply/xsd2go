@@ -282,6 +282,7 @@ var staticTypes = map[string]staticType{
 	"dateTime":           "string",
 	"date":               "string",
 	"base64Binary":       "string",
+	"duration":           "string",
 	"normalizedString":   "string",
 	"token":              "string",
 	"Name":               "string",
