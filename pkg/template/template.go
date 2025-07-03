@@ -31,6 +31,7 @@ func GenerateTypes(schema *xsd.Schema, outputDir string) error {
 	if err != nil {
 		return fmt.Errorf("could not create '%s': %w", goFile, err)
 	}
+	defer f.Close()
 
 	var buf bytes.Buffer
 	if err := t.Execute(&buf, schema); err != nil {
