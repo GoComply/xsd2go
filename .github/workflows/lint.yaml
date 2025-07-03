@@ -51,4 +51,5 @@ jobs:
 
     - name: Run golangci-lint
       uses: golangci/golangci-lint-action@v8
-      args: "--config=./.github/workflows/lint-golangci-lint.yaml"
+      with:
+        args: "--config=./.github/workflows/lint-golangci-lint.yaml"

@@ -29,17 +29,17 @@ func GenerateTypes(schema *xsd.Schema, outputDir string) error {
 	fmt.Printf("\tGenerating '%s'\n", goFile)
 	f, err := os.Create(goFile)
 	if err != nil {
-		return fmt.Errorf("Could not create '%s': %w", goFile, err)
+		return fmt.Errorf("could not create '%s': %w", goFile, err)
 	}
 
 	var buf bytes.Buffer
 	if err := t.Execute(&buf, schema); err != nil {
-		return fmt.Errorf("Could not execute template: %w", err)
+		return fmt.Errorf("could not execute template: %w", err)
 	}
 
 	p, err := format.Source(buf.Bytes())
 	if err != nil {
-		return fmt.Errorf("Could not gofmt output file\nError was: '%w'\nFile was:\n%s\n", err, buf.String())
+		return fmt.Errorf("unable to gofmt output file %s, error: %w", buf.String(), err)
 	}
 
 	_, err = f.Write(p)

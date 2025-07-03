@@ -15,7 +15,7 @@ type Documentation struct {
 
 func (d Documentation) GetContent() string {
 	docs := string(d.Content)
-	docs = regexp.MustCompile("\\s").ReplaceAllString(docs, " ")
+	docs = regexp.MustCompile(`\s`).ReplaceAllString(docs, " ")
 	docs = regexp.MustCompile(" +").ReplaceAllString(docs, " ")
 	docs = strings.Trim(docs, " ")
 	return docs

@@ -254,8 +254,8 @@ func (st staticType) GoName() string {
 	return string(st)
 }
 
-func (ct staticType) GoTypeName() string {
-	return ct.GoName()
+func (st staticType) GoTypeName() string {
+	return st.GoName()
 }
 
 func (st staticType) Attributes() []Attribute {

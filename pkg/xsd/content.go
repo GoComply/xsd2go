@@ -74,15 +74,15 @@ func (cc *ComplexContent) ContainsText() bool {
 	return cc.Extension != nil && cc.Extension.ContainsText()
 }
 
-func (c *ComplexContent) compile(sch *Schema, parentElement *Element) {
-	c.schema = sch
-	if c.Extension != nil {
-		c.Extension.compile(sch, parentElement)
+func (cc *ComplexContent) compile(sch *Schema, parentElement *Element) {
+	cc.schema = sch
+	if cc.Extension != nil {
+		cc.Extension.compile(sch, parentElement)
 	}
-	if c.Restriction != nil {
-		if c.Extension != nil {
+	if cc.Restriction != nil {
+		if cc.Extension != nil {
 			panic("Not implemented: xsd:complexContent defines xsd:restriction and xsd:extension")
 		}
-		c.Restriction.compile(sch, parentElement)
+		cc.Restriction.compile(sch, parentElement)
 	}
 }
