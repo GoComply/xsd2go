@@ -84,6 +84,9 @@ linters:
     - unused
     - usestdlibvars
     - usetesting
+    - wastedassign
+    - whitespace
+    - zerologlint
 
   disable:
     - cyclop
@@ -104,14 +107,11 @@ linters:
     - noinlineerr
     - nonamedreturns
     - paralleltest
-
     - varnamelen
-    - wastedassign
-    - whitespace
     - wrapcheck
     - wsl
     - wsl_v5
-    - zerologlint
+
   settings:
     staticcheck:
       checks:
