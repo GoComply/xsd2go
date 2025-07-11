@@ -63,10 +63,23 @@ func (sch *Schema) compile() {
 		ct := &sch.ComplexTypes[idx]
 		ct.compile(sch, nil)
 	}
-	for idx := range sch.SimpleTypes {
+
+	nonStaticType := filterNonStaticTypes(sch.SimpleTypes)
+	for idx := range nonStaticType {
 		st := &sch.SimpleTypes[idx]
 		st.compile(sch, nil)
 	}
+	sch.SimpleTypes = nonStaticType
+}
+
+func filterNonStaticTypes(types []SimpleType) []SimpleType {
+	var nonStaticTypes []SimpleType
+	for _, st := range types {
+		if st.Restriction == nil || !IsStaticType(st.Restriction.Base.Name()) {
+			nonStaticTypes = append(nonStaticTypes, st)
+		}
+	}
+	return nonStaticTypes
 }
 
 func (sch *Schema) findReferencedAttribute(ref reference) *Attribute {
@@ -224,6 +237,12 @@ func (sch *Schema) GetType(name string) Type {
 	}
 	for idx, typ := range sch.SimpleTypes {
 		if typ.Name == name {
+
+			simpleType := sch.SimpleTypes[idx]
+			if simpleType.Restriction != nil && IsStaticType(simpleType.Restriction.Base.Name()) {
+				return StaticType(simpleType.Restriction.Base.Name())
+			}
+
 			return &sch.SimpleTypes[idx]
 		}
 	}
