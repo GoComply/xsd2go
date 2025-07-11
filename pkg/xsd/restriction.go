@@ -25,7 +25,7 @@ func (r *Restriction) compile(sch *Schema, parentElement *Element) {
 	}
 
 	if r.Base == "" {
-		panic("Not implemented: xsd:extension/@base empty, cannot extend unknown type")
+		panic("Not implemented: xsd:restriction/@base empty, cannot extend unknown type")
 	}
 
 	r.typ = sch.findReferencedType(r.Base)
