@@ -7,9 +7,9 @@ import (
 )
 
 type Workspace struct {
-	Cache          map[string]*Schema
-	GoModulesPath  string
-	xmlnsOverrides xmlnsOverrides
+	Cache          map[string]*Schema // Parsed XSD schemas by its filename (user specifies initial one, and we load dependencies)
+	GoModulesPath  string             // user requested go package path (example: github.com/gocomply/scap)
+	xmlnsOverrides xmlnsOverrides     // user-supplied xmlns overrides
 }
 
 func NewWorkspace(goModulesPath, xsdPath string, xmlnsOverrides []string) (*Workspace, error) {
