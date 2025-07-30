@@ -100,8 +100,8 @@ func (ws *Workspace) compile() error {
 
 	for _, schema := range ws.Cache {
 		goPackageName := schema.GoPackageName()
-		prevXmlns, ok := uniqPkgNames[goPackageName]
-		if ok {
+		prevXmlns, dupeFound := uniqPkgNames[goPackageName]
+		if dupeFound {
 			return fmt.Errorf("malformed workspace; multiple XSD files refer to itself with xmlns shorthand: '%s':\n - %s\n - %s\nWhile this is valid in XSD it is impractical for golang code generation.\nConsider providing --xmlns-override=%s=mygopackage", goPackageName, prevXmlns, schema.TargetNamespace, schema.TargetNamespace)
 		}
 		uniqPkgNames[goPackageName] = schema.TargetNamespace
