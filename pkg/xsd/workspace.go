@@ -23,14 +23,14 @@ func NewWorkspace(goModulesPath, xsdPath string, xmlnsOverrides []string) (*Work
 		return nil, err
 	}
 
-	_, err = ws.loadXsd(xsdPath, true)
+	_, err = ws.loadXsd(xsdPath, false)
 	if err != nil {
 		return nil, err
 	}
 	return &ws, ws.compile()
 }
 
-func (ws *Workspace) loadXsd(xsdPath string, cache bool) (*Schema, error) {
+func (ws *Workspace) loadXsd(xsdPath string, shouldBeInlined bool) (*Schema, error) {
 	cached, found := ws.Cache[xsdPath]
 	if found {
 		return cached, nil
@@ -59,9 +59,10 @@ func (ws *Workspace) loadXsd(xsdPath string, cache bool) (*Schema, error) {
 	schema.ModulesPath = ws.GoModulesPath
 	schema.filePath = xsdPath
 	schema.goPackageNameOverride = ws.xmlnsOverrides.override(schema.TargetNamespace)
-	// Won't cache included schemas - we need to append contents to the current
-	// schema.
-	if cache {
+
+	if !shouldBeInlined {
+		// Cache all loaded schemas in the workspace, unless it was brought in by xsd:include element.
+		// Unlike xsd:import, xsd:include does not result in a separate schema in the workspace.
 		ws.Cache[xsdPath] = schema
 	}
 
