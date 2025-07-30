@@ -41,7 +41,7 @@ func assertConvertsFine(t *testing.T, xsdPath string) []byte {
 	result, err := os.ReadFile(generatedFilePath)
 	require.NoError(t, err)
 
-	out, err := exec.Command("go", "build", generatedFilePath).CombinedOutput()
+	out, err := exec.CommandContext(t.Context(), "go", "build", generatedFilePath).CombinedOutput()
 	assert.Empty(t, string(out))
 	require.NoError(t, err)
 
