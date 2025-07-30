@@ -10,7 +10,6 @@ import (
 )
 
 func main() {
-
 	app := cli.NewApp()
 	app.Name = "GoComply XSD2Go"
 	app.Usage = "Automatically generate golang xml parser based on XSD"
