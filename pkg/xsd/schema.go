@@ -32,6 +32,27 @@ type Schema struct {
 	goPackageNameOverride string
 }
 
+func ReadSchemaFromFile(xsdPath string) (*Schema, error) {
+	xsdPathClean := filepath.Clean(xsdPath)
+	f, err := os.Open(xsdPathClean)
+	if err != nil {
+		return nil, err
+	}
+	defer func() {
+		err := f.Close()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error while closing file %s, %v", xsdPathClean, err)
+		}
+	}()
+
+	schema, err := parseSchema(f)
+	if err != nil {
+		return nil, fmt.Errorf("%w; while processing %s", err, xsdPath)
+	}
+
+	return schema, nil
+}
+
 func parseSchema(f io.Reader) (*Schema, error) {
 	schema := Schema{importedModules: map[string]*Schema{}}
 	d := xml.NewDecoder(f)

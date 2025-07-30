@@ -2,7 +2,6 @@ package xsd
 
 import (
 	"fmt"
-	"os"
 	"path/filepath"
 )
 
@@ -37,21 +36,7 @@ func (ws *Workspace) loadXsd(xsdPath string, shouldBeInlined bool) (*Schema, err
 	}
 	fmt.Println("\tParsing:", xsdPath)
 
-	xsdPathClean := filepath.Clean(xsdPath)
-	f, err := os.Open(xsdPathClean)
-	if err != nil {
-		return nil, err
-	}
-
-	schema, err := parseSchema(f)
-	if err != nil {
-		err2 := f.Close()
-		if err2 != nil {
-			fmt.Fprintf(os.Stderr, "Error while closing file %s, %v", xsdPathClean, err2)
-		}
-		return nil, fmt.Errorf("%w; while processing %s", err, xsdPath)
-	}
-	err = f.Close()
+	schema, err := ReadSchemaFromFile(xsdPath)
 	if err != nil {
 		return nil, err
 	}
