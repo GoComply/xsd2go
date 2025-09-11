@@ -2,16 +2,18 @@ package template
 
 import (
 	"bytes"
+	_ "embed"
 	"fmt"
 	"go/format"
-	"io"
 	"os"
 	"path/filepath"
 	"text/template"
 
 	"github.com/gocomply/xsd2go/pkg/xsd"
-	"github.com/markbates/pkger"
 )
+
+//go:embed types.tmpl
+var templText string
 
 func GenerateTypes(schema *xsd.Schema, outputDir string) error {
 	t, err := newTemplate()
@@ -52,16 +54,5 @@ func GenerateTypes(schema *xsd.Schema, outputDir string) error {
 }
 
 func newTemplate() (*template.Template, error) {
-	in, err := pkger.Open("/pkg/template/types.tmpl")
-	if err != nil {
-		return nil, err
-	}
-	defer in.Close()
-
-	tempText, err := io.ReadAll(in)
-	if err != nil {
-		return nil, err
-	}
-
-	return template.New("types.tmpl").Funcs(template.FuncMap{}).Parse(string(tempText))
+	return template.New("types.tmpl").Funcs(template.FuncMap{}).Parse(templText)
 }
