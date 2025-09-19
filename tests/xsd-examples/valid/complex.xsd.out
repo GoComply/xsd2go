@@ -12,13 +12,13 @@ type Myelement struct {
 
 	Id int64 `xml:"id"`
 
-	ExternalId *int64 `xml:"external_id"`
+	ExternalId *int64 `xml:"external_id,omitempty"`
 
-	Id1 *int `xml:"id_1"`
+	Id1 *int `xml:"id_1,omitempty"`
 
-	Id21 *int `xml:"id_21"`
+	Id21 *int `xml:"id_21,omitempty"`
 
-	Id22 *int `xml:"id_22"`
+	Id22 *int `xml:"id_22,omitempty"`
 }
 
 // XSD ComplexType declarations
@@ -28,13 +28,13 @@ type MyElementType struct {
 
 	Id int64 `xml:"id"`
 
-	ExternalId *int64 `xml:"external_id"`
+	ExternalId *int64 `xml:"external_id,omitempty"`
 
-	Id1 *int `xml:"id_1"`
+	Id1 *int `xml:"id_1,omitempty"`
 
-	Id21 *int `xml:"id_21"`
+	Id21 *int `xml:"id_21,omitempty"`
 
-	Id22 *int `xml:"id_22"`
+	Id22 *int `xml:"id_22,omitempty"`
 }
 
 // XSD SimpleType declarations

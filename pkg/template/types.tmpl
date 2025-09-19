@@ -19,7 +19,7 @@ import (
   // Element
   {{- end}}
   type {{ .GoName }} struct {
-    XMLName xml.Name `xml:"{{.Name}}"`
+    XMLName xml.Name `xml:"{{.Name}}{{.Modifiers}}"`
     {{ range .Attributes }}
         {{- if .ContainsDocumentation }}
         // {{ .GoName }}: {{ .Documentation }}
@@ -31,7 +31,7 @@ import (
       {{- if .ContainsDocumentation }}
       // {{ .GoName }}: {{ .Documentation }}
       {{- end}}
-      {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}"`
+      {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}{{.Modifiers}}"`
     {{ end }}
 
     {{- if .ContainsText }}
@@ -63,7 +63,7 @@ import (
       {{- if .ContainsDocumentation }}
       // {{ .GoName }}: {{ .Documentation }}
       {{- end}}
-    {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}"`
+    {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}{{.Modifiers}}"`
   {{end}}
 
   {{- if .ContainsText }}

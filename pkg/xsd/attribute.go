@@ -97,7 +97,8 @@ func (a *Attribute) XmlName() string {
 }
 
 func (a *Attribute) optional() bool {
-	return a.Use == "optional"
+	// 'use' defaults to 'optional': https://www.w3.org/TR/xmlschema11-1/#declare-attribute
+	return a.Use == "" || a.Use == "optional"
 }
 
 func (a *Attribute) compile(s *Schema) {
