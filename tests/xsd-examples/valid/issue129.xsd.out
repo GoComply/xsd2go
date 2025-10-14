@@ -8,14 +8,14 @@ import (
 
 // Element
 type List struct {
-	XMLName xml.Name `xml:"List"`
+	XMLName xml.Name `xml:"List,omitempty"`
 
 	Ccc []string `xml:",any"`
 }
 
 // Element
 type List1 struct {
-	XMLName xml.Name `xml:"List"`
+	XMLName xml.Name `xml:"List,omitempty"`
 
 	Ddd []int `xml:",any"`
 }
@@ -25,13 +25,13 @@ type List1 struct {
 type Aaa struct {
 	XMLName xml.Name
 
-	List *List `xml:",any"`
+	List *List `xml:",any,omitempty"`
 }
 
 type Bbb struct {
 	XMLName xml.Name
 
-	List *List `xml:",any"`
+	List *List `xml:",any,omitempty"`
 }
 
 // XSD SimpleType declarations

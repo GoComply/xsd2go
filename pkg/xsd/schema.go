@@ -120,7 +120,7 @@ func (sch *Schema) findReferencedType(ref reference) Type {
 	innerSchema := sch.findReferencedSchemaByPrefix(ref.NsPrefix())
 	if innerSchema == nil {
 		xmlnsUri := sch.Xmlns.UriByPrefix(ref.NsPrefix())
-		if xmlnsUri == "http://www.w3.org/2001/XMLSchema" {
+		if xmlnsUri == "http://www.w3.org/2001/XMLSchema" { //nolint:revive
 			return StaticType(ref.Name())
 		}
 		panic("Internal error: referenced type '" + string(ref) + "' cannot be found.")
@@ -148,7 +148,7 @@ func (sch *Schema) xmlnsByPrefixInternal(xmlnsPrefix string) string {
 	case "":
 		return sch.TargetNamespace
 	case "xml":
-		return "http://www.w3.org/XML/1998/namespace"
+		return "http://www.w3.org/XML/1998/namespace" //nolint:revive
 	default:
 		uri := sch.Xmlns.UriByPrefix(xmlnsPrefix)
 		if uri == "" {
