@@ -33,7 +33,7 @@ func assertConvertsFine(t *testing.T, xsdPath string) []byte {
 	outputDir := t.TempDir()
 	goModule := "user.com/private"
 
-	err := xsd2go.Convert(xsdPath, goModule, outputDir, nil)
+	err := xsd2go.Convert([]string{xsdPath}, goModule, outputDir, nil, nil)
 	require.NoError(t, err)
 
 	generatedFilePath, err := locateGeneratedFile(outputDir)

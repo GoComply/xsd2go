@@ -27,6 +27,10 @@ type Element struct {
 	typ             Type
 }
 
+func (e *Element) Schema() *Schema {
+	return e.schema
+}
+
 func (e *Element) Attributes() []Attribute {
 	if e.typ != nil {
 		return injectSchemaIntoAttributes(e.schema, e.typ.Attributes())
@@ -94,9 +98,14 @@ func (e *Element) GoTypeName() string {
 	return e.GoName()
 }
 
-func (e *Element) GoForeignModule() string {
+func (e *Element) GoForeignModule(parent interface{}) string {
 	if e.isPlainString() && e.refElm == nil && e.typ == nil {
 		return ""
+	}
+
+	var parentSchema *Schema
+	if sch, ok := parent.(schemaProvider); ok {
+		parentSchema = sch.Schema()
 	}
 
 	foreignSchema := (*Schema)(nil)
@@ -106,8 +115,8 @@ func (e *Element) GoForeignModule() string {
 		foreignSchema = e.typ.Schema()
 	}
 
-	if foreignSchema != nil && foreignSchema != e.schema &&
-		foreignSchema.TargetNamespace != e.schema.TargetNamespace {
+	if parentSchema != nil && foreignSchema != nil &&
+		foreignSchema.TargetNamespace != parentSchema.TargetNamespace {
 		return foreignSchema.GoPackageName() + "."
 	}
 	return ""

@@ -62,9 +62,14 @@ func (a *Attribute) isPlainString() bool {
 	return ok
 }
 
-func (a *Attribute) GoForeignModule() string {
+func (a *Attribute) GoForeignModule(parent interface{}) string {
 	if a.isPlainString() {
 		return ""
+	}
+
+	var parentSchema *Schema
+	if sch, ok := parent.(schemaProvider); ok {
+		parentSchema = sch.Schema()
 	}
 
 	foreignSchema := (*Schema)(nil)
@@ -74,8 +79,8 @@ func (a *Attribute) GoForeignModule() string {
 		foreignSchema = a.typ.Schema()
 	}
 
-	if foreignSchema != nil && foreignSchema != a.schema &&
-		foreignSchema.TargetNamespace != a.schema.TargetNamespace {
+	if parentSchema != nil && foreignSchema != nil &&
+		foreignSchema.TargetNamespace != parentSchema.TargetNamespace {
 		return foreignSchema.GoPackageName() + "."
 	}
 	return ""

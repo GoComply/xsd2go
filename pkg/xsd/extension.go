@@ -10,6 +10,7 @@ type Extension struct {
 	AttributesDirect []Attribute      `xml:"attribute"`
 	AttributeGroups  []AttributeGroup `xml:"attributeGroup"`
 	Sequence         *Sequence        `xml:"sequence"`
+	Choice           *Choice          `xml:"choice"`
 	typ              Type
 }
 
@@ -28,9 +29,12 @@ func (ext *Extension) Attributes() []Attribute {
 }
 
 func (ext *Extension) Elements() []Element {
-	elements := []Element{}
+	var elements []Element
 	if ext.Sequence != nil {
 		elements = append(elements, ext.Sequence.Elements()...)
+	}
+	if ext.Choice != nil {
+		elements = append(elements, ext.Choice.Elements()...)
 	}
 	if ext.typ != nil {
 		elements = append(elements, ext.typ.Elements()...)
@@ -43,7 +47,7 @@ func (ext *Extension) Elements() []Element {
 		goNames[attr.GoName()] = struct{}{}
 	}
 
-	final := []Element{}
+	var final []Element
 	for _, element := range elements {
 		if _, found := goNames[element.GoFieldName()]; found {
 			element.FieldOverride = true
@@ -89,6 +93,9 @@ func (ext *Extension) ContainsText() bool {
 func (ext *Extension) compile(sch *Schema, parentElement *Element) {
 	if ext.Sequence != nil {
 		ext.Sequence.compile(sch, parentElement)
+	}
+	if ext.Choice != nil {
+		ext.Choice.compile(sch, parentElement)
 	}
 	if ext.Base == "" {
 		panic("Not implemented: xsd:extension/@base empty, cannot extend unknown type")

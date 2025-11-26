@@ -12,7 +12,7 @@ import (
 // {{ .Documentation }}
 {{- end}}
 
-{{range .ExportableElements }}
+{{range $parent := .ExportableElements }}
   {{- if .ContainsDocumentation }}
   // {{ .GoName }}: {{ .Documentation }}
   {{- else}}
@@ -24,14 +24,14 @@ import (
         {{- if .ContainsDocumentation }}
         // {{ .GoName }}: {{ .Documentation }}
         {{- end}}
-        {{ .GoName }} {{.GoForeignModule}}{{.GoType}} `xml:"{{.XmlName}},{{.Modifiers}}"`
+        {{ .GoName }} {{.GoForeignModule $parent}}{{.GoType}} `xml:"{{.XmlName}},{{.Modifiers}}"`
     {{end }}
 
     {{ range .Elements }}
       {{- if .ContainsDocumentation }}
       // {{ .GoName }}: {{ .Documentation }}
       {{- end}}
-      {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}{{.Modifiers}}"`
+      {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule $parent}}{{ .GoTypeName }} `xml:"{{.XmlName}}{{.Modifiers}}"`
     {{ end }}
 
     {{- if .ContainsText }}
@@ -43,7 +43,7 @@ import (
 
 
 // XSD ComplexType declarations
-{{range .ExportableComplexTypes }}
+{{range $parent := .ExportableComplexTypes }}
 
   {{- if .ContainsDocumentation }}
   // {{ .GoName }}: {{ .Documentation }}
@@ -56,14 +56,14 @@ import (
       {{- if .ContainsDocumentation }}
       // {{ .GoName }}: {{ .Documentation }}
       {{- end}}
-      {{ .GoName }} {{.GoForeignModule}}{{.GoType}} `xml:"{{.XmlName}},{{.Modifiers}}"`
+      {{ .GoName }} {{.GoForeignModule $parent}}{{.GoType}} `xml:"{{.XmlName}},{{.Modifiers}}"`
   {{end }}
 
   {{ range .Elements }}
       {{- if .ContainsDocumentation }}
       // {{ .GoName }}: {{ .Documentation }}
       {{- end}}
-    {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}{{.Modifiers}}"`
+    {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule $parent}}{{ .GoTypeName }} `xml:"{{.XmlName}}{{.Modifiers}}"`
   {{end}}
 
   {{- if .ContainsText }}

@@ -15,7 +15,28 @@ type Enumeration struct {
 
 // Public Go Name of this struct item.
 func (e *Enumeration) GoName() string {
-	return strcase.ToCamel(strings.ToLower(e.Value))
+	final := e.Value
+
+	// Touch ups for special characters.
+	replacer := strings.NewReplacer(
+		"+", "Plus",
+		"-", "Minus",
+		" ", "_",
+		".", "_",
+		":", "_",
+		"/", "_",
+		"\\", "_",
+		",", "_",
+	)
+	final = replacer.Replace(final)
+
+	// Only camel case if the enum was at least 3 characters or more to prevent collisions when enums like `HK`, `hk`
+	// and `Hk` are all present. Without hints, there is no elegant way to handle this special case.
+	if len(e.Value) > 2 {
+		final = strcase.ToCamel(strings.ToLower(final))
+	}
+
+	return final
 }
 
 func (*Enumeration) Modifiers() string {
