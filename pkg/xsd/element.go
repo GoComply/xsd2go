@@ -31,6 +31,10 @@ func (e *Element) Schema() *Schema {
 	return e.schema
 }
 
+func (e *Element) IsEmpty() bool {
+	return len(e.Attributes()) == 0 && len(e.Elements()) == 0
+}
+
 func (e *Element) Attributes() []Attribute {
 	if e.typ != nil {
 		return injectSchemaIntoAttributes(e.schema, e.typ.Attributes())

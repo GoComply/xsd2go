@@ -12,35 +12,16 @@ import (
 // {{ .Documentation }}
 {{- end}}
 
-{{range $parent := .ExportableElements }}
-  {{- if .ContainsDocumentation }}
-  // {{ .GoName }}: {{ .Documentation }}
-  {{- else}}
-  // Element
-  {{- end}}
-  type {{ .GoName }} struct {
-    XMLName xml.Name `xml:"{{.Name}}{{.Modifiers}}"`
-    {{ range .Attributes }}
-        {{- if .ContainsDocumentation }}
-        // {{ .GoName }}: {{ .Documentation }}
-        {{- end}}
-        {{ .GoName }} {{.GoForeignModule $parent}}{{.GoType}} `xml:"{{.XmlName}},{{.Modifiers}}"`
-    {{end }}
-
-    {{ range .Elements }}
-      {{- if .ContainsDocumentation }}
-      // {{ .GoName }}: {{ .Documentation }}
-      {{- end}}
-      {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule $parent}}{{ .GoTypeName }} `xml:"{{.XmlName}}{{.Modifiers}}"`
-    {{ end }}
-
-    {{- if .ContainsText }}
-      Text string `xml:",chardata"`
-    {{- end}}
-  }
-
-{{end}}
-
+{{ range $parent := .ExportableElements }}
+  {{- if not .IsEmpty }}
+	{{- if .ContainsDocumentation }}
+	// {{ .GoName }}: {{ .Documentation }}
+	{{- else }}
+	// Element
+	{{- end }}
+	type {{ .GoName }} = {{.GoForeignModule $parent}}{{ .GoTypeName }}
+  {{- end }}
+{{ end }}
 
 // XSD ComplexType declarations
 {{range $parent := .ExportableComplexTypes }}
@@ -60,10 +41,12 @@ import (
   {{end }}
 
   {{ range .Elements }}
+      {{- if not .IsEmpty }}
       {{- if .ContainsDocumentation }}
       // {{ .GoName }}: {{ .Documentation }}
       {{- end}}
-    {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule $parent}}{{ .GoTypeName }} `xml:"{{.XmlName}}{{.Modifiers}}"`
+      {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule $parent}}{{ .GoTypeName }} `xml:"{{.XmlName}}{{.Modifiers}}"`
+      {{- end }}
   {{end}}
 
   {{- if .ContainsText }}
