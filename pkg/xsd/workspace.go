@@ -80,6 +80,9 @@ func (ws *Workspace) loadXsd(xsdPath string, shouldBeInlined bool) (*Schema, err
 		return nil, err
 	}
 
+	// Set the type overrides.
+	schema.typeOverrides = ws.typeOverrides
+
 	// Some schemas continue in separate files.
 	seenSchema, isExternalContinuation := ws.Lookup[schema.TargetNamespace]
 	if !isExternalContinuation {
