@@ -37,5 +37,10 @@ func (t typeOverrides) overrideType(schema string, typeName string) (string, boo
 	if !ok {
 		return "", false
 	}
-	return overrides[typeName], true
+
+	if replacement, ok := overrides[typeName]; ok {
+		return replacement, true
+	}
+
+	return "", false
 }
