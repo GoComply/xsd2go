@@ -97,7 +97,7 @@ func (ws *Workspace) loadXsd(xsdPath string, shouldBeInlined bool) (*Schema, err
 		ws.Cache[xsdPath] = schema
 	}
 
-	dir := filepath.Dir(xsdPath)
+	dir := filepath.ToSlash(filepath.Dir(xsdPath))
 
 	// Merge included schemas.
 	for idx := range schema.Includes {

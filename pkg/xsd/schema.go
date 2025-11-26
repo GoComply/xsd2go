@@ -379,7 +379,8 @@ type Import struct {
 
 func (i *Import) load(ws *Workspace, baseDir string) (err error) {
 	if i.SchemaLocation != "" {
-		i.ImportedSchema, err = ws.loadXsd(filepath.Join(baseDir, i.SchemaLocation), false)
+		fname := filepath.ToSlash(filepath.Join(baseDir, i.SchemaLocation))
+		i.ImportedSchema, err = ws.loadXsd(fname, false)
 	}
 	return
 }
@@ -393,7 +394,8 @@ type Include struct {
 
 func (i *Include) load(ws *Workspace, baseDir string) (err error) {
 	if i.SchemaLocation != "" {
-		i.IncludedSchema, err = ws.loadXsd(filepath.Join(baseDir, i.SchemaLocation), true)
+		fname := filepath.ToSlash(filepath.Join(baseDir, i.SchemaLocation))
+		i.IncludedSchema, err = ws.loadXsd(fname, true)
 	}
 	return
 }
