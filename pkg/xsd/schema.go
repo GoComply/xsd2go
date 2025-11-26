@@ -95,6 +95,52 @@ func (sch *Schema) compile() {
 		st := &sch.SimpleTypes[idx]
 		st.compile(sch, nil)
 	}
+	sch.resolveNameCollisions()
+}
+
+func (sch *Schema) resolveNameCollisions() {
+	elementsByName := sch.elementsByGoName()
+	for _, l := range elementsByName {
+		if len(l) > 1 {
+			// Found elements that have duplicate name
+			// TODO: resolve the name collisions more intelligently here.
+			// TODO: Needs to compare parent name for all the collisions and potentially use grand parent
+			fmt.Printf("\n - TODO: resolving name collision: %s", l[0].GoName())
+			for idx := range l {
+				el := l[idx]
+				el.prefixNameWithParent(el.Parent)
+			}
+		}
+	}
+	// TODO call resolveNameCollisions again on resolved schema, to avoid new collisions created by resolver
+}
+
+func (sch *Schema) elementsByGoName() map[string][]*Element {
+	result := map[string][]*Element{}
+	for idx := range sch.Elements {
+		el := &sch.Elements[idx]
+		l, ok := result[el.GoName()]
+		if !ok {
+			result[el.GoName()] = []*Element{
+				el,
+			}
+		} else {
+			result[el.GoName()] = append(l, el)
+		}
+	}
+
+	for idx := range sch.inlinedElements {
+		el := &sch.inlinedElements[idx]
+		l, ok := result[el.GoName()]
+		if !ok {
+			result[el.GoName()] = []*Element{
+				el,
+			}
+		} else {
+			result[el.GoName()] = append(l, el)
+		}
+	}
+	return result
 }
 
 func (sch *Schema) findReferencedAttribute(ref reference) *Attribute {
@@ -326,7 +372,6 @@ func (sch *Schema) registerInlinedElement(el *Element, parentElement *Element) {
 		if el.Name == "" {
 			panic("Not implemented: found inlined xsd:element without @name attribute")
 		}
-		el.prefixNameWithParent(parentElement)
 		sch.inlinedElements = append(sch.inlinedElements, *el)
 	}
 }
