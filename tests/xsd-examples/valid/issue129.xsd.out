@@ -9,29 +9,25 @@ import (
 // Element
 type List struct {
 	XMLName xml.Name `xml:"List,omitempty"`
-
-	Ccc []string `xml:",any"`
+	Ccc     []string `xml:",any"`
 }
 
 // Element
 type List1 struct {
 	XMLName xml.Name `xml:"List,omitempty"`
-
-	Ddd []int `xml:",any"`
+	Ddd     []int    `xml:",any"`
 }
 
 // XSD ComplexType declarations
 
 type Aaa struct {
 	XMLName xml.Name
-
-	List *List `xml:",any,omitempty"`
+	List    *List `xml:",any,omitempty"`
 }
 
 type Bbb struct {
 	XMLName xml.Name
-
-	List *List `xml:",any,omitempty"`
+	List    *List `xml:",any,omitempty"`
 }
 
 // XSD SimpleType declarations

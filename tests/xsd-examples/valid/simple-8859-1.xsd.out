@@ -9,8 +9,7 @@ import (
 // Element
 type Myelement struct {
 	XMLName xml.Name `xml:"myelement"`
-
-	Id int64 `xml:",any"`
+	Id      int64    `xml:",any"`
 }
 
 // XSD ComplexType declarations
@@ -18,8 +17,7 @@ type Myelement struct {
 // MyElementType: Documentation with a character from ISO-8859-1 encoding: ñ
 type MyElementType struct {
 	XMLName xml.Name
-
-	Id int64 `xml:",any"`
+	Id      int64 `xml:",any"`
 }
 
 // XSD SimpleType declarations

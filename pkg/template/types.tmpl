@@ -20,20 +20,18 @@ import (
   {{- end}}
   type {{ .GoName }} struct {
     XMLName xml.Name `xml:"{{.Name}}{{.Modifiers}}"`
-    {{ range .Attributes }}
+    {{- range .Attributes }}
         {{- if .ContainsDocumentation }}
         // {{ .GoName }}: {{ .Documentation }}
         {{- end}}
         {{ .GoName }} {{.GoForeignModule}}{{.GoType}} `xml:"{{.XmlName}},{{.Modifiers}}"`
-    {{end }}
-
-    {{ range .Elements }}
+    {{- end }}
+    {{- range .Elements }}
       {{- if .ContainsDocumentation }}
       // {{ .GoName }}: {{ .Documentation }}
       {{- end}}
       {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}{{.Modifiers}}"`
-    {{ end }}
-
+    {{- end }}
     {{- if .ContainsText }}
       Text string `xml:",chardata"`
     {{- end}}
@@ -52,20 +50,18 @@ import (
   {{- if not .HasXmlNameAttribute }}
     XMLName xml.Name
   {{- end}}
-  {{ range .Attributes }}
+  {{- range .Attributes }}
       {{- if .ContainsDocumentation }}
       // {{ .GoName }}: {{ .Documentation }}
       {{- end}}
       {{ .GoName }} {{.GoForeignModule}}{{.GoType}} `xml:"{{.XmlName}},{{.Modifiers}}"`
-  {{end }}
-
-  {{ range .Elements }}
+  {{- end }}
+  {{- range .Elements }}
       {{- if .ContainsDocumentation }}
       // {{ .GoName }}: {{ .Documentation }}
       {{- end}}
     {{ .GoFieldName}} {{.GoMemLayout}}{{.GoForeignModule}}{{ .GoTypeName }} `xml:"{{.XmlName}}{{.Modifiers}}"`
-  {{end}}
-
+  {{- end}}
   {{- if .ContainsText }}
     Text string `xml:",chardata"`
   {{- end}}
@@ -82,9 +78,13 @@ import (
   {{- end}}
   type {{ .GoName }} {{ .GoTypeName }}
 
+  {{- if .Enums }}
   {{ $simpleType := . }}
-  {{ range .Enums }}
-  const {{ $simpleType.GoName -}} {{- .GoName }} {{ $simpleType.GoName }} = "{{ .XmlName }}"
-  {{end }}
+  const (
+  {{- range .Enums }}
+    {{ $simpleType.GoName -}} {{- .GoName }} {{ $simpleType.GoName }} = "{{ .XmlName }}"
+  {{- end }}
+  )
+  {{- end }}
 
 {{end}}

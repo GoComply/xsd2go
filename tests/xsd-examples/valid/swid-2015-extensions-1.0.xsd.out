@@ -13,8 +13,8 @@ import ()
 // PatchEventType: This type defines the types of file actions that can be peformed when applying a patch.
 type PatchEventType string
 
-const PatchEventTypeUpdate PatchEventType = "update"
-
-const PatchEventTypeRemove PatchEventType = "remove"
-
-const PatchEventTypeAdd PatchEventType = "add"
+const (
+	PatchEventTypeUpdate PatchEventType = "update"
+	PatchEventTypeRemove PatchEventType = "remove"
+	PatchEventTypeAdd    PatchEventType = "add"
+)

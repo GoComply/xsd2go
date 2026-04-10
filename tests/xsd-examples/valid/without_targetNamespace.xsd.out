@@ -9,15 +9,13 @@ import (
 // Element
 type Name struct {
 	XMLName xml.Name `xml:"name"`
-
-	Text string `xml:",chardata"`
+	Text    string   `xml:",chardata"`
 }
 
 // Element
 type Referencingthename struct {
 	XMLName xml.Name `xml:"referencingthename"`
-
-	Name string `xml:",any"`
+	Name    string   `xml:",any"`
 }
 
 // XSD ComplexType declarations

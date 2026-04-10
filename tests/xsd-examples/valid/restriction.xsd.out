@@ -8,36 +8,28 @@ import (
 
 // Element
 type Myelement struct {
-	XMLName xml.Name `xml:"myelement"`
-
-	Datatype DatatypeEnumeration `xml:"datatype,attr,omitempty"`
-
+	XMLName   xml.Name             `xml:"myelement"`
+	Datatype  DatatypeEnumeration  `xml:"datatype,attr,omitempty"`
 	Operation OperationEnumeration `xml:"operation,attr,omitempty"`
 }
 
 // XSD ComplexType declarations
 
 type StateRefType struct {
-	XMLName xml.Name
-
+	XMLName  xml.Name
 	StateRef StateIdpattern `xml:"state_ref,attr"`
 }
 
 type MySimpleBaseType struct {
-	XMLName xml.Name
-
-	Datatype DatatypeEnumeration `xml:"datatype,attr,omitempty"`
-
+	XMLName   xml.Name
+	Datatype  DatatypeEnumeration  `xml:"datatype,attr,omitempty"`
 	Operation OperationEnumeration `xml:"operation,attr,omitempty"`
-
-	Text string `xml:",chardata"`
+	Text      string               `xml:",chardata"`
 }
 
 type MyElementType struct {
-	XMLName xml.Name
-
-	Datatype DatatypeEnumeration `xml:"datatype,attr,omitempty"`
-
+	XMLName   xml.Name
+	Datatype  DatatypeEnumeration  `xml:"datatype,attr,omitempty"`
 	Operation OperationEnumeration `xml:"operation,attr,omitempty"`
 }
 
@@ -47,60 +39,43 @@ type StateIdpattern string
 
 type SimpleDatatypeEnumeration string
 
-const SimpleDatatypeEnumerationBinary SimpleDatatypeEnumeration = "binary"
-
-const SimpleDatatypeEnumerationBoolean SimpleDatatypeEnumeration = "boolean"
-
-const SimpleDatatypeEnumerationEvrString SimpleDatatypeEnumeration = "evr_string"
-
-const SimpleDatatypeEnumerationDebianEvrString SimpleDatatypeEnumeration = "debian_evr_string"
-
-const SimpleDatatypeEnumerationFilesetRevision SimpleDatatypeEnumeration = "fileset_revision"
-
-const SimpleDatatypeEnumerationFloat SimpleDatatypeEnumeration = "float"
-
-const SimpleDatatypeEnumerationIosVersion SimpleDatatypeEnumeration = "ios_version"
-
-const SimpleDatatypeEnumerationInt SimpleDatatypeEnumeration = "int"
-
-const SimpleDatatypeEnumerationIpv4Address SimpleDatatypeEnumeration = "ipv4_address"
-
-const SimpleDatatypeEnumerationIpv6Address SimpleDatatypeEnumeration = "ipv6_address"
-
-const SimpleDatatypeEnumerationString SimpleDatatypeEnumeration = "string"
-
-const SimpleDatatypeEnumerationVersion SimpleDatatypeEnumeration = "version"
+const (
+	SimpleDatatypeEnumerationBinary          SimpleDatatypeEnumeration = "binary"
+	SimpleDatatypeEnumerationBoolean         SimpleDatatypeEnumeration = "boolean"
+	SimpleDatatypeEnumerationEvrString       SimpleDatatypeEnumeration = "evr_string"
+	SimpleDatatypeEnumerationDebianEvrString SimpleDatatypeEnumeration = "debian_evr_string"
+	SimpleDatatypeEnumerationFilesetRevision SimpleDatatypeEnumeration = "fileset_revision"
+	SimpleDatatypeEnumerationFloat           SimpleDatatypeEnumeration = "float"
+	SimpleDatatypeEnumerationIosVersion      SimpleDatatypeEnumeration = "ios_version"
+	SimpleDatatypeEnumerationInt             SimpleDatatypeEnumeration = "int"
+	SimpleDatatypeEnumerationIpv4Address     SimpleDatatypeEnumeration = "ipv4_address"
+	SimpleDatatypeEnumerationIpv6Address     SimpleDatatypeEnumeration = "ipv6_address"
+	SimpleDatatypeEnumerationString          SimpleDatatypeEnumeration = "string"
+	SimpleDatatypeEnumerationVersion         SimpleDatatypeEnumeration = "version"
+)
 
 type ComplexDatatypeEnumeration string
 
-const ComplexDatatypeEnumerationRecord ComplexDatatypeEnumeration = "record"
+const (
+	ComplexDatatypeEnumerationRecord ComplexDatatypeEnumeration = "record"
+)
 
 type DatatypeEnumeration string
 
 type OperationEnumeration string
 
-const OperationEnumerationEquals OperationEnumeration = "equals"
-
-const OperationEnumerationNotEqual OperationEnumeration = "not equal"
-
-const OperationEnumerationCaseInsensitiveEquals OperationEnumeration = "case insensitive equals"
-
-const OperationEnumerationCaseInsensitiveNotEqual OperationEnumeration = "case insensitive not equal"
-
-const OperationEnumerationGreaterThan OperationEnumeration = "greater than"
-
-const OperationEnumerationLessThan OperationEnumeration = "less than"
-
-const OperationEnumerationGreaterThanOrEqual OperationEnumeration = "greater than or equal"
-
-const OperationEnumerationLessThanOrEqual OperationEnumeration = "less than or equal"
-
-const OperationEnumerationBitwiseAnd OperationEnumeration = "bitwise and"
-
-const OperationEnumerationBitwiseOr OperationEnumeration = "bitwise or"
-
-const OperationEnumerationPatternMatch OperationEnumeration = "pattern match"
-
-const OperationEnumerationSubsetOf OperationEnumeration = "subset of"
-
-const OperationEnumerationSupersetOf OperationEnumeration = "superset of"
+const (
+	OperationEnumerationEquals                  OperationEnumeration = "equals"
+	OperationEnumerationNotEqual                OperationEnumeration = "not equal"
+	OperationEnumerationCaseInsensitiveEquals   OperationEnumeration = "case insensitive equals"
+	OperationEnumerationCaseInsensitiveNotEqual OperationEnumeration = "case insensitive not equal"
+	OperationEnumerationGreaterThan             OperationEnumeration = "greater than"
+	OperationEnumerationLessThan                OperationEnumeration = "less than"
+	OperationEnumerationGreaterThanOrEqual      OperationEnumeration = "greater than or equal"
+	OperationEnumerationLessThanOrEqual         OperationEnumeration = "less than or equal"
+	OperationEnumerationBitwiseAnd              OperationEnumeration = "bitwise and"
+	OperationEnumerationBitwiseOr               OperationEnumeration = "bitwise or"
+	OperationEnumerationPatternMatch            OperationEnumeration = "pattern match"
+	OperationEnumerationSubsetOf                OperationEnumeration = "subset of"
+	OperationEnumerationSupersetOf              OperationEnumeration = "superset of"
+)
