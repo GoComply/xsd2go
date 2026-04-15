@@ -42,7 +42,7 @@ type CanonicalizationMethod struct {
 type SignatureMethod struct {
 	XMLName          xml.Name              `xml:"SignatureMethod"`
 	Algorithm        string                `xml:"Algorithm,attr"`
-	HmacoutputLength *HmacoutputLengthType `xml:",any,omitempty"`
+	HmacoutputLength *HmacoutputLengthType `xml:"HMACOutputLength,omitempty"`
 }
 
 // Element
@@ -59,7 +59,7 @@ type Reference struct {
 // Element
 type Transforms struct {
 	XMLName   xml.Name        `xml:"Transforms"`
-	Transform []TransformType `xml:",any"`
+	Transform []TransformType `xml:"Transform"`
 }
 
 // Element
@@ -118,7 +118,7 @@ type RetrievalMethod struct {
 	XMLName    xml.Name        `xml:"RetrievalMethod"`
 	Uri        string          `xml:"URI,attr,omitempty"`
 	Type       string          `xml:"Type,attr,omitempty"`
-	Transforms *TransformsType `xml:",any,omitempty"`
+	Transforms *TransformsType `xml:"Transforms,omitempty"`
 }
 
 // Element
@@ -141,7 +141,7 @@ type Pgpdata struct {
 // Element
 type Spkidata struct {
 	XMLName  xml.Name `xml:"SPKIData"`
-	Spkisexp string   `xml:",any"`
+	Spkisexp string   `xml:"SPKISexp"`
 }
 
 // Element
@@ -156,14 +156,14 @@ type Object struct {
 type Manifest struct {
 	XMLName   xml.Name        `xml:"Manifest"`
 	Id        string          `xml:"Id,attr,omitempty"`
-	Reference []ReferenceType `xml:",any"`
+	Reference []ReferenceType `xml:"Reference"`
 }
 
 // Element
 type SignatureProperties struct {
 	XMLName           xml.Name                `xml:"SignatureProperties"`
 	Id                string                  `xml:"Id,attr,omitempty"`
-	SignatureProperty []SignaturePropertyType `xml:",any"`
+	SignatureProperty []SignaturePropertyType `xml:"SignatureProperty"`
 }
 
 // Element
@@ -222,7 +222,7 @@ type CanonicalizationMethodType struct {
 type SignatureMethodType struct {
 	XMLName          xml.Name
 	Algorithm        string                `xml:"Algorithm,attr"`
-	HmacoutputLength *HmacoutputLengthType `xml:",any,omitempty"`
+	HmacoutputLength *HmacoutputLengthType `xml:"HMACOutputLength,omitempty"`
 	InnerXml         string                `xml:",innerxml"`
 }
 
@@ -238,7 +238,7 @@ type ReferenceType struct {
 
 type TransformsType struct {
 	XMLName   xml.Name
-	Transform []TransformType `xml:",any"`
+	Transform []TransformType `xml:"Transform"`
 }
 
 type TransformType struct {
@@ -278,7 +278,7 @@ type RetrievalMethodType struct {
 	XMLName    xml.Name
 	Uri        string          `xml:"URI,attr,omitempty"`
 	Type       string          `xml:"Type,attr,omitempty"`
-	Transforms *TransformsType `xml:",any,omitempty"`
+	Transforms *TransformsType `xml:"Transforms,omitempty"`
 }
 
 type X509DataType struct {
@@ -304,7 +304,7 @@ type PgpdataType struct {
 
 type SpkidataType struct {
 	XMLName  xml.Name
-	Spkisexp string `xml:",any"`
+	Spkisexp string `xml:"SPKISexp"`
 }
 
 type ObjectType struct {
@@ -318,13 +318,13 @@ type ObjectType struct {
 type ManifestType struct {
 	XMLName   xml.Name
 	Id        string          `xml:"Id,attr,omitempty"`
-	Reference []ReferenceType `xml:",any"`
+	Reference []ReferenceType `xml:"Reference"`
 }
 
 type SignaturePropertiesType struct {
 	XMLName           xml.Name
 	Id                string                  `xml:"Id,attr,omitempty"`
-	SignatureProperty []SignaturePropertyType `xml:",any"`
+	SignatureProperty []SignaturePropertyType `xml:"SignatureProperty"`
 }
 
 type SignaturePropertyType struct {

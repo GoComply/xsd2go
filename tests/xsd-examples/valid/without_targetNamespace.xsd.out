@@ -15,7 +15,7 @@ type Name struct {
 // Element
 type Referencingthename struct {
 	XMLName xml.Name `xml:"referencingthename"`
-	Name    string   `xml:",any"`
+	Name    string   `xml:"name"`
 }
 
 // XSD ComplexType declarations

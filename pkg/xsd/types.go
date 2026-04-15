@@ -25,12 +25,7 @@ func injectSchemaIntoAttributes(schema *Schema, intermAttributes []Attribute) []
 	return attributesWithProperScema
 }
 
-func setXmlNameAnyForSingleElements(elements []Element) []Element {
-	if len(elements) == 1 {
-		element := elements[0]
-		element.XmlNameOverride = ",any"
-		return []Element{element}
-	}
+func clearXmlNameOverrides(elements []Element) []Element {
 	for idx := range elements {
 		element := &elements[idx]
 		element.XmlNameOverride = ""
@@ -85,11 +80,11 @@ func (ct *ComplexType) Documentation() string {
 
 func (ct *ComplexType) Elements() []Element {
 	if ct.Sequence != nil {
-		return setXmlNameAnyForSingleElements(ct.Sequence.Elements())
+		return clearXmlNameOverrides(ct.Sequence.Elements())
 	} else if ct.SequenceAll != nil {
-		return setXmlNameAnyForSingleElements(ct.SequenceAll.Elements())
+		return clearXmlNameOverrides(ct.SequenceAll.Elements())
 	} else if ct.content != nil {
-		return setXmlNameAnyForSingleElements(ct.content.Elements())
+		return clearXmlNameOverrides(ct.content.Elements())
 	} else if ct.Choice != nil {
 		return ct.Choice.Elements()
 	}
