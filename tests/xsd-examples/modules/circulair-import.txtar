@@ -1,0 +1,33 @@
+-- a.xsd --
+<?xml version="1.0"?>
+<xsd:schema
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:a="urn:a"
+	xmlns:b="urn:b"
+	targetNamespace="urn:a">
+
+	<xsd:import namespace="urn:b" schemaLocation="b.xsd"/>
+
+	<xsd:complexType name="AType">
+		<xsd:sequence>
+			<xsd:element name="b" type="b:BType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>
+
+-- b.xsd --
+<?xml version="1.0"?>
+<xsd:schema
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:a="urn:a"
+	xmlns:b="urn:b"
+	targetNamespace="urn:b">
+
+	<xsd:import namespace="urn:a" schemaLocation="a.xsd"/>
+
+	<xsd:complexType name="BType">
+		<xsd:sequence>
+			<xsd:element name="a" type="a:AType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

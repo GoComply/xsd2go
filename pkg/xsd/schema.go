@@ -6,7 +6,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
-	"sort"
+	"slices"
 	"strings"
 
 	"golang.org/x/net/html/charset"
@@ -312,7 +312,7 @@ func (sch *Schema) GoImportsNeeded() []string {
 	for _, importedMod := range sch.importedModules {
 		imports = append(imports, fmt.Sprintf("%s/%s", sch.ModulesPath, importedMod.GoPackageName()))
 	}
-	sort.Strings(imports)
+	slices.Sort(imports)
 	return imports
 }
 

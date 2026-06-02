@@ -7,6 +7,7 @@ import (
 
 type Workspace struct {
 	Cache          map[string]*Schema // Parsed XSD schemas by its filename (user specifies initial one, and we load dependencies)
+	Loaded         map[string]*Schema // Parsed AND resolved schemas by its filename
 	GoModulesPath  string             // user requested go package path (example: github.com/gocomply/scap)
 	xmlnsOverrides xmlnsOverrides     // user-supplied xmlns overrides
 }
@@ -14,6 +15,7 @@ type Workspace struct {
 func NewWorkspace(goModulesPath, xsdPath string, xmlnsOverrides []string) (*Workspace, error) {
 	ws := Workspace{
 		Cache:         map[string]*Schema{},
+		Loaded:        map[string]*Schema{},
 		GoModulesPath: goModulesPath,
 	}
 	var err error
@@ -29,11 +31,34 @@ func NewWorkspace(goModulesPath, xsdPath string, xmlnsOverrides []string) (*Work
 	return &ws, ws.compile()
 }
 
+// merges unique elements of newer into origin, compared by getName.
+func merge[T any, M comparable](newer, origin []T, getName func(T) M) []T {
+	names := make(map[M]struct{})
+	for _, o := range origin {
+		names[getName(o)] = struct{}{}
+	}
+
+	for _, n := range newer {
+		name := getName(n)
+		if _, ok := names[name]; ok {
+			continue
+		}
+		origin = append(origin, n)
+		names[name] = struct{}{}
+	}
+	return origin
+}
+
 func (ws *Workspace) loadXsd(xsdPath string, shouldBeInlined bool) (*Schema, error) {
-	cached, found := ws.Cache[xsdPath]
-	if found {
+	xsdPath = filepath.Clean(xsdPath)
+
+	if schema, found := ws.Loaded[xsdPath]; found {
+		return schema, nil
+	}
+	if cached, found := ws.Cache[xsdPath]; found {
 		return cached, nil
 	}
+
 	fmt.Println("\tParsing:", xsdPath)
 
 	schema, err := ReadSchemaFromFile(xsdPath)
@@ -44,6 +69,8 @@ func (ws *Workspace) loadXsd(xsdPath string, shouldBeInlined bool) (*Schema, err
 	schema.ModulesPath = ws.GoModulesPath
 	schema.filePath = xsdPath
 	schema.goPackageNameOverride = ws.xmlnsOverrides.override(schema.TargetNamespace)
+
+	ws.Loaded[xsdPath] = schema
 
 	if !shouldBeInlined {
 		// Cache all loaded schemas in the workspace, unless it was brought in by xsd:include element.
@@ -60,13 +87,13 @@ func (ws *Workspace) loadXsd(xsdPath string, shouldBeInlined bool) (*Schema, err
 		}
 
 		isch := si.IncludedSchema
-		schema.Imports = append(isch.Imports, schema.Imports...)
-		schema.Elements = append(isch.Elements, schema.Elements...)
-		schema.Attributes = append(isch.Attributes, schema.Attributes...)
-		schema.AttributeGroups = append(isch.AttributeGroups, schema.AttributeGroups...)
-		schema.ComplexTypes = append(isch.ComplexTypes, schema.ComplexTypes...)
-		schema.SimpleTypes = append(isch.SimpleTypes, schema.SimpleTypes...)
-		schema.inlinedElements = append(isch.inlinedElements, schema.inlinedElements...)
+		schema.Imports = merge(isch.Imports, schema.Imports, func(i Import) string { return i.Namespace + i.SchemaLocation })
+		schema.Elements = merge(isch.Elements, schema.Elements, func(e Element) string { return e.Name })
+		schema.Attributes = merge(isch.Attributes, schema.Attributes, func(a Attribute) string { return a.Name })
+		schema.AttributeGroups = merge(isch.AttributeGroups, schema.AttributeGroups, func(ag AttributeGroup) string { return ag.Name })
+		schema.ComplexTypes = merge(isch.ComplexTypes, schema.ComplexTypes, func(ct ComplexType) string { return ct.Name })
+		schema.SimpleTypes = merge(isch.SimpleTypes, schema.SimpleTypes, func(st SimpleType) string { return st.Name })
+		schema.inlinedElements = merge(isch.inlinedElements, schema.inlinedElements, func(e Element) string { return e.Name })
 		for key, sch := range isch.importedModules {
 			schema.importedModules[key] = sch
 		}

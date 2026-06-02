@@ -43,13 +43,13 @@ func (ext *Extension) Elements() []Element {
 		goNames[attr.GoName()] = struct{}{}
 	}
 
-	final := []Element{}
-	for _, element := range elements {
+	final := make([]Element, len(elements))
+	for i, element := range elements {
 		if _, found := goNames[element.GoFieldName()]; found {
 			element.FieldOverride = true
 		}
 		goNames[element.GoFieldName()] = struct{}{}
-		final = append(final, element)
+		final[i] = element
 	}
 	return final
 }
