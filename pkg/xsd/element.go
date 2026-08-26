@@ -25,6 +25,7 @@ type Element struct {
 	SimpleType      *SimpleType  `xml:"simpleType"`
 	schema          *Schema
 	typ             Type
+	Parent          *Element `xml:"-"`
 }
 
 func (e *Element) Attributes() []Attribute {
@@ -154,6 +155,7 @@ func (e *Element) isArray() bool {
 
 func (e *Element) compile(s *Schema, parentElement *Element) {
 	e.schema = s
+	e.Parent = parentElement
 	if e.ComplexType != nil {
 		e.typ = e.ComplexType
 		if e.SimpleType != nil {
