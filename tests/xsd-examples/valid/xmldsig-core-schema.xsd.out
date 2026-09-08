@@ -141,7 +141,7 @@ type Pgpdata struct {
 // Element
 type Spkidata struct {
 	XMLName  xml.Name `xml:"SPKIData"`
-	Spkisexp string   `xml:"SPKISexp"`
+	Spkisexp []string `xml:"SPKISexp"`
 }
 
 // Element
@@ -175,10 +175,14 @@ type SignatureProperty struct {
 
 // Element
 type DsakeyValue struct {
-	XMLName xml.Name      `xml:"DSAKeyValue"`
-	G       *CryptoBinary `xml:"G,omitempty"`
-	Y       CryptoBinary  `xml:"Y"`
-	J       *CryptoBinary `xml:"J,omitempty"`
+	XMLName     xml.Name      `xml:"DSAKeyValue"`
+	G           *CryptoBinary `xml:"G,omitempty"`
+	Y           CryptoBinary  `xml:"Y"`
+	J           *CryptoBinary `xml:"J,omitempty"`
+	P           *CryptoBinary `xml:"P,omitempty"`
+	Q           *CryptoBinary `xml:"Q,omitempty"`
+	Seed        *CryptoBinary `xml:"Seed,omitempty"`
+	PgenCounter *CryptoBinary `xml:"PgenCounter,omitempty"`
 }
 
 // Element
@@ -304,7 +308,7 @@ type PgpdataType struct {
 
 type SpkidataType struct {
 	XMLName  xml.Name
-	Spkisexp string `xml:"SPKISexp"`
+	Spkisexp []string `xml:"SPKISexp"`
 }
 
 type ObjectType struct {
@@ -335,10 +339,14 @@ type SignaturePropertyType struct {
 }
 
 type DsakeyValueType struct {
-	XMLName xml.Name
-	G       *CryptoBinary `xml:"G,omitempty"`
-	Y       CryptoBinary  `xml:"Y"`
-	J       *CryptoBinary `xml:"J,omitempty"`
+	XMLName     xml.Name
+	G           *CryptoBinary `xml:"G,omitempty"`
+	Y           CryptoBinary  `xml:"Y"`
+	J           *CryptoBinary `xml:"J,omitempty"`
+	P           *CryptoBinary `xml:"P,omitempty"`
+	Q           *CryptoBinary `xml:"Q,omitempty"`
+	Seed        *CryptoBinary `xml:"Seed,omitempty"`
+	PgenCounter *CryptoBinary `xml:"PgenCounter,omitempty"`
 }
 
 type RsakeyValueType struct {
